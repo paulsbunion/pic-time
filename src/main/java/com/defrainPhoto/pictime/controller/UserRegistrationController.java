@@ -9,12 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.defrainPhoto.pictime.model.User;
 import com.defrainPhoto.pictime.repository.UserRegistrationDto;
 import com.defrainPhoto.pictime.service.UserService;
 
 @Controller
+@RequestMapping("/registration")
 public class UserRegistrationController {
 
 	@Autowired

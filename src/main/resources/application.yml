@@ -20,4 +20,4 @@ logging:
       root: WARN
       com.memorynotfound: DEBUG
       org.springframework.web: DEBUG
-      org.springframework.security: DEBUG
+      org.springframework.security: INFO
