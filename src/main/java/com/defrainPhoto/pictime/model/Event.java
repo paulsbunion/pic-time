@@ -1,11 +1,18 @@
 package com.defrainPhoto.pictime.model;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -15,15 +22,19 @@ public class Event {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String eventName;
-	//private EventType eventType;
-	private LocalDate eventDate;
-	private long startTime; // start time in minutes (e.x. 5pm = 1020 (17*60))
-	private long duration; // duration in minutes
-	//private Timeline timeline;
+	@ManyToOne
+	private EventType eventType;
+	@OneToOne(mappedBy = "event")
+	private Timeline timeline;
 	private String extraCost;
 	private String notes;
 	@OneToOne(mappedBy = "event")
 	private Mileage mileage;
+//	@ManyToMany(mappedBy = "event")
+//	@JoinTable(name = "event_users")
+//	private Set<User> users;
+	@OneToMany(mappedBy = "eventUserId", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<EventUser> users = new ArrayList<EventUser>();
 	
 	public Event() {}
 	
@@ -39,29 +50,17 @@ public class Event {
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-//	public EventType getEventType() {
-//		return eventType;
-//	}
-//	public void setEventType(EventType eventType) {
-//		this.eventType = eventType;
-//	}
-	public LocalDate getEventDate() {
-		return eventDate;
+	public EventType getEventType() {
+		return eventType;
 	}
-	public void setEventDate(LocalDate eventDate) {
-		this.eventDate = eventDate;
+	public void setEventType(EventType eventType) {
+		this.eventType = eventType;
 	}
-	public long getStartTime() {
-		return startTime;
+	public Timeline getTimeline() {
+		return timeline;
 	}
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-	public long getDuration() {
-		return duration;
-	}
-	public void setDuration(long duration) {
-		this.duration = duration;
+	public void setTimeline(Timeline timeline) {
+		this.timeline = timeline;
 	}
 	public String getExtraCost() {
 		return extraCost;
@@ -74,6 +73,12 @@ public class Event {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	public Mileage getMileage() {
+		return mileage;
+	}
+	public void setMileage(Mileage mileage) {
+		this.mileage = mileage;
 	}
 	
 }
