@@ -3,6 +3,7 @@ package com.defrainPhoto.pictime.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,18 +21,18 @@ public class Timeslot {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private EventTime time;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Timeline timeline;
 	private String heading;
 	private String notes;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
 	@ManyToMany
 //	@JoinTable(joinColumns = @JoinColumn(name = "time_slot_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 //	@JoinColumn(name = "timeline_event_id")
 	private Set<EventUser> photographers;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Location location;
 	private boolean trackMileage;
 	public long getId() {

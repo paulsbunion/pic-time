@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -11,14 +12,24 @@ import javax.persistence.ManyToOne;
 public class LocationDistance implements Serializable {
 
 	@Id
-	@ManyToOne
+	private Long id; // combination of startLocation and endLocation
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Location startLocation;
 	
-	@Id
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Location endLocation;
 	
 	private String miles;
+
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Location getStartLocation() {
 		return startLocation;
@@ -46,7 +57,7 @@ public class LocationDistance implements Serializable {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(getStartLocation(), getEndLocation(), getMiles());
+		return Objects.hash(getId(), getStartLocation(), getEndLocation(), getMiles());
 	}
 	
 	@Override
@@ -54,7 +65,8 @@ public class LocationDistance implements Serializable {
 		if (this == obj) return true;
         if (!(obj instanceof LocationDistance)) return false;
         LocationDistance temp = (LocationDistance) obj;
-        return Objects.equals(getStartLocation(), temp.getStartLocation()) &&
+        return Objects.equals(getId(), temp.getId()) &&
+        		Objects.equals(getStartLocation(), temp.getStartLocation()) &&
                 Objects.equals(getEndLocation(), temp.getEndLocation()) &&
                 Objects.equals(getMiles(), temp.getMiles());
 	}

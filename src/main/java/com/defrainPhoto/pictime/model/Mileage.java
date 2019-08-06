@@ -1,6 +1,7 @@
 package com.defrainPhoto.pictime.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -12,7 +13,7 @@ public class Mileage {
 	private long eventId;
 	private int year;
 	private long totalMiles;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	private Event event;
 	

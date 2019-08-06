@@ -2,6 +2,7 @@ package com.defrainPhoto.pictime.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -19,9 +20,9 @@ public class EventUser {
 	
 	@Id
 	@JoinColumn(name = "event_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Event event;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 }

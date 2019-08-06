@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,11 +25,11 @@ public class Event {
 	private String eventName;
 	@ManyToOne
 	private EventType eventType;
-	@OneToOne(mappedBy = "event")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "event")
 	private Timeline timeline;
 	private String extraCost;
 	private String notes;
-	@OneToOne(mappedBy = "event")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "event")
 	private Mileage mileage;
 //	@ManyToMany(mappedBy = "event")
 //	@JoinTable(name = "event_users")
