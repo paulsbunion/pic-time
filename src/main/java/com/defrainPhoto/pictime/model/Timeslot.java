@@ -14,14 +14,20 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Timeslot {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
 	private long id;
 	private EventTime time;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Timeline timeline;
 	private String heading;
 	private String notes;
@@ -88,5 +94,10 @@ public class Timeslot {
 	}
 	public void setTrackMileage(boolean trackMileage) {
 		this.trackMileage = trackMileage;
+	}
+	
+	public void addPhotographer(EventUser photographer) {
+		photographers.add(photographer);
+		//photographer.setEvent(timeline.getEvent());
 	}
 }

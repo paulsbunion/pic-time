@@ -9,29 +9,24 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @IdClass(LocationDistancePK.class)
 public class LocationDistance implements Serializable {
 
-//	@Id
-//	private Long id; // combination of startLocation and endLocation
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE) // if parent location deleted, remove all child
 	private Location startLocation;
+	
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Location endLocation;
 	
 	private String miles;
-
-	
-//	public Long getId() {
-//		return id;
-//	}
-//
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
 
 	public Location getStartLocation() {
 		return startLocation;

@@ -16,26 +16,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class Event {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
 	private long id;
 	private String eventName;
+	
 	@ManyToOne
 	private EventType eventType;
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "event")
+	
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
 	private Timeline timeline;
+	
 	private String extraCost;
 	private String notes;
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "event")
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
 	private Mileage mileage;
 //	@ManyToMany(mappedBy = "event")
 //	@JoinTable(name = "event_users")
 //	private Set<User> users;
 	@OneToMany(mappedBy = "eventUserId", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<EventUser> users = new ArrayList<EventUser>();
+	private List<EventUser> eventUsers = new ArrayList<EventUser>();
 	
 	public Event() {}
 	
@@ -62,6 +68,7 @@ public class Event {
 	}
 	public void setTimeline(Timeline timeline) {
 		this.timeline = timeline;
+		timeline.setEvent(this);
 	}
 	public String getExtraCost() {
 		return extraCost;
@@ -81,5 +88,13 @@ public class Event {
 	public void setMileage(Mileage mileage) {
 		this.mileage = mileage;
 	}
-	
+		
+	public void removeTimeline(Timeline timeline) {
+		timeline.setEvent(null);
+	}
+
+	public void addEventUser(EventUser eventUser) {
+		this.eventUsers.add(eventUser);
+		eventUser.setEvent(this);
+	}
 }
