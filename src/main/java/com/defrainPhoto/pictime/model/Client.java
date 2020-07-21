@@ -24,6 +24,18 @@ public class Client {
 	
 	public Client() {}
 	
+	public Client(Long id, String firstName, String lastName, String address, String phoneNumber, String email,
+			boolean autoRemind) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.autoRemind = autoRemind;
+	}
+
 	public Long getId() {
 		return id;
 	}
