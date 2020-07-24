@@ -4,8 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.defrainPhoto.pictime.constraint.PhoneNumber;
 
 @Entity
 public class Client {
@@ -14,10 +18,15 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
+	@NotNull
 	private String firstName;
+	@NotNull
 	private String lastName;
+	@NotNull
 	private String address;
+	@PhoneNumber
 	private String phoneNumber;
+	@Email
 	private String email;
 	private boolean autoRemind;
 	//private Set<Event> events;
