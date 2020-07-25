@@ -1,5 +1,8 @@
 package com.defrainPhoto.pictime.model;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -87,5 +90,34 @@ public class Client {
 	public void setAutoRemind(boolean autoRemind) {
 		this.autoRemind = autoRemind;
 	}
+
+	@Override
+	public int hashCode() {
+		return 13;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (obj.getClass() == Optional.class) {
+        	Optional opt = (Optional)obj;
+        	obj = opt.get();
+        }
+        if (getClass() != obj.getClass())
+            return false;
+        Client other = (Client) obj;
+        return id != null && id.equals(other.getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", autoRemind=" + autoRemind + "]";
+	}
+	
+	
 	
 }
