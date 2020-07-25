@@ -69,7 +69,7 @@ public class ClientControllerIntegrationTest {
 				.with(csrf())
 				.content(asJsonString(client))
 				.contentType(MediaType.APPLICATION_JSON))
-//				.andExpect(status().isOk())
+				.andExpect(status().isOk())
 //				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.firstName", is(client.getFirstName())));
 

@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 	
 	// match phone number with possible parentheses or dashes/ spaces
-	private final String MATCHER = "^(\\+?\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$";
+	private final String MATCHER = "^(\\+?\\d{1,3}[- . ]?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$";
 
 	@Override
 	public void initialize(PhoneNumber constraintAnnotation) {
