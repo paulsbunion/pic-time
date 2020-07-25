@@ -3,10 +3,6 @@ package com.defrainPhoto.pictime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -18,20 +14,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.defrainPhoto.pictime.constraint.PhoneNumber;
-import com.defrainPhoto.pictime.constraint.PhoneNumberValidator;
 import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.repository.ClientRepository;
-import com.defrainPhoto.pictime.service.ClientService;
 import com.defrainPhoto.pictime.service.ClientServiceImpl;
 
+@ComponentScan
 @RunWith(MockitoJUnitRunner.class)
-public class TestClientService {
+public class MockTestClientService {
 	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	@InjectMocks
@@ -43,6 +39,7 @@ public class TestClientService {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
+
 	}
 
 	@Test
@@ -85,6 +82,7 @@ public class TestClientService {
 		Set<ConstraintViolation<Client>> violations = validator.validate(client);
 		assertEquals("Invalid phone number", violations.stream().findFirst().get().getMessage());
 	}
+
 	@Test
 	public void testValidPhoneNumber() {
 		Client client = new Client(1l, "Bob", "Barker", "address", "228-234-5566", "email@valid", false);
@@ -101,4 +99,5 @@ public class TestClientService {
 		violations = validator.validate(client);
 		assertEquals(0, violations.size());
 	}
+
 }
