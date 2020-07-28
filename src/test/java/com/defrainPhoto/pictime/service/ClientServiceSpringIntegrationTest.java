@@ -1,4 +1,4 @@
-package com.defrainPhoto.pictime;
+package com.defrainPhoto.pictime.service;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,11 +24,11 @@ import com.defrainPhoto.pictime.service.ClientServiceImpl;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
-public class SpringIntegrationTestClientService {
+public class ClientServiceSpringIntegrationTest {
 	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	@Autowired
-	ClientServiceImpl clientService;
+	ClientService clientService;
 
 	@Before
 	public void init() {

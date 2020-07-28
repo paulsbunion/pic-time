@@ -1,4 +1,4 @@
-package com.defrainPhoto.pictime;
+package com.defrainPhoto.pictime.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +27,11 @@ import com.defrainPhoto.pictime.service.ClientServiceImpl;
 
 @ComponentScan
 @RunWith(MockitoJUnitRunner.class)
-public class MockTestClientService {
+public class ClientServiceMockUnitTest {
 	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	@InjectMocks
-	ClientServiceImpl clientService;
+	ClientService clientService = new ClientServiceImpl();
 
 	@Mock
 	ClientRepository clientRepository;

@@ -112,11 +112,11 @@ public class Client {
         return id != null && id.equals(other.getId());
 	}
 
-	@Override
-	public String toString() {
-		return "Client [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
-				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", autoRemind=" + autoRemind + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Client [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+//				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", autoRemind=" + autoRemind + "]";
+//	}
 	
 	
 	
