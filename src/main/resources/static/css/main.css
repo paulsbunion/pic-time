@@ -1,11 +1,28 @@
 h1 {
-    color: #78ab46;
+	/*     color: #78ab46; */
+	color: #007bff;
+	font-weight: bold;
+	font: 
 }
 
 .error-message {
-    color: #a94442;
+	color: #a94442;
 }
 
 .error-message:first-letter {
-    text-transform: capitalize;
+	text-transform: capitalize;
+}
+
+td {
+	padding: 10px;
+}
+
+.delete {
+	background-color: red;
+	border-color: red;
+}
+
+.delete:hover {
+	background-color: #cc0000;
+	border-color: #cc0000;
 }
