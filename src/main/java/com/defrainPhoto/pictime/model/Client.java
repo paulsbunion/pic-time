@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -22,10 +23,13 @@ public class Client {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
 	@NotNull
+	@NotEmpty
 	private String firstName;
 	@NotNull
+	@NotEmpty
 	private String lastName;
 	@NotNull
+	@NotEmpty
 	private String address;
 	@PhoneNumber
 	private String phoneNumber;

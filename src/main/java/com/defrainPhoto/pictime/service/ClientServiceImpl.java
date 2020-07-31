@@ -57,7 +57,12 @@ public class ClientServiceImpl implements ClientService {
 		validate(newClient);
 		return Optional.of(clientRepository.save(newClient));
 	}
-	
+
+	@Override
+	public void deleteClient(Long id) {
+		clientRepository.deleteById(id);
+	}
+
 	private void validate(Client client) {
 //		Set<ConstraintViolation<Client>> violations = validator.validate(client);
 //		if (!violations.isEmpty()) {

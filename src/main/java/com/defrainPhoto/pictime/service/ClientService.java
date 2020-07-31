@@ -21,4 +21,6 @@ public interface ClientService {
 
 	Optional<Client> getClient(Long id);
 	
+	void deleteClient(Long id);
+	
 }
