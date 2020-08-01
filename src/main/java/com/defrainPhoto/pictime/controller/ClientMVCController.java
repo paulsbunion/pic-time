@@ -22,6 +22,8 @@ public class ClientMVCController {
 	private final String MVC_CLIENT_URL_BASE = "/mvc/clients/";
 	private final String LIST_CLIENTS_URL = "client/list-clients";
 	private final String EDIT_CLIENT_URL = "client/edit-client";
+	private final String NEW_CLIENT_URL = "client/new-client";
+	private final String SHOW_CLIENT_URL = "client/show-client";
 	
 	@Autowired
 	private ClientController clientController;
@@ -36,7 +38,28 @@ public class ClientMVCController {
 		model.addAttribute("clients", clientController.getAllClients());
 		return LIST_CLIENTS_URL;
 	}
+	
+	@GetMapping("show/{id}")
+	public String shoClientDetails(@PathVariable("id") long id, Model model) {
+		model.addAttribute("client", clientController.getClientById(id));
+		return SHOW_CLIENT_URL;
+	}
 
+	@GetMapping("new")
+	public String newClientForm(Model model) {
+		model.addAttribute("client", new Client());
+		return NEW_CLIENT_URL;
+	}
+	
+	@PostMapping("save")
+	public String saveNewClient(@Valid Client client, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return NEW_CLIENT_URL;
+		}
+		clientController.addClient(client);
+		return "redirect:" + MVC_CLIENT_URL_BASE + "list";
+	}
+	
 	@GetMapping("edit/{id}")
 	public String showEditClientForm(@PathVariable("id") long id, Model model) {
 		Client client = clientController.getClientById(id);

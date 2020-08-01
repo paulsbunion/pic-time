@@ -84,3 +84,7 @@ input[type="checkbox"]:checked ~ .slider:after
   content:'ON';
   left: 27%;
 }
+
+#disabled {
+	cursor: default;
+}

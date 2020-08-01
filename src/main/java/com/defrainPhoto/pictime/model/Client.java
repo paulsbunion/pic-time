@@ -1,6 +1,5 @@
 package com.defrainPhoto.pictime.model;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.Entity;
@@ -34,6 +33,8 @@ public class Client {
 	@PhoneNumber
 	private String phoneNumber;
 	@Email
+	@NotNull
+	@NotEmpty
 	private String email;
 	private boolean autoRemind;
 	//private Set<Event> events;

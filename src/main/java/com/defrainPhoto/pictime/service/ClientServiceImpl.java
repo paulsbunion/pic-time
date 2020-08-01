@@ -26,7 +26,8 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public List<Client> getAllClients() {
-		return clientRepository.findAll();
+//		return clientRepository.findAll();
+		return clientRepository.findByOrderByLastNameAscFirstNameAsc();
 	}
 
 	@Override
