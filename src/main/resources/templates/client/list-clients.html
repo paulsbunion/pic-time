@@ -12,13 +12,11 @@
 <title>All Clients</title>
 </head>
 <body>
+
 	<div class="container my-5">
 		<div class="row">
 
 			<h1>All Clients</h1>
-			<!-- 	<div class="container"> -->
-			<!-- 		<hr> -->
-			<!-- 	</div> -->
 			<div th:switch="${clients}" class="container">
 				<p class="my-5">
 					<a th:href="@{/mvc/clients/new}" class="btn btn-primary"> <i
@@ -42,11 +40,9 @@
 								</thead>
 								<tbody>
 									<tr th:each="client: ${clients}">
-										<div class="name-wrapper">
 											<td>
 												<a th:href="@{/mvc/clients/show/{id}(id=${client.id})}" th:text="${client.firstName + ' ' + client.lastName}"></a>
 											</td>
-										</div>
 										<td th:text="${client.email}"></td>
 										<td><a th:href="@{/mvc/clients/edit/{id}(id=${client.id})}"
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
@@ -62,10 +58,7 @@
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 	</div>
-
 </body>
 </html>
