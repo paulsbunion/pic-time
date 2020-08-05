@@ -1,4 +1,4 @@
-package com.defrainPhoto.pictime.controller;
+package com.defrainPhoto.pictime.controller.mvc;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.defrainPhoto.pictime.controller.ClientController;
 import com.defrainPhoto.pictime.model.Client;
 
 @Controller
