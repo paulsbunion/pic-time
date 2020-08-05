@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.defrainPhoto.pictime.model.Client;
 
@@ -26,11 +28,14 @@ public class ClientMVCController {
 	private final String NEW_CLIENT_URL = "client/new-client";
 	private final String SHOW_CLIENT_URL = "client/show-client";
 	
+	Logger log = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private ClientController clientController;
 
 	@GetMapping("list")
 	public String listAllClients(Model model) {
+		log.info("MVC user calling get all clients");
 		List<Client> allClients = clientController.getAllClients();
 		while (allClients == null || allClients.isEmpty()) {
 			addClients();
@@ -80,11 +85,13 @@ public class ClientMVCController {
 	
 	@GetMapping("delete/{id}")
 	public String deleteClient(@PathVariable("id") long id) {
+		log.debug("entering delete client controller from client MVC");
 		try {
 			clientController.delete(id);
 		}
 		catch (EmptyResultDataAccessException e) {
 			// TODO: handle exception
+			log.error("Error occured in callind delete client by ID for ID: " + id, e);
 		}
 		return "redirect:" + MVC_CLIENT_URL_BASE + "list";
 	}
