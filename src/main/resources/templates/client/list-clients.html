@@ -29,22 +29,24 @@
 						<h2 th:case="null">No Client Records Found!</h2>
 						<h2 th:case="NoData">No Client Records Found!</h2>
 
-						<div th:case="*">
-							<table class="table table-striped">
+						<div th:case="*" class="client-table">
+							<table class="table-striped">
 								<thead>
 									<tr>
-										<th>Name</th>
+										<th class="row-1 row-name">Name</th>
 <!-- 										<th>Address</th> -->
-										<th>Email</th>
-										<th>Edit</th>
-										<th>Delete</th>
+										<th class="row-2 row-email">Email</th>
+										<th class="row-3 row-button-edit">Edit</th>
+										<th class="row-4 row-button-delete">Delete</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="client: ${clients}">
-										<td>
-											<a th:href="@{/mvc/clients/show/{id}(id=${client.id})}" th:text="${client.firstName + ' ' + client.lastName}"></a>
-										</td>
+										<div class="name-wrapper">
+											<td>
+												<a th:href="@{/mvc/clients/show/{id}(id=${client.id})}" th:text="${client.firstName + ' ' + client.lastName}"></a>
+											</td>
+										</div>
 										<td th:text="${client.email}"></td>
 										<td><a th:href="@{/mvc/clients/edit/{id}(id=${client.id})}"
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
