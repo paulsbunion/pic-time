@@ -48,7 +48,9 @@
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
 										</a></td>
 										<td><a th:href="@{/mvc/clients/delete/{id}(id=${client.id})}"
-											class="btn btn-primary delete"> <i
+											class="btn btn-primary delete" 
+											th:data-confirm-delete="|Are you sure you want to delete client ${client.firstName} ${client.lastName}?|"
+											onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"> <i
 												class="fas fa-user-times m1-2">Delete</i>
 										</a></td>
 									</tr>

@@ -91,7 +91,7 @@ public class ClientMVCController {
 		}
 		catch (EmptyResultDataAccessException e) {
 			// TODO: handle exception
-			log.error("Error occured in callind delete client by ID for ID: " + id, e);
+			log.error("Error occured in calling delete client by ID for ID: " + id, e);
 		}
 		return "redirect:" + MVC_CLIENT_URL_BASE + "list";
 	}
