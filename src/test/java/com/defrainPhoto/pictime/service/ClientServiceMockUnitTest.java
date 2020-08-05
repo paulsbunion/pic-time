@@ -56,7 +56,7 @@ public class ClientServiceMockUnitTest {
 		clientList.add(client2);
 		clientList.add(client3);
 
-		when(clientRepository.findAll()).thenReturn(clientList);
+		when(clientRepository.findByOrderByLastNameAscFirstNameAsc()).thenReturn(clientList);
 
 		assertEquals(3, clientService.getAllClients().size());
 	}

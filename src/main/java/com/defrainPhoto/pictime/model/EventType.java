@@ -19,6 +19,12 @@ public class EventType {
 	
 	public EventType() {}
 
+	public EventType(long id, String typeOfEvent, int baseCost) {
+		this.id = id;
+		this.type = typeOfEvent;
+		this.baseCost = baseCost;
+	}
+
 	public long getId() {
 		return id;
 	}
