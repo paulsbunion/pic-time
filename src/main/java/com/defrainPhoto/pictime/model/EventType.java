@@ -21,7 +21,7 @@ public class EventType {
 	private Long id;
 	@NotEmpty(message = "Event Type cannot be Blank")
 	@NotNull(message = "Event Type cannot be Null")
-	private String type;
+	private String name;
 	@Min(value = 0, message = "Base Event Cost cannot be negative")
 	private int baseCost;
 
@@ -30,7 +30,7 @@ public class EventType {
 
 	public EventType(Long id, String typeOfEvent, int baseCost) {
 		this.id = id;
-		this.type = typeOfEvent;
+		this.name = typeOfEvent;
 		this.baseCost = baseCost;
 	}
 
@@ -42,12 +42,12 @@ public class EventType {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getBaseCost() {

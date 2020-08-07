@@ -57,10 +57,10 @@ public class EventTypeControllerIntegrationtest {
 		mvc.perform(get("/eventTypes")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[*]", hasSize(2)))
 			.andExpect(jsonPath("$[0].id", is(1)))
-			.andExpect(jsonPath("$[0].type", is("Basic Event")))
+			.andExpect(jsonPath("$[0].name", is("Basic Event")))
 			.andExpect(jsonPath("$[0].baseCost", is(1000)))
 			.andExpect(jsonPath("$[1].id", is(2)))
-			.andExpect(jsonPath("$[1].type", is("Super Event")))
+			.andExpect(jsonPath("$[1].name", is("Super Event")))
 			.andExpect(jsonPath("$[1].baseCost", is(7689)));
 	}
 
@@ -73,7 +73,7 @@ public class EventTypeControllerIntegrationtest {
 		
 		mvc.perform(post("/eventTypes").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
 		.andExpect(jsonPath("$.id", is(1)))
-		.andExpect(jsonPath("$.type", is("Basic Event")))
+		.andExpect(jsonPath("$.name", is("Basic Event")))
 		.andExpect(jsonPath("$.baseCost", is(1000)));
 	}
 	

@@ -8,6 +8,8 @@ import com.defrainPhoto.pictime.model.EventType;
 
 public interface EventTypeRepository extends JpaRepository<EventType, Long> {
 
-	List<EventType> findByOrderByTypeAsc();
+	List<EventType> findByOrderByNameAsc();
+
+	EventType findByName(String name);
 
 }

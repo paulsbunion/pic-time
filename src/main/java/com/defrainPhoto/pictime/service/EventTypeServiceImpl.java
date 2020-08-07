@@ -17,7 +17,7 @@ public class EventTypeServiceImpl implements EventTypeService {
 	@Override
 	public List<EventType> getAllEventTypes() {
 //		return eventTypeRepository.findAll();
-		return eventTypeRepository.findByOrderByTypeAsc();
+		return eventTypeRepository.findByOrderByNameAsc();
 	}
 
 	@Override
@@ -29,6 +29,11 @@ public class EventTypeServiceImpl implements EventTypeService {
 	@Override
 	public EventType updateEventTypeById(EventType eventType) {
 		return eventTypeRepository.save(eventType);
+	}
+
+	@Override
+	public EventType getEventType(EventType eventType) {
+		return eventTypeRepository.findByName(eventType.getName());
 	}
 
 }

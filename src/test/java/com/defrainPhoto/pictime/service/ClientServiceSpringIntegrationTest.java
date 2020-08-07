@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.TransactionSystemException;
 
 import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.service.ClientServiceImpl;
@@ -35,7 +36,8 @@ public class ClientServiceSpringIntegrationTest {
 
 	}
 
-	@Test(expected = ValidationException.class)
+//	@Test(expected = ValidationException.class)
+	@Test(expected = TransactionSystemException.class)
 	public void testAddInvalidClient() {
 		Client client1 = new Client(1l, "Larry", "Evans", "123 South Street, Columbus, OH, 43062", "123-456-7890",
 				"larryEmail", false);
