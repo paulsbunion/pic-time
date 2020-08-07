@@ -11,9 +11,9 @@ public interface ClientService {
 
 	List<Client> getAllClients();
 
-	Client addClient(@Valid Client client);
+	Client addClient(Client client);
 
-	Optional<Client> updateClientById(@Valid Client newClient);
+	Optional<Client> updateClientById(Client newClient);
 
 	Optional<Client> getClient(String email);
 

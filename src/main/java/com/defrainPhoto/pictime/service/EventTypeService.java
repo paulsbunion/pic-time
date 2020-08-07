@@ -8,4 +8,8 @@ public interface EventTypeService {
 
 	List<EventType> getAllEventTypes();
 
+	EventType addEventType(EventType eventType);
+
+	EventType updateEventTypeById(EventType eventType);
+
 }

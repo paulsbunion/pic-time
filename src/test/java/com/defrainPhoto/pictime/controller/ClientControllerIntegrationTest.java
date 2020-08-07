@@ -62,7 +62,7 @@ public class ClientControllerIntegrationTest {
 
 		when(clientService.addClient(client)).thenReturn(client);
 
-		mvc.perform(post("/client/").with(csrf()).content(asJsonString(client)).contentType(MediaType.APPLICATION_JSON))
+		mvc.perform(post("/clients/").with(csrf()).content(asJsonString(client)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.firstName", is(client.getFirstName())));
 
 	}
@@ -72,7 +72,7 @@ public class ClientControllerIntegrationTest {
 	public void testAddBadClient() throws Exception {
 		Client client = new Client(1l, "Jenny", "Doodle", "123 E Main", "1-221-228-3392", "email", false);
 		when(clientService.addClient(client)).thenReturn(client);
-		mvc.perform(post("/client").with(csrf()).content(asJsonString(client)).contentType(MediaType.APPLICATION_JSON))
+		mvc.perform(post("/clients").with(csrf()).content(asJsonString(client)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest());
 //		.andExpect(jsonPath("$.status", is(400)))
 //		.andExpect(jsonPath("$.error", is("Invalid email")));
@@ -87,7 +87,7 @@ public class ClientControllerIntegrationTest {
 
 		when(clientService.getAllClients()).thenReturn(Lists.newArrayList(client1, client2));
 
-		mvc.perform(get("/client/").with(csrf()).contentType(MediaType.APPLICATION_JSON))
+		mvc.perform(get("/clients/").with(csrf()).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$[*]", hasSize(2))).andExpect(jsonPath("$[0].firstName", is("Jenny")))
 				.andExpect(jsonPath("$[0].lastName", is("Doodle")))
 				.andExpect(jsonPath("$[0].phoneNumber", is("1-221-228-3392")))

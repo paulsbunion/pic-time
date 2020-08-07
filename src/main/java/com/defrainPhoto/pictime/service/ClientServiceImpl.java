@@ -32,8 +32,8 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	@Validated
-	public Client addClient(@Valid Client client) {
-		validate(client);
+	public Client addClient(Client client) {
+//		validate(client);
 		Client saved = clientRepository.save(client);
 		return saved;
 	}
@@ -54,8 +54,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Optional<Client> updateClientById(@Valid Client newClient) {
-		validate(newClient);
+	public Optional<Client> updateClientById(Client newClient) {
+//		validate(newClient);
 		return Optional.of(clientRepository.save(newClient));
 	}
 

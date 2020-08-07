@@ -74,6 +74,10 @@ public class ClientServiceMockUnitTest {
 		Client client = new Client(1l, "Bob", "Barker", "address", "227-334-5566", "email@valid", false);
 		Set<ConstraintViolation<Client>> violations = validator.validate(client);
 		assertTrue(violations.size() == 0);
+		
+		when(clientRepository.save(client)).thenReturn(client);
+		Client savedClient = clientService.addClient(client);
+		assertTrue(savedClient == client);
 	}
 
 	@Test
