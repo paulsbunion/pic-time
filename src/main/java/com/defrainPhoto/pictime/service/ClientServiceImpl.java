@@ -17,7 +17,7 @@ import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.repository.ClientRepository;
 
 @Service
-@Validated
+//@Validated
 public class ClientServiceImpl implements ClientService {
 	@Autowired
 	ClientRepository clientRepository;
@@ -64,12 +64,12 @@ public class ClientServiceImpl implements ClientService {
 		clientRepository.deleteById(id);
 	}
 
-	private void validate(Client client) {
+//	private void validate(Client client) {
 //		Set<ConstraintViolation<Client>> violations = validator.validate(client);
 //		if (!violations.isEmpty()) {
 //			StringBuilder sb = new StringBuilder();
 //			violations.stream().forEach(v -> sb.append(v.getMessage()));
 //			throw new ConstraintViolationException("Error occured: " + sb.toString(), violations);
 //		}
-	}
+//	}
 }

@@ -75,7 +75,7 @@ public class EventType {
 		}
 		if (getClass() != obj.getClass())
 			return false;
-		Client other = (Client) obj;
+		EventType other = (EventType) obj;
 		return id != null && id.equals(other.getId());
 	}
 
