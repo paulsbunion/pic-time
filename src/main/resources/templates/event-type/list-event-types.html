@@ -43,10 +43,10 @@
 												<a th:href="@{/mvc/event-types/show/{id}(id=${eventType.id})}" th:text="${eventType.name}"></a>
 											</td>
 										<td th:text="'$' + ${#numbers.formatDecimal(eventType.baseCost, 0, 'COMMA', 0, 'POINT')}"></td>
-										<td><a th:href="@{/mvc/event-types/edit/{id}(id=${eventType.id})}"
+										<td class="td-btn"><a th:href="@{/mvc/event-types/edit/{id}(id=${eventType.id})}"
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
 										</a></td>
-										<td><a th:href="@{/mvc/event-types/delete/{id}(id=${eventType.id})}"
+										<td class="td-btn"><a th:href="@{/mvc/event-types/delete/{id}(id=${eventType.id})}"
 											class="btn btn-primary delete" 
 											th:data-confirm-delete="|Are you sure you want to delete Event Type ${eventType.name}?|"
 											onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"> <i

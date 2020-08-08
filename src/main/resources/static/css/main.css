@@ -2,7 +2,6 @@ h1 {
 	/*     color: #78ab46; */
 	color: #007bff;
 	font-weight: bold;
-	font: 
 }
 
 .error-message {
@@ -16,7 +15,16 @@ h1 {
 td {
 	padding: 10px;
 	max-width: 10%;
-	overflow: scroll;
+/* 	overflow: scroll; */
+	
+	max-width: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+td.td-btn {
+	text-overflow: clip;
 }
 
 .delete {
@@ -43,19 +51,6 @@ table {
 .name-wrapper {
 	max-width: 10px;
 	overflow: hidden;
-}
-
-<th class="row-1 row-name">Name</th>
-<!-- 										<th>Address</th> -->
-										<th class="row-2 row-email">Email</th>
-										<th class="row-3 row-button">Edit</th>
-										<th class="row-4 row-button">Delete</th>
-
-td {
-	max-width: 10px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 
 .row-name {

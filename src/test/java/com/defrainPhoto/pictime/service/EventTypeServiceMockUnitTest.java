@@ -62,7 +62,7 @@ public class EventTypeServiceMockUnitTest {
 		eventType = new EventType(2l, "Normal Event", -1);
 		violations = validator.validate(eventType);
 		assertEquals(1, violations.size());
-		assertEquals("Base Event Cost cannot be negative", violations.stream().findFirst().get().getMessage());
+		assertEquals("Base Cost cannot be negative", violations.stream().findFirst().get().getMessage());
 		
 		eventType = new EventType(2l, "", 1);
 		violations = validator.validate(eventType);
