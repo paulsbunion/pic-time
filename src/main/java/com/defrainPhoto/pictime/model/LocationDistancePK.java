@@ -5,6 +5,10 @@ import java.util.Objects;
 
 public class LocationDistancePK implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1761320131142489912L;
 	private Location startLocation;
 	private Location endLocation;
 	

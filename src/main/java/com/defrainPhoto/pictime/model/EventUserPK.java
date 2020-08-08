@@ -5,7 +5,11 @@ import java.util.Objects;
 
 public class EventUserPK implements Serializable {
 
-//	private Long eventId;
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3700272096526735632L;
+	//	private Long eventId;
 	private Event event;
 	private Long eventUserId;
 	

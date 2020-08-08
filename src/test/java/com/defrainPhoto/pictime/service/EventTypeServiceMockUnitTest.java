@@ -1,10 +1,10 @@
 package com.defrainPhoto.pictime.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +12,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import org.hibernate.validator.internal.metadata.descriptor.ConstraintDescriptorImpl.ConstraintType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +20,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.annotation.ComponentScan;
-
-import static org.mockito.Mockito.when;
 
 import com.defrainPhoto.pictime.model.EventType;
 import com.defrainPhoto.pictime.repository.EventTypeRepository;
@@ -76,7 +73,7 @@ public class EventTypeServiceMockUnitTest {
 		violations = validator.validate(eventType);
 		violations.stream().forEach(e -> System.out.println(e.getMessage()));
 		assertEquals(2, violations.size());
-		ConstraintViolation[] violationArray = violations.toArray(new ConstraintViolation[0]);
+//		ConstraintViolation[] violationArray = violations.toArray(new ConstraintViolation[0]);
 //		assertEquals("Event Type cannot be Blank", violationArray[1].getMessage());
 //		assertEquals("Event Type cannot be Null", violationArray[0].getMessage());
 	}
@@ -109,6 +106,7 @@ public class EventTypeServiceMockUnitTest {
 		
 		when(eventTypeRepository.save(eventType)).thenReturn(eventType);
 		EventType updatedEventType = eventTypeService.updateEventTypeById(eventType);
+		assertEquals(eventType, updatedEventType);
 	}
 
 }

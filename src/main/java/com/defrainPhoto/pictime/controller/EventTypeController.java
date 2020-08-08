@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.EventType;
 import com.defrainPhoto.pictime.service.EventTypeService;
 

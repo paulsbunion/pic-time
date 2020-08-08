@@ -16,6 +16,11 @@ import org.hibernate.annotations.OnDeleteAction;
 @IdClass(LocationDistancePK.class)
 public class LocationDistance implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -770841172800478068L;
+
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE) // if parent location deleted, remove all child

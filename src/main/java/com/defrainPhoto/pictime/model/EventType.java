@@ -22,13 +22,14 @@ public class EventType {
 	@NotEmpty(message = "Event Type Name cannot be Blank")
 	@NotNull(message = "Event Type Name cannot be Blank")
 	private String name;
-	@Min(value = 0, message = "Base Event Cost cannot be negative")
-	private int baseCost;
+	@NotNull(message = "Base Cost must have a value")
+	@Min(value = 0, message = "Base Cost cannot be negative")
+	private Integer baseCost;
 
 	public EventType() {
 	}
 
-	public EventType(Long id, String typeOfEvent, int baseCost) {
+	public EventType(Long id, String typeOfEvent, Integer baseCost) {
 		this.id = id;
 		this.name = typeOfEvent;
 		this.baseCost = baseCost;
@@ -50,11 +51,11 @@ public class EventType {
 		this.name = name;
 	}
 
-	public int getBaseCost() {
+	public Integer getBaseCost() {
 		return baseCost;
 	}
 
-	public void setBaseCost(int baseCost) {
+	public void setBaseCost(Integer baseCost) {
 		this.baseCost = baseCost;
 	}
 
@@ -70,6 +71,7 @@ public class EventType {
 		if (obj == null)
 			return false;
 		if (obj.getClass() == Optional.class) {
+			@SuppressWarnings("rawtypes")
 			Optional opt = (Optional) obj;
 			obj = opt.get();
 		}

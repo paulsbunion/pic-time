@@ -108,7 +108,8 @@ public class Client {
         if (obj == null)
             return false;
         if (obj.getClass() == Optional.class) {
-        	Optional opt = (Optional)obj;
+        	@SuppressWarnings("rawtypes")
+			Optional opt = (Optional)obj;
         	obj = opt.get();
         }
         if (getClass() != obj.getClass())

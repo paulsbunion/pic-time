@@ -2,31 +2,22 @@ package com.defrainPhoto.pictime.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
 import com.defrainPhoto.pictime.model.Client;
-import com.defrainPhoto.pictime.service.ClientServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class ClientServiceSpringIntegrationTest {
-	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	@Autowired
 	ClientService clientService;
