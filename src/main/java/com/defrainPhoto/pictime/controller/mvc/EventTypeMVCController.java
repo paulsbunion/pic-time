@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ public class EventTypeMVCController {
 	private static final String NEW_EVENT_TYPE_URL = "event-type/new-event-type";
 	private static final String MVC_EVENT_TYPE_URL_BASE = "/mvc/event-types/";
 	private static final String EDIT_EVENT_TYPE_URL = "event-type/edit-event-type";
+	private static final String SHOW_EVENT_TYPE_DETAILS_URL = "event-type/show-event-type";
 
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -66,6 +68,12 @@ public class EventTypeMVCController {
 		}
 	}
 	
+	@GetMapping("show/{id}")
+	public String showEventTypeDetails(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("eventType", eventTypeController.getEventTypeById(id));
+		return SHOW_EVENT_TYPE_DETAILS_URL;
+	}
+	
 	@GetMapping("edit/{id}")
 	public String showEditEventTypeForm(@PathVariable("id") Long id, Model model) {
 		EventType eventType = eventTypeController.getEventTypeById(id);
@@ -81,6 +89,18 @@ public class EventTypeMVCController {
 			return EDIT_EVENT_TYPE_URL;
 		}
 		eventTypeController.updateEventType(id, eventType);
+		return "redirect:" + MVC_EVENT_TYPE_URL_BASE + "list";
+	}
+	
+	@GetMapping("delete/{id}")
+	public String deleteEventTypeById(@PathVariable("id") Long id) {
+		try {
+			eventTypeController.deleteEventypeById(id);
+		}
+		catch (EmptyResultDataAccessException e) {
+			log.error("Error occured in calling delete client by ID for ID: " + id, e);
+		}
+		
 		return "redirect:" + MVC_EVENT_TYPE_URL_BASE + "list";
 	}
 	

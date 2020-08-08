@@ -16,4 +16,6 @@ public interface EventTypeService {
 
 	EventType getEventTypeById(Long id);
 
+	void deleteEventTypeById(Long id);
+
 }

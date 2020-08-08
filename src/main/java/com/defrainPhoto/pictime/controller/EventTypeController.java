@@ -47,4 +47,8 @@ public class EventTypeController {
 		return eventTypeService.updateEventTypeById(eventDetails);
 	}
 
+	public void deleteEventypeById(Long id) {
+		eventTypeService.deleteEventTypeById(id);
+	}
+
 }

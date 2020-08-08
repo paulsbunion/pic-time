@@ -12,57 +12,35 @@
 <link rel="stylesheet" type="text/css" th:href="@{../../../css/main.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{../../../css/slider.css}" />
 
-<title>Client Details</title>
+<title>Event Type Details</title>
 </head>
 <body>
 	<div class="container my-5">
 		<div class="row">
 
-			<h1>Client Details</h1>
+			<h1>Event Type Details</h1>
 
-			<div th:switch="${client}" class="container">
+			<div th:switch="${eventType}" class="container">
 				<div class="col-md-10">
-					<h2 th:case="null">No Client Record Found!</h2>
-					<h2 th:case="NoData">No Client Record Found!</h2>
+					<h2 th:case="null">No Event Type Record Found!</h2>
+					<h2 th:case="NoData">No Event Type Record Found!</h2>
 
 					<div th:case="*">
 
 						<div class="form-group col-md-6">
-							<label for="firstName" class="col-form-label">First Name</label> 
-							<input type="text" th:field="${client.firstName}" class="form-control" disabled> 
+							<label for="name" class="col-form-label">Event Type Name</label> 
+							<input type="text" th:field="${eventType.name}" class="form-control" disabled> 
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label for="lastName" class="col-form-label">Last Name</label> 
-							<input type="text" th:field="${client.lastName}" class="form-control" disabled> 
+							<label for="baseCost" class="col-form-label">Last Name</label> 
+							<input type="text" th:field="${eventType.baseCost}" class="form-control" disabled> 
 						</div>
 						
-						<div class="form-group col-md-6">
-							<label for="address" class="col-form-label">Address</label> 
-							<input type="text" th:field="${client.address}" class="form-control" disabled> 
-						</div>
-						
-						<div class="form-group col-md-6">
-							<label for="phoneNumber" class="col-form-label">Phone Number</label> 
-							<input type="text" th:field="${client.phoneNumber}" class="form-control" disabled> 
-						</div>
-						
-						<div class="form-group col-md-6">
-							<label for="email" class="col-form-label">Email</label> 
-							<input type="text" th:field="${client.email}" class="form-control" disabled> 
-						</div>
-						
-						<div class="form-group col-md-6">
-							Auto Remind
-							<label class="switch"> 
-								<input type="checkbox" th:field="${client.autoRemind}" th:checked ="${client.autoRemind}" id="disabled" name="Auto Remind" disabled="disabled"> 
-								<span class="slider round"></span>
-							</label>
-						</div>
-                         <td><a th:href="@{/mvc/clients/edit/{id}(id=${client.id})}"
+                         <td><a th:href="@{/mvc/event-types/edit/{id}(id=${eventType.id})}"
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
 										</a></td>
-						<td><a th:href="@{/mvc/clients/list}"
+						<td><a th:href="@{/mvc/event-types/list}"
 							class="btn btn-primary delete"> <i
 								class="fas fa-user-times m1-2">Back</i>
 						</a></td>
