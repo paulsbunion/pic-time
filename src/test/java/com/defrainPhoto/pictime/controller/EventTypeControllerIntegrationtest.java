@@ -54,7 +54,7 @@ public class EventTypeControllerIntegrationtest {
 		
 		when(eventTypeService.getAllEventTypes()).thenReturn(Arrays.asList(eventType1, eventType2));
 		
-		mvc.perform(get("/eventTypes")).andExpect(status().isOk())
+		mvc.perform(get("/event-types")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[*]", hasSize(2)))
 			.andExpect(jsonPath("$[0].id", is(1)))
 			.andExpect(jsonPath("$[0].name", is("Basic Event")))
@@ -71,7 +71,7 @@ public class EventTypeControllerIntegrationtest {
 		
 		when(eventTypeService.addEventType(eventType)).thenReturn(eventType);
 		
-		mvc.perform(post("/eventTypes").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+		mvc.perform(post("/event-types").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
 		.andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.name", is("Basic Event")))
 		.andExpect(jsonPath("$.baseCost", is(1000)));
@@ -84,7 +84,7 @@ public class EventTypeControllerIntegrationtest {
 		
 		when(eventTypeService.addEventType(eventType)).thenReturn(eventType);
 		
-		mvc.perform(post("/eventTypes").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+		mvc.perform(post("/event-types").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
 		.andExpect(status().isBadRequest());
 		
 	}
@@ -96,7 +96,7 @@ public class EventTypeControllerIntegrationtest {
 		
 		when(eventTypeService.addEventType(eventType)).thenReturn(eventType);
 		
-		mvc.perform(post("/eventTypes").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+		mvc.perform(post("/event-types").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
 		.andExpect(status().isBadRequest());
 		
 	}

@@ -19,8 +19,8 @@ public class EventType {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
-	@NotEmpty(message = "Event Type cannot be Blank")
-	@NotNull(message = "Event Type cannot be Null")
+	@NotEmpty(message = "Event Type Name cannot be Blank")
+	@NotNull(message = "Event Type Name cannot be Blank")
 	private String name;
 	@Min(value = 0, message = "Base Event Cost cannot be negative")
 	private int baseCost;
@@ -34,7 +34,7 @@ public class EventType {
 		this.baseCost = baseCost;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

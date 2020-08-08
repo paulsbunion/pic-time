@@ -28,12 +28,19 @@ public class EventTypeServiceImpl implements EventTypeService {
 
 	@Override
 	public EventType updateEventTypeById(EventType eventType) {
+		System.out.println(eventType);
+		System.out.println(eventType.getName());
 		return eventTypeRepository.save(eventType);
 	}
 
 	@Override
 	public EventType getEventType(EventType eventType) {
 		return eventTypeRepository.findByName(eventType.getName());
+	}
+
+	@Override
+	public EventType getEventTypeById(Long id) {
+		return eventTypeRepository.findById(id).orElse(null);
 	}
 
 }

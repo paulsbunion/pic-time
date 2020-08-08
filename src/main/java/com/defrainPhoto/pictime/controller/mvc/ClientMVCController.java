@@ -47,20 +47,24 @@ public class ClientMVCController {
 	}
 	
 	@GetMapping("show/{id}")
-	public String shoClientDetails(@PathVariable("id") long id, Model model) {
+	public String showClientDetails(@PathVariable("id") long id, Model model) {
+		log.info("MVC user calling show client details for ID: " + id);
 		model.addAttribute("client", clientController.getClientById(id));
 		return SHOW_CLIENT_URL;
 	}
 
 	@GetMapping("new")
 	public String newClientForm(Model model) {
+		log.info("MVC user creating new client");
 		model.addAttribute("client", new Client());
 		return NEW_CLIENT_URL;
 	}
 	
 	@PostMapping("save")
 	public String saveNewClient(@Valid Client client, BindingResult result, Model model) {
+		log.info("MVC user saving new client");
 		if (result.hasErrors()) {
+			log.error("Error(s) saving new client: " + result.getAllErrors());
 			return NEW_CLIENT_URL;
 		}
 		clientController.addClient(client);
@@ -69,6 +73,7 @@ public class ClientMVCController {
 	
 	@GetMapping("edit/{id}")
 	public String showEditClientForm(@PathVariable("id") long id, Model model) {
+		log.info("MVC user editing existing client with ID: " + id);
 		Client client = clientController.getClientById(id);
 		model.addAttribute("client", client);
 		return EDIT_CLIENT_URL;
@@ -76,7 +81,9 @@ public class ClientMVCController {
 	
 	@PostMapping("update/{id}")
 	public String updateEditedClient(@Valid Client client, BindingResult result, @PathVariable("id") Long id, Model model) {
+		log.info("MVC user saving edits to existing client with ID: " + id);
 		if (result.hasErrors()) {
+			log.error("Error saving client changes: " + result.getAllErrors());
 			client.setId(id);
 			return EDIT_CLIENT_URL;
 		}
@@ -86,7 +93,7 @@ public class ClientMVCController {
 	
 	@GetMapping("delete/{id}")
 	public String deleteClient(@PathVariable("id") long id) {
-		log.debug("entering delete client controller from client MVC");
+		log.info("entering delete client controller from client MVC");
 		try {
 			clientController.delete(id);
 		}

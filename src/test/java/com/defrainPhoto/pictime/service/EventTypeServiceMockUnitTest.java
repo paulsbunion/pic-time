@@ -70,7 +70,7 @@ public class EventTypeServiceMockUnitTest {
 		eventType = new EventType(2l, "", 1);
 		violations = validator.validate(eventType);
 		assertEquals(1, violations.size());
-		assertEquals("Event Type cannot be Blank", violations.stream().findFirst().get().getMessage());
+		assertEquals("Event Type Name cannot be Blank", violations.stream().findFirst().get().getMessage());
 		
 		eventType = new EventType(2l, null, 1);
 		violations = validator.validate(eventType);

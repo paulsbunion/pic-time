@@ -70,6 +70,11 @@ td {
 	overflow: scroll;
 }
 
+.row-cost {
+	width: 35%;
+	overflow: scroll;
+}
+
 .row-button-edit {
 	width: 15%;
 	

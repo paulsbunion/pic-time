@@ -14,4 +14,6 @@ public interface EventTypeService {
 
 	EventType getEventType(EventType eventType);
 
+	EventType getEventTypeById(Long id);
+
 }
