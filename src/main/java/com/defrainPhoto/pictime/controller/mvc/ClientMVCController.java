@@ -1,5 +1,6 @@
 package com.defrainPhoto.pictime.controller.mvc;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -39,10 +40,11 @@ public class ClientMVCController {
 		log.info("MVC user calling get all clients");
 		List<Client> allClients = clientController.getAllClients();
 		while (allClients == null || allClients.isEmpty()) {
+			log.info("Addind Dummy Client Data for testing");
 			addClients();
 			allClients = clientController.getAllClients();
 		}
-		model.addAttribute("clients", clientController.getAllClients());
+		model.addAttribute("clients", allClients);
 		return LIST_CLIENTS_URL;
 	}
 	
@@ -98,7 +100,7 @@ public class ClientMVCController {
 			clientController.delete(id);
 		}
 		catch (EmptyResultDataAccessException e) {
-			log.error("Error occured in calling delete client by ID for ID: " + id, e);
+			log.error("Error occured in calling delete client by ID, Empty Result for ID: " + id, e);
 		}
 		return "redirect:" + MVC_CLIENT_URL_BASE + "list";
 	}

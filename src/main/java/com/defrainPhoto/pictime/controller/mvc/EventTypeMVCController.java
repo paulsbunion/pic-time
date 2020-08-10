@@ -41,6 +41,7 @@ public class EventTypeMVCController {
 		List<EventType> allEventTypes = eventTypeController.getAllEventTypes();
 		
 		while(allEventTypes.isEmpty()) {
+			log.info("Addind Dummy EventType Data for testing");
 			addEventTypes();
 			allEventTypes = eventTypeController.getAllEventTypes();
 		}
@@ -57,6 +58,7 @@ public class EventTypeMVCController {
 	
 	@PostMapping("save")
 	public String saveNewEventType(@Valid EventType eventType, BindingResult result, Model model) {
+		log.info("MVC user saving new EventType");
 		if (result.hasErrors()) {
 			log.error("Errors savinng new Event Type: " + (result.getFieldErrors().stream()
 					.map(e -> e.getDefaultMessage()).collect(Collectors.joining(","))));
@@ -70,12 +72,14 @@ public class EventTypeMVCController {
 	
 	@GetMapping("show/{id}")
 	public String showEventTypeDetails(@PathVariable("id") Long id, Model model) {
+		log.info("MVC user viewing details for EventType with ID: " + id);
 		model.addAttribute("eventType", eventTypeController.getEventTypeById(id));
 		return SHOW_EVENT_TYPE_DETAILS_URL;
 	}
 	
 	@GetMapping("edit/{id}")
 	public String showEditEventTypeForm(@PathVariable("id") Long id, Model model) {
+		log.info("MVC user editing details for EventType with ID: " + id);
 		EventType eventType = eventTypeController.getEventTypeById(id);
 		model.addAttribute("eventType", eventType);
 		return EDIT_EVENT_TYPE_URL;
@@ -83,6 +87,7 @@ public class EventTypeMVCController {
 	
 	@PostMapping("update/{id}")
 	public String saveEditedEventTypeForm(@Valid EventType eventType, BindingResult result, @PathVariable("id") Long id, Model model) {
+		log.info("MVC user saving updated EventType with ID: " + id);
 		if (result.hasErrors()) {
 			log.error("Error updating EventType: " + (result.getFieldErrors().stream().map(e->e.getDefaultMessage()).collect(Collectors.joining(","))));
 			eventType.setId(id);
@@ -94,6 +99,7 @@ public class EventTypeMVCController {
 	
 	@GetMapping("delete/{id}")
 	public String deleteEventTypeById(@PathVariable("id") Long id) {
+		log.info("MVC user deleting EventType with ID: " + id);
 		try {
 			eventTypeController.deleteEventypeById(id);
 		}

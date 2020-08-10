@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -100,6 +101,28 @@ public class EventTypeControllerIntegrationtest {
 		
 	}
 	
+	@WithMockUser
+	@Test
+	public void testAUpdateEventType() throws Exception {
+		EventType eventType = new EventType(1l, "Fish Mini Session", 500);
+		
+		when(eventTypeService.addEventType(eventType)).thenReturn(eventType);
+		when(eventTypeService.updateEventTypeById(eventType)).thenReturn(eventType);
+		when(eventTypeService.getEventTypeById(1l)).thenReturn(eventType);
+		
+		mvc.perform(post("/event-types").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+		.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.name", is("Fish Mini Session")))
+		.andExpect(jsonPath("$.baseCost", is(500)));
+		
+		eventType.setBaseCost(200);
+		
+		mvc.perform(put("/event-types/1").content(asJsonString(eventType)).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+		.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.name", is("Fish Mini Session")))
+		.andExpect(jsonPath("$.baseCost", is(200)));
+		
+	}
 	
 	public static String asJsonString(final Object obj) {
 		try {
