@@ -23,6 +23,18 @@ public class Location {
 	public Location() {
 		
 	}
+	
+
+	public Location(long id, String city, String state, String zip, String street, String description) {
+		super();
+		this.id = id;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.street = street;
+		this.description = description;
+	}
+
 
 	public long getId() {
 		return id;
