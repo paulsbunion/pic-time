@@ -4,8 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.defrainPhoto.pictime.constraint.City;
+import com.defrainPhoto.pictime.constraint.State;
+import com.defrainPhoto.pictime.constraint.Street;
+import com.defrainPhoto.pictime.constraint.Zipcode;
 
 @Entity
 public class Location {
@@ -14,9 +21,21 @@ public class Location {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private long id;
+	@City
+	@NotEmpty
+	@NotNull
 	private String city;
+	@State
+	@NotEmpty
+	@NotNull
 	private String state;
+	@Zipcode
+	@NotEmpty
+	@NotNull
 	private String zip;
+	@Street
+	@NotEmpty
+	@NotNull
 	private String street;
 	private String description;
 	

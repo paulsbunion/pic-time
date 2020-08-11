@@ -9,6 +9,11 @@ import static org.mockito.Mockito.times;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +28,7 @@ import com.defrainPhoto.pictime.repository.LocationRepository;
 @RunWith(MockitoJUnitRunner.class)
 public class LocationServiceMockUnitTest {
 
+	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 	@InjectMocks
 	LocationService locationService = new LocationServiceImpl();
 
@@ -37,6 +43,66 @@ public class LocationServiceMockUnitTest {
 		Location result = locationService.saveLocation(location);
 		assertEquals(location.getId(), result.getId());
 		assertEquals(location.getDescription(), result.getDescription());
+	}
+	
+	@Test
+	public void testAddNewLocationInvalidCity() {
+		Location location = new Location(1l, "7Wg", "Michigan", "22671", "101 Crown Gate Avenue", "The CROWN!");
+
+		when(locationRepository.save(location)).thenReturn(location);
+		Location result = locationService.saveLocation(location);
+		
+		Set<ConstraintViolation<Location>> violations = validator.validate(location);
+		
+		System.out.println("Violations");
+		violations.stream().forEach(e->System.out.println(e.getMessage()));
+		assertEquals(1, violations.size());
+		assertEquals("Invalid City", violations.stream().findFirst().get().getMessage());
+	}
+	
+	@Test
+	public void testAddNewLocationInvalidState() {
+		Location location = new Location(1l, "City", "Pickle", "22671", "101 Crown Gate Avenue", "The CROWN!");
+
+		when(locationRepository.save(location)).thenReturn(location);
+		Location result = locationService.saveLocation(location);
+		
+		Set<ConstraintViolation<Location>> violations = validator.validate(location);
+		
+		System.out.println("Violations");
+		violations.stream().forEach(e->System.out.println(e.getMessage()));
+		assertEquals(1, violations.size());
+		assertEquals("Invalid State", violations.stream().findFirst().get().getMessage());
+	}
+	
+	@Test
+	public void testAddNewLocationInvalidStreet() {
+		Location location = new Location(1l, "City", "MN", "22671-3345", "101 Crown{ Gate Avenue", "The CROWN!");
+
+		when(locationRepository.save(location)).thenReturn(location);
+		Location result = locationService.saveLocation(location);
+		
+		Set<ConstraintViolation<Location>> violations = validator.validate(location);
+		
+		System.out.println("Violations");
+		violations.stream().forEach(e->System.out.println(e.getMessage()));
+		assertEquals(1, violations.size());
+		assertEquals("Invalid Street", violations.stream().findFirst().get().getMessage());
+	}
+	
+	@Test
+	public void testAddNewLocationInvalidSZipcode() {
+		Location location = new Location(1l, "City", "WA", "22671:5", "101 Crown Gate Avenue", "The CROWN!");
+
+		when(locationRepository.save(location)).thenReturn(location);
+		Location result = locationService.saveLocation(location);
+		
+		Set<ConstraintViolation<Location>> violations = validator.validate(location);
+		
+		System.out.println("Violations");
+		violations.stream().forEach(e->System.out.println(e.getMessage()));
+		assertEquals(1, violations.size());
+		assertEquals("Invalid Zipcode", violations.stream().findFirst().get().getMessage());
 	}
 
 	@Test
