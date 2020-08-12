@@ -2,6 +2,8 @@ package com.defrainPhoto.pictime.service;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class EventTypeServiceSpringIntegrationTest {
 	@Autowired
 	EventTypeService eventTypeService;
 	
-	@Test(expected = TransactionSystemException.class)
+	@Test(expected = ConstraintViolationException.class)
 	public void testAddEventTypeInvalidBaseCost() {
 		EventType eventType = new EventType(1l, "Basic Event", -500);
 		

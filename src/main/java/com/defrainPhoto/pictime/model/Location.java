@@ -34,7 +34,7 @@ public class Location {
 	@Zipcode
 	@NotEmpty
 	@NotNull
-	private String zip;
+	private String zipcode;
 	@Street
 	@NotEmpty
 	@NotNull
@@ -51,7 +51,7 @@ public class Location {
 		this.id = id;
 		this.city = city;
 		this.state = state;
-		this.zip = zip;
+		this.zipcode = zip;
 		this.street = street;
 		this.description = description;
 	}
@@ -81,12 +81,12 @@ public class Location {
 		this.state = state;
 	}
 
-	public String getZip() {
-		return zip;
+	public String getZipcode() {
+		return zipcode;
 	}
 
-	public void setZip(String zip) {
-		this.zip = zip;
+	public void setZipcode(String zip) {
+		this.zipcode = zip;
 	}
 
 	public String getStreet() {
