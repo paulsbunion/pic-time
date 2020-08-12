@@ -10,7 +10,7 @@ public interface LocationService {
 	
 	public Location getLocationById(Long id);
 	
-	public Location saveLocation(Location location);
+	public Location addLocation(Location location);
 	
 	public Location updateLocationById(Location location);
 	

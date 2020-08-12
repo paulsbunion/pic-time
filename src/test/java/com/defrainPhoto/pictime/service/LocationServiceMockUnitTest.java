@@ -40,7 +40,7 @@ public class LocationServiceMockUnitTest {
 		Location location = new Location(1l, "City", "CT", "22671", "101 Crown Gate Avenue", "The CROWN!");
 
 		when(locationRepository.save(location)).thenReturn(location);
-		Location result = locationService.saveLocation(location);
+		Location result = locationService.addLocation(location);
 		assertEquals(location.getId(), result.getId());
 		assertEquals(location.getDescription(), result.getDescription());
 	}
@@ -50,7 +50,7 @@ public class LocationServiceMockUnitTest {
 		Location location = new Location(1l, "7Wg", "Michigan", "22671", "101 Crown Gate Avenue", "The CROWN!");
 
 		when(locationRepository.save(location)).thenReturn(location);
-		Location result = locationService.saveLocation(location);
+		Location result = locationService.addLocation(location);
 		
 		Set<ConstraintViolation<Location>> violations = validator.validate(location);
 		
@@ -65,7 +65,7 @@ public class LocationServiceMockUnitTest {
 		Location location = new Location(1l, "City", "Pickle", "22671", "101 Crown Gate Avenue", "The CROWN!");
 
 		when(locationRepository.save(location)).thenReturn(location);
-		Location result = locationService.saveLocation(location);
+		Location result = locationService.addLocation(location);
 		
 		Set<ConstraintViolation<Location>> violations = validator.validate(location);
 		
@@ -80,7 +80,7 @@ public class LocationServiceMockUnitTest {
 		Location location = new Location(1l, "City", "MN", "22671-3345", "101 Crown{ Gate Avenue", "The CROWN!");
 
 		when(locationRepository.save(location)).thenReturn(location);
-		Location result = locationService.saveLocation(location);
+		Location result = locationService.addLocation(location);
 		
 		Set<ConstraintViolation<Location>> violations = validator.validate(location);
 		
@@ -95,7 +95,7 @@ public class LocationServiceMockUnitTest {
 		Location location = new Location(1l, "City", "WA", "22671:5", "101 Crown Gate Avenue", "The CROWN!");
 
 		when(locationRepository.save(location)).thenReturn(location);
-		Location result = locationService.saveLocation(location);
+		Location result = locationService.addLocation(location);
 		
 		Set<ConstraintViolation<Location>> violations = validator.validate(location);
 		
@@ -110,7 +110,7 @@ public class LocationServiceMockUnitTest {
 		Location location = new Location(1l, "City", "CT", "22671", "101 Crown Gate Avenue", "The CROWN!");
 
 		when(locationRepository.save(location)).thenReturn(location);
-		Location result = locationService.saveLocation(location);
+		Location result = locationService.addLocation(location);
 		result.setCity("PLAINVILLE");
 		locationService.updateLocationById(location);
 		assertEquals(1l, result.getId());

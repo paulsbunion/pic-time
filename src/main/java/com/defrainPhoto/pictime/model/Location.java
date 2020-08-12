@@ -1,5 +1,7 @@
 package com.defrainPhoto.pictime.model;
 
+import java.util.Optional;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class Location {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
-	private long id;
+	private Long id;
 	@City
 	@NotEmpty
 	@NotNull
@@ -44,7 +46,7 @@ public class Location {
 	}
 	
 
-	public Location(long id, String city, String state, String zip, String street, String description) {
+	public Location(Long id, String city, String state, String zip, String street, String description) {
 		super();
 		this.id = id;
 		this.city = city;
@@ -59,7 +61,7 @@ public class Location {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -101,5 +103,27 @@ public class Location {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 23;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (obj.getClass() == Optional.class) {
+			@SuppressWarnings("rawtypes")
+			Optional opt = (Optional) obj;
+			obj = opt.get();
+		}
+		if (getClass() != obj.getClass())
+			return false;
+		Location other = (Location) obj;
+		return id != null && id.equals(other.getId());
 	}
 }

@@ -21,7 +21,7 @@ public class EventTypeServiceSpringIntegrationTest {
 	EventTypeService eventTypeService;
 	
 	@Test(expected = TransactionSystemException.class)
-	public void testAddInvalidEventType() {
+	public void testAddEventTypeInvalidBaseCost() {
 		EventType eventType = new EventType(1l, "Basic Event", -500);
 		
 		eventTypeService.addEventType(eventType);

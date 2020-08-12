@@ -29,7 +29,7 @@ public class ClientServiceSpringIntegrationTest {
 
 //	@Test(expected = ValidationException.class)
 	@Test(expected = TransactionSystemException.class)
-	public void testAddInvalidClient() {
+	public void testAddClientInvalidEmail() {
 		Client client1 = new Client(1l, "Larry", "Evans", "123 South Street, Columbus, OH, 43062", "123-456-7890",
 				"larryEmail", false);
 		clientService.addClient(client1);
