@@ -103,7 +103,7 @@ public class EventTypeControllerIntegrationtest {
 	
 	@WithMockUser
 	@Test
-	public void testAUpdateEventType() throws Exception {
+	public void testUpdateEventType() throws Exception {
 		EventType eventType = new EventType(1l, "Fish Mini Session", 500);
 		
 		when(eventTypeService.addEventType(eventType)).thenReturn(eventType);
