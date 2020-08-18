@@ -53,6 +53,13 @@ table {
 	overflow: hidden;
 }
 
+.row-address {
+	width: 30%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .row-name {
 	width: 30%;
 	overflow: hidden;
