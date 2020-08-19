@@ -25,19 +25,19 @@ public class Location {
 	private Long id;
 	@City
 	@NotEmpty
-	@NotNull
+	@NotNull(message = "")
 	private String city;
 	@State
 	@NotEmpty
-	@NotNull
+	@NotNull(message = "")
 	private String state;
 	@Zipcode
 	@NotEmpty
-	@NotNull
+	@NotNull(message = "")
 	private String zipcode;
 	@Street
 	@NotEmpty
-	@NotNull
+	@NotNull(message = "")
 	private String street;
 	private String description;
 	
@@ -57,7 +57,7 @@ public class Location {
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

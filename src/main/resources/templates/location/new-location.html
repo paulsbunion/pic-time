@@ -12,67 +12,54 @@
 <link rel="stylesheet" type="text/css" th:href="@{../../../css/main.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{../../../css/slider.css}" />
 
-<title>New Client</title>
+<title>New Location</title>
 </head>
 <body>
 	<div class="container my-5">
 		<div class="row">
 
-			<h1>New Client</h1>
+			<h1>New Location</h1>
 
 			<div class="col-md-10">
 
-				<form action="#" th:action="@{/mvc/clients/save}" th:object="${client}" method="post">
+				<form action="#" th:action="@{/mvc/locations/save}" th:object="${location}" method="post">
+
 
 					<div class="form-group col-md-6">
-						<label for="firstName" class="col-form-label">First Name</label> 
-						<input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="First Name"> 
-						<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
+						<label for="street" class="col-form-label">Street</label> 
+						<input type="text" th:field="*{street}" class="form-control" id="street" placeholder="Street (EX: 123 Main St.)"> 
+						<span th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></span>
 					</div>
 					
 					<div class="form-group col-md-6">
-						<label for="lastName" class="col-form-label">Last Name</label> 
-						<input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Last Name"> 
-						<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+						<label for="city" class="col-form-label">City</label> 
+						<input type="text" th:field="*{city}" class="form-control" id="city" placeholder="City"> 
+						<span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></span>
 					</div>
 					
 					<div class="form-group col-md-6">
-						<label for="address" class="col-form-label">Address</label> 
-						<input type="text" th:field="*{address}" class="form-control" id="address" placeholder="Address"> 
-						<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></span>
+						<label for="state" class="col-form-label">State</label> 
+						<select class="form-control" th:field="*{state}" id="state">
+							<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+						</select>
+						<span th:if="${#fields.hasErrors('state')}" th:errors="*{state}" class="text-danger"></span>
 					</div>
 					
 					<div class="form-group col-md-6">
-						<label for="phoneNumber" class="col-form-label">Phone Number</label> 
-						<input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber" placeholder="(222) 222-2222"> 
-						<span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger"></span>
+						<label for="zipcode" class="col-form-label">ZIP Code</label> 
+						<input type="text" th:field="*{zipcode}" class="form-control" id="zipcode" placeholder="EX: 43068"> 
+						<span th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}" class="text-danger"></span>
 					</div>
 					
 					<div class="form-group col-md-6">
-						<label for="email" class="col-form-label">Email</label> 
-						<input type="text" th:field="*{email}" class="form-control" id="email" placeholder="Email"> 
-						<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+						<label for="description" class="col-form-label">Description (Optional)</label> 
+						<input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Description"> 
+						<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
 					</div>
-					
-					<div class="form-group col-md-6">
-<!-- 								Auto Remind <input type="checkbox" th:field="${client.autoRemind}" th:checked ="${client.autoRemind}" id="autoRemind" name="Auto Remind">  -->
-					</div>
-					
-<!-- 							<td><a th:href="@{/mvc/clients/update/{id}(id=${client.id})}" -->
-<!-- 								class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Save</i> -->
-<!-- 							</a></td> -->
-					<div class="form-group col-md-6">
-						Auto Remind
-						<label class="switch"> 
-							<input type="checkbox" th:field="*{autoRemind}" th:checked ="${autoRemind}" id="autoRemind" name="Auto Remind"> 
-							<span class="slider round"></span>
-						</label>
-					</div>
+
 					<td><input type="submit" class="btn btn-primary" value="Save"></td>
-                          
 					
-					
-					<td><a th:href="@{/mvc/clients/list}"
+					<td><a th:href="@{/mvc/locations/list}"
 						class="btn btn-primary delete"> <i
 							class="fas fa-user-times m1-2">Cancel</i>
 					</a></td>

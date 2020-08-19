@@ -1,6 +1,5 @@
 package com.defrainPhoto.pictime.controller.mvc;
 
-import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -85,7 +84,7 @@ public class ClientMVCController {
 	public String updateEditedClient(@Valid Client client, BindingResult result, @PathVariable("id") Long id, Model model) {
 		log.info("MVC user saving edits to existing client with ID: " + id);
 		if (result.hasErrors()) {
-			log.error("Error saving client changes: " + result.getAllErrors());
+			log.error("Error saving Client changes: " + result.getAllErrors());
 			client.setId(id);
 			return EDIT_CLIENT_URL;
 		}

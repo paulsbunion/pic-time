@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class CityValidator implements ConstraintValidator<City, String> {
 
-	private final String CITY_MATCHER = "([A-Z][a-z]+[ ]?)+";
+	private final String CITY_MATCHER = "([A-Za-z]+[ ]?)+";
 	
 	@Override
 	public void initialize(City constraintAnnotation) {};

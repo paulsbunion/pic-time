@@ -12,57 +12,54 @@
 <link rel="stylesheet" type="text/css" th:href="@{../../../css/main.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{../../../css/slider.css}" />
 
-<title>Client Details</title>
+<title>Location Details</title>
 </head>
 <body>
 	<div class="container my-5">
 		<div class="row">
 
-			<h1>Client Details</h1>
+			<h1>Location Details</h1>
 
-			<div th:switch="${client}" class="container">
+			<div th:switch="${location}" class="container">
 				<div class="col-md-10">
-					<h2 th:case="null">No Client Record Found!</h2>
-					<h2 th:case="NoData">No Client Record Found!</h2>
+					<h2 th:case="null">No Location Record Found!</h2>
+					<h2 th:case="NoData">No Location Record Found!</h2>
 
 					<div th:case="*">
 
 						<div class="form-group col-md-6">
-							<label for="firstName" class="col-form-label">First Name</label> 
-							<input type="text" th:field="${client.firstName}" class="form-control" disabled> 
+							<label for="street" class="col-form-label">Street</label> 
+							<input type="text" th:field="${location.street}" class="form-control" disabled> 
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label for="lastName" class="col-form-label">Last Name</label> 
-							<input type="text" th:field="${client.lastName}" class="form-control" disabled> 
+							<label for="city" class="col-form-label">City</label> 
+							<input type="text" th:field="${location.city}" class="form-control" disabled> 
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label for="address" class="col-form-label">Address</label> 
-							<input type="text" th:field="${client.address}" class="form-control" disabled> 
+							<label for="state" class="col-form-label">State</label> 
+<!-- 							<input type="text" th:field="${location.state}" class="form-control" disabled>  -->
+							<select class="form-control" th:field="${location.state}" id="state" disabled>
+								<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+							</select>
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label for="phoneNumber" class="col-form-label">Phone Number</label> 
-							<input type="text" th:field="${client.phoneNumber}" class="form-control" disabled> 
+							<label for="zipcode" class="col-form-label">ZIP Code</label> 
+							<input type="text" th:field="${location.zipcode}" class="form-control" disabled> 
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label for="email" class="col-form-label">Email</label> 
-							<input type="text" th:field="${client.email}" class="form-control" disabled> 
+							<label for="description" class="col-form-label">Description (Optional)</label> 
+							<input type="text" th:field="${location.description}" class="form-control" disabled> 
 						</div>
 						
-						<div class="form-group col-md-6">
-							Auto Remind
-							<label class="switch"> 
-								<input type="checkbox" th:field="${client.autoRemind}" th:checked ="${client.autoRemind}" id="disabled" name="Auto Remind" disabled="disabled"> 
-								<span class="slider round"></span>
-							</label>
-						</div>
-                         <td><a th:href="@{/mvc/clients/edit/{id}(id=${client.id})}"
+						
+                         <td><a th:href="@{/mvc/locations/edit/{id}(id=${location.id})}"
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
 										</a></td>
-						<td><a th:href="@{/mvc/clients/list}"
+						<td><a th:href="@{/mvc/locations/list}"
 							class="btn btn-primary delete"> <i
 								class="fas fa-user-times m1-2">Back</i>
 						</a></td>
