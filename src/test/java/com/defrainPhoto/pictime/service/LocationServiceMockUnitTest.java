@@ -21,6 +21,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.defrainPhoto.pictime.dto.LocationDTO;
+import com.defrainPhoto.pictime.dto.LocationDTOImpl;
 import com.defrainPhoto.pictime.model.Location;
 import com.defrainPhoto.pictime.repository.LocationRepository;
 
@@ -112,21 +114,21 @@ public class LocationServiceMockUnitTest {
 		Location result = locationService.addLocation(location);
 		result.setCity("PLAINVILLE");
 		locationService.updateLocationById(location);
-		assertEquals(1l, result.getId());
+		assertEquals(Long.valueOf(1l), result.getId());
 		assertEquals(location.getCity(), result.getCity());
 	}
 
 	@Test
 	public void testGetAllLocations() {
 
-		Location location = new Location(1l, "City", "CT", "22671", "101 Crown Gate Avenue", "The CROWN!");
-		Location locationNoDesc = new Location(2l, "Orange Lake", "MN", "76533", "22 E Main St.", "");
+		LocationDTO location = new LocationDTOImpl(1l, "City", "CT", "22671", "101 Crown Gate Avenue", "The CROWN!");
+		LocationDTO locationNoDesc = new LocationDTOImpl(2l, "Orange Lake", "MN", "76533", "22 E Main St.", "");
 
-		when(locationRepository.findAll()).thenReturn(Arrays.asList(location, locationNoDesc));
+		when(locationRepository.findAllBy()).thenReturn(Arrays.asList(location, locationNoDesc));
 
-		List<Location> results = locationService.getAllLocations();
+		List<LocationDTO> results = locationService.getAllLocations();
 		assertTrue(results.size() == 2);
-		assertEquals(2l, results.get(1).getId());
+		assertEquals(Long.valueOf(2l), results.get(1).getId());
 		assertEquals("", results.get(1).getDescription());
 
 	}

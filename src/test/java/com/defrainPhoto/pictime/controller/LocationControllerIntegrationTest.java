@@ -24,6 +24,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.defrainPhoto.pictime.dto.LocationDTO;
+import com.defrainPhoto.pictime.dto.LocationDTOImpl;
 import com.defrainPhoto.pictime.model.Location;
 import com.defrainPhoto.pictime.service.LocationService;
 import com.defrainPhoto.pictime.service.UserService;
@@ -51,8 +53,8 @@ public class LocationControllerIntegrationTest {
 	public void testGetAllLocations() throws Exception {
 		long id = 1l;
 		
-		Location location = new Location(id, "PickleCity", "MN", "56702", "123 South Pickle St.", "The Pickle Town");
-		
+		LocationDTO location = new LocationDTOImpl(id, "PickleCity", "MN", "56702", "123 South Pickle St.", "The Pickle Town");
+			
 		when(locationService.getAllLocations()).thenReturn(Arrays.asList(location));
 		
 		mvc.perform(get("/locations").with(csrf())).andExpect(status().isOk())

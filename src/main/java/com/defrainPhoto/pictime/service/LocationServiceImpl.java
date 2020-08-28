@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
 import com.defrainPhoto.pictime.repository.LocationRepository;
 
@@ -13,10 +14,10 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	LocationRepository locationRepository;
-
+	
 	@Override
-	public List<Location> getAllLocations() {
-		return locationRepository.findAll();
+	public List<LocationDTO> getAllLocations() {
+		return locationRepository.findAllBy();
 	}
 
 	@Override

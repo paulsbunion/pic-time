@@ -2,6 +2,7 @@ package com.defrainPhoto.pictime.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
 import com.defrainPhoto.pictime.service.LocationService;
 
@@ -36,8 +38,18 @@ public class LocationController {
 	}
 
 	@GetMapping
-	public List<Location> getAllLocations() {
+	public List<LocationDTO> getAllLocations() {
 		log.info("Location REST controller getting all Locations");
+//		List<LocationDTO> locations = locationService.getAllLocations();
+//		System.out.println("Checking managed Entities..........");
+		
+//		final org.hibernate.engine.spi.SessionImplementor session = em.unwrap( org.hibernate.engine.spi.SessionImplementor.class );
+//		final org.hibernate.engine.spi.PersistenceContext pc = session.getPersistenceContext();
+//		final Map.Entry<Object,org.hibernate.engine.spi.EntityEntry>[] entityEntries = pc.reentrantSafeEntityEntries();
+//		System.out.println(entityEntries.length);
+//		Arrays.stream(entityEntries).forEach(m -> m.getKey().toString());
+//		
+//		return locations;
 		return locationService.getAllLocations();
 	}
 

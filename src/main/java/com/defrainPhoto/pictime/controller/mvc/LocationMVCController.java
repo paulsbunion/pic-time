@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.defrainPhoto.pictime.controller.LocationController;
-import com.defrainPhoto.pictime.model.Client;
+import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
 
 @Controller
@@ -45,7 +45,7 @@ public class LocationMVCController {
 	@GetMapping("list")
 	public String listAllLocations(Model model) {
 		log.info("MVC user calling get all locations");
-		List<Location> allLocations = locationController.getAllLocations();
+		List<LocationDTO> allLocations = locationController.getAllLocations();
 		while (allLocations == null || allLocations.isEmpty()) {
 			log.info("Addind Dummy Location Data for testing");
 			addLocations();
