@@ -40,16 +40,6 @@ public class LocationController {
 	@GetMapping
 	public List<LocationDTO> getAllLocations() {
 		log.info("Location REST controller getting all Locations");
-//		List<LocationDTO> locations = locationService.getAllLocations();
-//		System.out.println("Checking managed Entities..........");
-		
-//		final org.hibernate.engine.spi.SessionImplementor session = em.unwrap( org.hibernate.engine.spi.SessionImplementor.class );
-//		final org.hibernate.engine.spi.PersistenceContext pc = session.getPersistenceContext();
-//		final Map.Entry<Object,org.hibernate.engine.spi.EntityEntry>[] entityEntries = pc.reentrantSafeEntityEntries();
-//		System.out.println(entityEntries.length);
-//		Arrays.stream(entityEntries).forEach(m -> m.getKey().toString());
-//		
-//		return locations;
 		return locationService.getAllLocations();
 	}
 

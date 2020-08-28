@@ -3,11 +3,15 @@ package com.defrainPhoto.pictime.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import com.defrainPhoto.pictime.dto.TimeslotDTO;
 import com.defrainPhoto.pictime.model.Timeslot;
 
-public interface TimeSlotRepository extends JpaRepository<Timeslot, Long>{
+public interface TimeslotRepository extends JpaRepository<Timeslot, Long>{
 
 	public List<Timeslot> findAllByTimeline(Long id);
 	
+	@Query
+	List<TimeslotDTO> findAllBy();
 }

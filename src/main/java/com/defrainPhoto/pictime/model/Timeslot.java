@@ -25,7 +25,7 @@ public class Timeslot {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Timeline timeline;
-	private String heading;
+	private String title;
 	private String notes;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
@@ -55,11 +55,11 @@ public class Timeslot {
 	public void setTimeline(Timeline timeline) {
 		this.timeline = timeline;
 	}
-	public String getHeading() {
-		return heading;
+	public String getTitle() {
+		return title;
 	}
-	public void setHeading(String heading) {
-		this.heading = heading;
+	public void setTitle(String heading) {
+		this.title = heading;
 	}
 	public String getNotes() {
 		return notes;
