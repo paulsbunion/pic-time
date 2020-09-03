@@ -21,14 +21,20 @@ public class Timeslot {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private long id;
+	
 	private EventTime time;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Timeline timeline;
+	private Event event;
+	
 	private String title;
+	
 	private String notes;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
+	
 	@ManyToMany
 //	@JoinTable(joinColumns = @JoinColumn(name = "time_slot_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 //	@JoinColumn(name = "timeline_event_id")
@@ -45,11 +51,12 @@ public class Timeslot {
 		
 	}
 	
-	public Timeslot(long id, EventTime time, Timeline timeline, String title, String notes, Client client,
+	public Timeslot(long id, EventTime time, Event event, String title, String notes, Client client,
 			Set<EventUser> photographers, Location location, boolean trackMileage) {
+		super();
 		this.id = id;
 		this.time = time;
-		this.timeline = timeline;
+		this.event = event;
 		this.title = title;
 		this.notes = notes;
 		this.client = client;
@@ -67,12 +74,15 @@ public class Timeslot {
 	public void setTime(EventTime time) {
 		this.time = time;
 	}
-	public Timeline getTimeline() {
-		return timeline;
+	
+	public Event getEvent() {
+		return event;
 	}
-	public void setTimeline(Timeline timeline) {
-		this.timeline = timeline;
+
+	public void setEvent(Event event) {
+		this.event = event;
 	}
+
 	public String getTitle() {
 		return title;
 	}

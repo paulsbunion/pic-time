@@ -27,8 +27,10 @@ public class Event {
 	@ManyToOne
 	private EventType eventType;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
-	private Timeline timeline;
+//	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
+//	private Timeline timeline;
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Timeslot> timeslots = new ArrayList<Timeslot>();
 	
 	private String extraCost;
 	private String notes;
@@ -60,13 +62,20 @@ public class Event {
 	public void setEventType(EventType eventType) {
 		this.eventType = eventType;
 	}
-	public Timeline getTimeline() {
-		return timeline;
+
+	public List<Timeslot> getTimeslots() {
+		return timeslots;
 	}
-	public void setTimeline(Timeline timeline) {
-		this.timeline = timeline;
-		timeline.setEvent(this);
+
+	public void setTimeslots(List<Timeslot> timeslots) {
+		this.timeslots = timeslots;
 	}
+	
+	public void addTimeslot(Timeslot timeslot) {
+		this.timeslots.add(timeslot);
+		timeslot.setEvent(this);
+	}
+
 	public String getExtraCost() {
 		return extraCost;
 	}
@@ -86,10 +95,6 @@ public class Event {
 		this.mileage = mileage;
 	}
 		
-	public void removeTimeline(Timeline timeline) {
-		timeline.setEvent(null);
-	}
-
 	public void addEventUser(EventUser eventUser) {
 		this.eventUsers.add(eventUser);
 		eventUser.setEvent(this);

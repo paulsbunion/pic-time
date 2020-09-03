@@ -6,12 +6,10 @@ import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.EventTime;
 import com.defrainPhoto.pictime.model.EventUser;
 import com.defrainPhoto.pictime.model.Location;
-import com.defrainPhoto.pictime.model.Timeline;
 
 public class TimeslotDTOImpl implements TimeslotDTO {
 	private long id;
 	private EventTime time;
-	private Timeline timeline;
 	private String title;
 	private String notes;
 	private Client client;
@@ -35,15 +33,6 @@ public class TimeslotDTOImpl implements TimeslotDTO {
 
 	public void setTime(EventTime time) {
 		this.time = time;
-	}
-
-	@Override
-	public Timeline getTimeline() {
-		return timeline;
-	}
-
-	public void setTimeline(Timeline timeline) {
-		this.timeline = timeline;
 	}
 
 	@Override

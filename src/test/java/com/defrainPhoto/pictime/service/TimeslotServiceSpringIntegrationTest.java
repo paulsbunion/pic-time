@@ -23,7 +23,6 @@ import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.EventTime;
 import com.defrainPhoto.pictime.model.EventUser;
 import com.defrainPhoto.pictime.model.Location;
-import com.defrainPhoto.pictime.model.Timeline;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
 
@@ -80,9 +79,6 @@ public class TimeslotServiceSpringIntegrationTest {
 		eventUser.setUser(user);
 		eventUser.setEvent(event);
 		eventUser.setEventUserId(1l);
-		Timeline timeline = new Timeline();
-		timeline.setEvent(event);
-		timeline.setEventId(1l);
 		
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
@@ -103,9 +99,6 @@ public class TimeslotServiceSpringIntegrationTest {
 			System.out.println(id);
 		}
 		entityManager.getTransaction().begin();
-		entityManager.createNativeQuery("INSERT into timeline (start_time, total_minutes, event_id) VALUES (1, 1, 1)" ).executeUpdate();
-		entityManager.getTransaction().commit();
-		entityManager.getTransaction().begin();
 		entityManager.createNativeQuery("INSERT into event_user (event_user_id, event_id, user_id) VALUES (1, 1, 1)" ).executeUpdate();
 		entityManager.getTransaction().commit();
 		System.out.println("Results");
@@ -122,14 +115,14 @@ public class TimeslotServiceSpringIntegrationTest {
 		Location location = new Location(1l, "city", "OH", "43068", "11 street", "a place");
 		locationService.addLocation(location);
 		
-		Timeslot timeslot = new Timeslot(1l, eventTime, timeline, "Arrive on location", "Dont forget props",
+		Timeslot timeslot = new Timeslot(1l, eventTime, event, "Arrive on location", "Dont forget props",
 				client, photographers, location, false);
 		timeslotService.addTimeslot(timeslot);
 		
 		eventTime.setStartTime(eventTime.getStartTime() + eventTime.getTotalMinutes());
 		eventTime.setTotalMinutes(10);
 		
-		timeslot = new Timeslot(2l, eventTime, timeline, "secend Spot", null, null, null, null, false);
+		timeslot = new Timeslot(2l, eventTime, event, "secend Spot", null, null, null, null, false);
 		timeslotService.addTimeslot(timeslot);
 	}	
 }

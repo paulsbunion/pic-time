@@ -10,7 +10,7 @@ import com.defrainPhoto.pictime.model.Timeslot;
 
 public interface TimeslotRepository extends JpaRepository<Timeslot, Long>{
 
-	public List<Timeslot> findAllByTimeline(Long id);
+	public List<Timeslot> findAllByEvent(Long id);
 	
 	@Query
 	List<TimeslotDTO> findAllBy();
@@ -19,5 +19,5 @@ public interface TimeslotRepository extends JpaRepository<Timeslot, Long>{
 	public List<TimeslotDTO> findAllByPhotographersUserId(Long id);
 
 	@Query
-	public List<Timeslot> findAllByTimelineEventId(Long id);
+	public List<Timeslot> findAllByEventId(Long id);
 }

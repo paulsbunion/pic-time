@@ -27,7 +27,7 @@ public class TimeslotServiceImpl implements TimeslotService {
 
 	@Override
 	public List<Timeslot> getAllTimeslotsByTimelineId(Long id) {
-		return timeslotRepository.findAllByTimelineEventId(id);
+		return timeslotRepository.findAllByEventId(id);
 	}
 
 	@Override
