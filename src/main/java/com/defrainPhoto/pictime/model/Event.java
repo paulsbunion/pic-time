@@ -94,4 +94,11 @@ public class Event {
 		this.eventUsers.add(eventUser);
 		eventUser.setEvent(this);
 	}
+
+	@Override
+	public String toString() {
+		return "eventId=" + id;
+	}
+	
+	
 }

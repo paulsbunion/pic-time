@@ -45,5 +45,19 @@ public class EventUser {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	
+	public Long getEventUserId() {
+		return eventUserId;
+	}
+
+	public void setEventUserId(Long eventUserId) {
+		this.eventUserId = eventUserId;
+	}
+
+	@Override
+	public String toString() {
+		return "EventUser [eventUserId=" + eventUserId + "]";
+	}
 	
 }

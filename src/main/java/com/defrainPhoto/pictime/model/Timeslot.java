@@ -40,6 +40,24 @@ public class Timeslot {
 	public long getId() {
 		return id;
 	}
+	
+	public Timeslot() {
+		
+	}
+	
+	public Timeslot(long id, EventTime time, Timeline timeline, String title, String notes, Client client,
+			Set<EventUser> photographers, Location location, boolean trackMileage) {
+		this.id = id;
+		this.time = time;
+		this.timeline = timeline;
+		this.title = title;
+		this.notes = notes;
+		this.client = client;
+		this.photographers = photographers;
+		this.location = location;
+		this.trackMileage = trackMileage;
+	}
+
 	public void setId(long id) {
 		this.id = id;
 	}

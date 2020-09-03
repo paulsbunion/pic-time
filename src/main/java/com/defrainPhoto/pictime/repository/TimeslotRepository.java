@@ -14,4 +14,10 @@ public interface TimeslotRepository extends JpaRepository<Timeslot, Long>{
 	
 	@Query
 	List<TimeslotDTO> findAllBy();
+
+	@Query
+	public List<TimeslotDTO> findAllByPhotographersUserId(Long id);
+
+	@Query
+	public List<Timeslot> findAllByTimelineEventId(Long id);
 }

@@ -43,4 +43,11 @@ public class EventUserPK implements Serializable {
 	        return Objects.equals(getEvent().getId(), that.getEvent().getId()) &&
 	        		Objects.equals(getEventUserId(), that.getEventUserId());
 	}
+
+	@Override
+	public String toString() {
+		return "EventUserPK [event=" + event + ", eventUserId=" + eventUserId + "]";
+	}
+	
+	
 }
