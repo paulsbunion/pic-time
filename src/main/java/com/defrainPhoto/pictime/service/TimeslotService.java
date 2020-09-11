@@ -8,7 +8,7 @@ import com.defrainPhoto.pictime.model.Timeslot;
 public interface TimeslotService {
 	public List<TimeslotDTO> getAllTimeslots();
 
-	public List<Timeslot> getAllTimeslotsByTimelineId(Long id);
+	public List<Timeslot> getAllTimeslotsByEventId(Long id);
 
 	public List<TimeslotDTO> findAllTimeslotsByUserId(Long userID);
 

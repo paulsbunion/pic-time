@@ -54,7 +54,7 @@ public class TimeslotServiceSpringIntegrationTest {
 	@Test
 	public void testGetTimelsotsForTimeline() {
 		Long id = 0l;
-		List<Timeslot> timelineTimeslots = timeslotService.getAllTimeslotsByTimelineId(id);
+		List<Timeslot> timelineTimeslots = timeslotService.getAllTimeslotsByEventId(id);
 	}
 	
 	@Test
