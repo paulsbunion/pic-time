@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -27,7 +28,7 @@ public class Event {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
-	private long id;
+	private Long id;
 
 	private String eventName;
 
@@ -52,11 +53,11 @@ public class Event {
 	public Event() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -93,8 +94,13 @@ public class Event {
 	}
 
 	public void addTimeslot(Timeslot timeslot) {
-		this.timeslots.add(timeslot);
+		timeslots.add(timeslot);
 		timeslot.setEvent(this);
+	}
+	
+	public void removeTimeslot(Timeslot timeslot) {
+		timeslots.remove(timeslot);
+		timeslot.setEvent(null);
 	}
 
 	public String getExtraCost() {
@@ -135,11 +141,33 @@ public class Event {
 			photographers = new HashSet<User>();
 		}
 		this.photographers.add(newPhotographer);
+		newPhotographer.getEvents().add(this);
 	}
-
+	
+	public void removePhotographer(User photographer) {
+		photographers.remove(photographer);
+		photographer.getEvents().remove(this);
+	}
+	
 	@Override
 	public String toString() {
 		return "eventId=" + id;
 	}
 
+	@Override
+	public int hashCode() {
+		return 37;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Event))
+			return false;
+
+		return id != null && id.equals(((Event) o).getId());
+
+	}
+	
 }

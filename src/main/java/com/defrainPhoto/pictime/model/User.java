@@ -1,7 +1,9 @@
 package com.defrainPhoto.pictime.model;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -29,6 +32,8 @@ public class User {
 
 	private String firstName;
 	private String lastName;
+
+	@NaturalId
 	private String email;
 	private String password;
 
@@ -37,10 +42,10 @@ public class User {
 	private List<Role> roles;
 
 	@ManyToMany(mappedBy = "photographers")
-	private Set<Event> events;
+	private Set<Event> events = new HashSet<Event>();
 
 	@ManyToMany(mappedBy = "photographers")
-	private Set<Timeslot> timeslots;
+	private Set<Timeslot> timeslots = new HashSet<Timeslot>();
 
 	public User() {
 
@@ -107,6 +112,39 @@ public class User {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Set<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Event> events) {
+		this.events = events;
+	}
+
+	public Set<Timeslot> getTimeslots() {
+		return timeslots;
+	}
+
+	public void setTimeslots(Set<Timeslot> timeslots) {
+		this.timeslots = timeslots;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof User))
+			return false;
+
+		User user = (User) o;
+		return Objects.equals(email, user.email);
+
 	}
 
 	@Override

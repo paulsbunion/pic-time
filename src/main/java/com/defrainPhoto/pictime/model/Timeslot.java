@@ -23,7 +23,7 @@ public class Timeslot {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
-	private long id;
+	private Long id;
 
 	private EventTime time;
 
@@ -54,7 +54,7 @@ public class Timeslot {
 
 	}
 
-	public Timeslot(long id, EventTime time, Event event, String title, String notes, Client client,
+	public Timeslot(Long id, EventTime time, Event event, String title, String notes, Client client,
 			Set<User> photographers, Location location, boolean trackMileage) {
 		super();
 		this.id = id;
@@ -70,7 +70,7 @@ public class Timeslot {
 		this.trackMileage = trackMileage;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -138,8 +138,31 @@ public class Timeslot {
 		this.trackMileage = trackMileage;
 	}
 
-	public void addPhotographer(User photographer) {
-		photographers.add(photographer);
-		// photographer.setEvent(timeline.getEvent());
+	public void addPhotographer(User newPhotographer) {
+		if (this.photographers == null) {
+			photographers = new HashSet<User>();
+		}
+		this.photographers.add(newPhotographer);
+		newPhotographer.getTimeslots().add(this);
 	}
+	
+	public void removePhotographer(User photographer) {
+		photographers.remove(photographer);
+		photographer.getTimeslots().remove(this);
+	}
+
+	@Override
+	public int hashCode() {
+		return 31;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Timeslot)) return false;
+		return id != null && id.equals(((Timeslot) obj).getId());
+	}
+	
+	
 }
