@@ -2,11 +2,14 @@ package com.defrainPhoto.pictime.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.defrainPhoto.pictime.dto.TimeslotDTO;
 import com.defrainPhoto.pictime.model.Timeslot;
+import com.defrainPhoto.pictime.model.User;
 import com.defrainPhoto.pictime.repository.TimeslotRepository;
 
 @Service
@@ -36,8 +39,15 @@ public class TimeslotServiceImpl implements TimeslotService {
 	}
 
 	@Override
-	public Object findTimeslotById(long id) {
-		return timeslotRepository.findById(id);
+	public Timeslot findTimeslotById(long id) {
+		return timeslotRepository.findById(id).get();
+	}
+
+	@Override
+//	@Transactional
+	public void changePhotographer(Timeslot timeslot, User oldPhotographer, User newPhotographer) {
+		timeslot.getPhotographers().remove(oldPhotographer);
+		timeslot.getPhotographers().add(newPhotographer);
 	}
 
 }

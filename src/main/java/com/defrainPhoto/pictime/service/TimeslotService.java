@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.defrainPhoto.pictime.dto.TimeslotDTO;
 import com.defrainPhoto.pictime.model.Timeslot;
+import com.defrainPhoto.pictime.model.User;
 
 public interface TimeslotService {
 	public List<TimeslotDTO> getAllTimeslots();
@@ -14,5 +15,7 @@ public interface TimeslotService {
 
 	public void addTimeslot(Timeslot timeslot);
 
-	public Object findTimeslotById(long l);
+	public Timeslot findTimeslotById(long l);
+
+	public void changePhotographer(Timeslot timeslot, User photographerTwo, User photographerThree);
 }

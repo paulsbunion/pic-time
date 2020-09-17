@@ -2,7 +2,6 @@ package com.defrainPhoto.pictime.controller;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
