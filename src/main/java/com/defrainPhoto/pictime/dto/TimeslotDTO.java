@@ -4,8 +4,8 @@ import java.util.Set;
 
 import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.EventTime;
-import com.defrainPhoto.pictime.model.EventUser;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.User;
 
 public interface TimeslotDTO {
 
@@ -21,6 +21,6 @@ public interface TimeslotDTO {
 
 	Location getLocation();
 
-	Set<EventUser> getPhotographers();
+	Set<User> getPhotographers();
 
 }

@@ -22,7 +22,7 @@ public class TimeslotServiceImpl implements TimeslotService {
 	
 	@Override
 	public List<TimeslotDTO> findAllTimeslotsByUserId(Long id) {
-		return timeslotRepository.findAllByPhotographersUserId(id);
+		return timeslotRepository.findAllByPhotographersId(id);
 	}
 
 	@Override

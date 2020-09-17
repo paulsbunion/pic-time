@@ -2,6 +2,7 @@ package com.defrainPhoto.pictime.model;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -25,29 +26,33 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
-	
+
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "user_roles",
-			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private List<Role> roles;
-	
+
+	@ManyToMany(mappedBy = "photographers")
+	private Set<Event> events;
+
+	@ManyToMany(mappedBy = "photographers")
+	private Set<Timeslot> timeslots;
+
 	public User() {
-		
+
 	}
-	
+
 	public User(String firstName, String lastName, String email, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 	}
-	
+
 	public User(String firstName, String lastName, String email, String password, List<Role> roles) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -55,16 +60,6 @@ public class User {
 		this.password = password;
 		this.roles = roles;
 	}
-
-//	public User(Long id, String firstName, String lastName, String email, String password, List<Role> roles) {
-//		super();
-//		this.id = id;
-//		this.firstName = firstName;
-//		this.lastName = lastName;
-//		this.email = email;
-//		this.password = password;
-//		this.roles = roles;
-//	}
 
 	public Long getId() {
 		return id;
@@ -119,7 +114,5 @@ public class User {
 		return "User {id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=" + password + ", roles=" + roles + "}";
 	}
-	
-	
-	
+
 }

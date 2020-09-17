@@ -2,7 +2,9 @@ package com.defrainPhoto.pictime.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -36,13 +41,13 @@ public class Event {
 
 	private String extraCost;
 	private String notes;
+	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
 	private Mileage mileage;
-//	@ManyToMany(mappedBy = "event")
-//	@JoinTable(name = "event_users")
-//	private Set<User> users;
-	@OneToMany(mappedBy = "eventUserId", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<EventUser> eventUsers = new ArrayList<EventUser>();
+	
+	@ManyToMany
+	@JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<User> photographers;
 
 	public Event() {
 	}
@@ -116,18 +121,20 @@ public class Event {
 		this.mileage = mileage;
 	}
 
-	public void addEventUser(EventUser eventUser) {
-		this.eventUsers.add(eventUser);
-		eventUser.setEvent(this);
+	
+	public Set<User> getPhotographers() {
+		return photographers;
+	}
+
+	public void setPhotographers(Set<User> photographers) {
+		this.photographers = photographers;
 	}
 	
-
-	public List<EventUser> getEventUsers() {
-		return eventUsers;
-	}
-
-	public void setEventUsers(List<EventUser> eventUsers) {
-		this.eventUsers = eventUsers;
+	public void addPhotographer(User newPhotographer) {
+		if (this.photographers == null) {
+			photographers = new HashSet<User>();
+		}
+		this.photographers.add(newPhotographer);
 	}
 
 	@Override

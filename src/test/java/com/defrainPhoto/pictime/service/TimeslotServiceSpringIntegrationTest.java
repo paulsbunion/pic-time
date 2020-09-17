@@ -22,7 +22,6 @@ import com.defrainPhoto.pictime.dto.TimeslotDTO;
 import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.EventTime;
-import com.defrainPhoto.pictime.model.EventUser;
 import com.defrainPhoto.pictime.model.Location;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
@@ -97,12 +96,8 @@ public class TimeslotServiceSpringIntegrationTest {
 		User user = new User("Photographer", "one", "photo@email.com", "password");
 		user.setId(1l);
 
-		EventUser eventUser = new EventUser();
 		Event event = new Event();
 		event.setId(1l);
-		eventUser.setUser(user);
-		eventUser.setEvent(event);
-		eventUser.setEventUserId(1l);
 
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
@@ -119,30 +114,7 @@ public class TimeslotServiceSpringIntegrationTest {
 		entityManager.createNativeQuery("INSERT into event (id) VALUES (1)").executeUpdate();
 		entityManager.getTransaction().commit();
 
-//		System.out.println("Results");
-//		entityManager.getTransaction().begin();
-//		List<Object[]> results2 = entityManager.createNativeQuery("SELECT * FROM event").getResultList();
-//
-//		entityManager.getTransaction().commit();
-//		for (Object[] o : results2) {
-//			BigInteger id = (BigInteger) o[0];
-//			System.out.println(id);
-//		}
-		entityManager.getTransaction().begin();
-		entityManager.createNativeQuery("INSERT into event_user (event_user_id, event_id, user_id) VALUES (1, 1, 1)")
-				.executeUpdate();
-		entityManager.getTransaction().commit();
-//		System.out.println("Results");
-//		entityManager.getTransaction().begin();
-//		List<Object[]> results = entityManager.createNativeQuery("SELECT * FROM event_user").getResultList();
-//		for (Object[] o : results) {
-//			BigInteger id = (BigInteger) o[0];
-//			BigInteger id2 = (BigInteger) o[1];
-//			BigInteger id3 = (BigInteger) o[2];
-//			System.out.println(id + " ");
-//		}
-//		entityManager.getTransaction().commit();
-		Set<EventUser> photographers = Collections.singleton(eventUser);
+		Set<User> photographers = Collections.singleton(user);
 		Location location = new Location(1l, "city", "OH", "43068", "11 street", "a place");
 		locationService.addLocation(location);
 

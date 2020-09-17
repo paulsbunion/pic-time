@@ -10,6 +10,11 @@ public class EventTime {
 	
 	public EventTime() {}
 	
+	public EventTime(long startTime, long totalMinutes) {
+		this.startTime = startTime;
+		this.totalMinutes = totalMinutes;
+	}
+
 	/**
 	 * get the start time of the event in  military time, where 0 is midnight, 100 is 1:00 am,
 	 * 1200 is noon, 2120 is 9:30 pm etc.

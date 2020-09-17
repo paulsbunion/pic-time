@@ -4,8 +4,8 @@ import java.util.Set;
 
 import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.EventTime;
-import com.defrainPhoto.pictime.model.EventUser;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.User;
 
 public class TimeslotDTOImpl implements TimeslotDTO {
 	private long id;
@@ -13,9 +13,26 @@ public class TimeslotDTOImpl implements TimeslotDTO {
 	private String title;
 	private String notes;
 	private Client client;
-	private Set<EventUser> photographers;
+	private Set<User> photographers;
 	private Location location;
 	private boolean trackMileage;
+
+	public TimeslotDTOImpl() {
+		
+	}
+	
+	public TimeslotDTOImpl(long id, EventTime time, String title, String notes, Client client,
+			Set<User> photographers, Location location, boolean trackMileage) {
+		super();
+		this.id = id;
+		this.time = time;
+		this.title = title;
+		this.notes = notes;
+		this.client = client;
+		this.photographers = photographers;
+		this.location = location;
+		this.trackMileage = trackMileage;
+	}
 
 	@Override
 	public long getId() {
@@ -72,11 +89,11 @@ public class TimeslotDTOImpl implements TimeslotDTO {
 	}
 
 	@Override
-	public Set<EventUser> getPhotographers() {
+	public Set<User> getPhotographers() {
 		return photographers;
 	}
 
-	public void setPhotographers(Set<EventUser> photographers) {
+	public void setPhotographers(Set<User> photographers) {
 		this.photographers = photographers;
 	}
 
@@ -88,8 +105,7 @@ public class TimeslotDTOImpl implements TimeslotDTO {
 		this.trackMileage = trackMileage;
 	}
 
-	public void addPhotographer(EventUser photographer) {
+	public void addPhotographer(User photographer) {
 		photographers.add(photographer);
-		// photographer.setEvent(timeline.getEvent());
 	}
 }
