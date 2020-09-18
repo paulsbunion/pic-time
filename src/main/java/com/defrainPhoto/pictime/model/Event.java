@@ -41,15 +41,23 @@ public class Event {
 
 	private String extraCost;
 	private String notes;
-	
+
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
 	private Mileage mileage;
-	
+
 	@ManyToMany
 	@JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> photographers;
 
 	public Event() {
+	}
+
+	public Event(Long id, String eventName, LocalDate date, EventType eventType) {
+		super();
+		this.id = id;
+		this.eventName = eventName;
+		this.date = date;
+		this.eventType = eventType;
 	}
 
 	public Long getId() {
@@ -96,7 +104,7 @@ public class Event {
 		timeslots.add(timeslot);
 		timeslot.setEvent(this);
 	}
-	
+
 	public void removeTimeslot(Timeslot timeslot) {
 		timeslots.remove(timeslot);
 		timeslot.setEvent(null);
@@ -126,7 +134,6 @@ public class Event {
 		this.mileage = mileage;
 	}
 
-	
 	public Set<User> getPhotographers() {
 		return photographers;
 	}
@@ -134,7 +141,7 @@ public class Event {
 	public void setPhotographers(Set<User> photographers) {
 		this.photographers = photographers;
 	}
-	
+
 	public void addPhotographer(User newPhotographer) {
 		if (this.photographers == null) {
 			photographers = new HashSet<User>();
@@ -142,12 +149,12 @@ public class Event {
 		this.photographers.add(newPhotographer);
 		newPhotographer.getEvents().add(this);
 	}
-	
+
 	public void removePhotographer(User photographer) {
 		photographers.remove(photographer);
 		photographer.getEvents().remove(this);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "eventId=" + id;
@@ -168,5 +175,5 @@ public class Event {
 		return id != null && id.equals(((Event) o).getId());
 
 	}
-	
+
 }
