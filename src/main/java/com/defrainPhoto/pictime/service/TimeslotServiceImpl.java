@@ -44,7 +44,7 @@ public class TimeslotServiceImpl implements TimeslotService {
 	}
 
 	@Override
-//	@Transactional
+	@Transactional
 	public void changePhotographer(Timeslot timeslot, User oldPhotographer, User newPhotographer) {
 		timeslot.getPhotographers().remove(oldPhotographer);
 		timeslot.getPhotographers().add(newPhotographer);
