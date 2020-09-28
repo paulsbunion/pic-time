@@ -2,7 +2,7 @@ package com.defrainPhoto.pictime.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doAnswer;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.aopalliance.intercept.Invocation;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,6 +93,15 @@ public class EventServiceMockUnitTest {
 		assertEquals(photographerOne, foundEvent.getPhotographers().stream().findFirst().get());
 		assertEquals(photographerOne, foundEvent.getTimeslots().get(0).getPhotographers().parallelStream().findFirst().get());
 		assertEquals(photographerTwo, foundEvent.getTimeslots().get(1).getPhotographers().parallelStream().findFirst().get());
+		
+		doAnswer(invocation -> {
+			timeslotOne = timeslotOnePt2;
+			Timeslot found = eventOne.getTimeslots().get(0);
+			found.removePhotographer(photographerOne);
+			found.addPhotographer(photographerTwo);
+			eventOne.getTimeslots().set(0, found);
+			return null;
+		}).when(timeslotService).changePhotographer(timeslotOne, photographerOne, photographerTwo);
 		eventService.switchPhotographer(eventOne.getId(), photographerOne, photographerTwo);
 		
 		foundEvent = eventService.findById(1l);
