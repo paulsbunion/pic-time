@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.defrainPhoto.pictime.model.Event;
+import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
 import com.defrainPhoto.pictime.repository.EventRepository;
 
@@ -48,11 +49,33 @@ public class EventServiceImpl implements EventService {
 
 			foundEvent.getTimeslots().stream().filter(timeslot -> timeslot.getPhotographers().contains(oldPhotographer))
 					.forEach(timeslot -> {
-						timeslot.addPhotographer(newPhotographer);
-						timeslot.removePhotographer(oldPhotographer);
-//						timeslot = timeslotService.changePhotographer(timeslot, oldPhotographer, newPhotographer);
+//						timeslot.addPhotographer(newPhotographer);
+//						timeslot.removePhotographer(oldPhotographer);
+						timeslotService.changePhotographer(timeslot, oldPhotographer, newPhotographer);
 					});
 			foundEvent.removePhotographer(oldPhotographer);
+		}
+	}
+
+	@Override
+	public void addEvent(Event event) {
+		eventRepository.save(event);
+	}
+
+	@Override
+	@Transactional
+	public void addPhotographer(long eventId, User newPhotographer) {
+		Event foundEvent = findById(eventId);
+		if (foundEvent != null) {
+			foundEvent.addPhotographer(newPhotographer);
+		}
+	}
+
+	@Override
+	public void addTimeslot(Long id, Timeslot newTimeslot) {
+		Event foundEvent = findById(id);
+		if (foundEvent != null) {
+			foundEvent.addTimeslot(newTimeslot);
 		}
 	}
 
