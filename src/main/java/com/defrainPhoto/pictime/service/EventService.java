@@ -12,12 +12,20 @@ public interface EventService {
 
 	public Event findById(long id);
 
-	public void switchPhotographer(long eventId, User photographerOne, User photographerTwo);
+	public Event addEvent(Event event);
 
-	public void addEvent(Event event);
+	public void deleteEvent(long id);
 
-	public void addPhotographer(long id, User photographerOne);
+	public Event addPhotographer(long eventId, User photographer);
 
-	public void addTimeslot(Long id, Timeslot timeslotOne);
-	
+	public Event removePhotographer(long eventId, User photographer);
+
+	public Event switchPhotographer(long eventId, User photographerOne, User photographerTwo);
+
+	public Event addTimeslot(long eventId, Timeslot timeslot);
+
+	public Event deleteTimeslot(long eventId, long timeslotId);
+
+	public Event updateEvent(Event event);
+
 }

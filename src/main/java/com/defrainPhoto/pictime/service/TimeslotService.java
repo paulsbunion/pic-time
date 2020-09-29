@@ -15,7 +15,7 @@ public interface TimeslotService {
 
 	public void addTimeslot(Timeslot timeslot);
 
-	public Timeslot findTimeslotById(long l);
+	public Timeslot findTimeslotById(long id);
 
 	public void changePhotographer(Timeslot timeslot, User photographerTwo, User photographerThree);
 }

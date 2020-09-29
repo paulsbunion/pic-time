@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -80,6 +81,37 @@ public class EventServiceSpringIntegrationTest {
 		assertEquals(timeslots.get(0).getPhotographers().stream().findFirst().get(), photographerTwo);
 		assertEquals(timeslots.get(1).getPhotographers().stream().findFirst().get(), photographerTwo);
 		assertEquals(1, timeslots.get(0).getPhotographers().size());
+		assertEquals(1, timeslots.get(1).getPhotographers().size());
+	}
+	
+	@Test
+	public void testRemovePhotographer() {
+		eventType.setId(2l);
+		eventTypeService.addEventType(eventType);
+		event.setEventType(eventType);
+		event.setId(2l);
+		eventService.addEvent(event);
+		eventService.addPhotographer(event.getId(), photographerOne);
+		eventService.addPhotographer(event.getId(), photographerTwo);
+		timeslotOne.setPhotographers(new HashSet<User>(Arrays.asList(photographerOne))); 
+		eventService.addTimeslot(event.getId(), timeslotOne);
+		eventService.addTimeslot(event.getId(), timeslotTwo);
+		
+		Event foundEvent = eventService.findById(2l);
+		assertEquals(event, foundEvent);
+		assertEquals(2, foundEvent.getPhotographers().size());
+		List<Timeslot> timeslots = new ArrayList<Timeslot>(foundEvent.getTimeslots());
+		assertEquals(timeslots.get(0).getPhotographers().stream().findFirst().get(), photographerOne);
+		assertEquals(timeslots.get(1).getPhotographers().stream().findFirst().get(), photographerTwo);
+		
+		eventService.removePhotographer(foundEvent.getId(), photographerOne);
+		foundEvent = eventService.findById(2l);
+		assertEquals(event, foundEvent);
+		assertEquals(1, foundEvent.getPhotographers().size());
+		timeslots = new ArrayList<Timeslot>(foundEvent.getTimeslots());
+		assertEquals(timeslots.get(0).getPhotographers().stream().findFirst(), Optional.empty());
+		assertEquals(timeslots.get(1).getPhotographers().stream().findFirst().get(), photographerTwo);
+		assertEquals(0, timeslots.get(0).getPhotographers().size());
 		assertEquals(1, timeslots.get(1).getPhotographers().size());
 	}
 }

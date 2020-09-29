@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.defrainPhoto.pictime.exception.ResourceNotFoundException;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
@@ -34,13 +35,15 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	@Transactional
-	public void switchPhotographer(long eventId, User oldPhotographer, User newPhotographer) {
-		if (oldPhotographer.equals(newPhotographer)) {
-			return;
-		}
+	public Event switchPhotographer(long eventId, User oldPhotographer, User newPhotographer) {
+		
 		Optional<Event> event = eventRepository.findById(eventId);
 		if (event.isPresent()) {
 			Event foundEvent = event.get();
+			
+			if (oldPhotographer.equals(newPhotographer)) {
+				return foundEvent;
+			}
 
 			if (!foundEvent.getPhotographers().contains(newPhotographer)) {
 				foundEvent.addPhotographer(newPhotographer);
@@ -49,33 +52,93 @@ public class EventServiceImpl implements EventService {
 
 			foundEvent.getTimeslots().stream().filter(timeslot -> timeslot.getPhotographers().contains(oldPhotographer))
 					.forEach(timeslot -> {
-//						timeslot.addPhotographer(newPhotographer);
-//						timeslot.removePhotographer(oldPhotographer);
 						timeslotService.changePhotographer(timeslot, oldPhotographer, newPhotographer);
 					});
 			foundEvent.removePhotographer(oldPhotographer);
+			return foundEvent;
 		}
+		throw new ResourceNotFoundException("Event not found with id: " + eventId);
 	}
 
 	@Override
-	public void addEvent(Event event) {
-		eventRepository.save(event);
+	public Event addEvent(Event event) {
+		return eventRepository.save(event);
 	}
 
 	@Override
 	@Transactional
-	public void addPhotographer(long eventId, User newPhotographer) {
+	public Event addPhotographer(long eventId, User newPhotographer) {
 		Event foundEvent = findById(eventId);
 		if (foundEvent != null) {
 			foundEvent.addPhotographer(newPhotographer);
+			return foundEvent;
+		}
+		throw new ResourceNotFoundException("Event not found with id: " + eventId);
+	}
+
+	@Override
+	public Event addTimeslot(long eventId, Timeslot newTimeslot) {
+		Event foundEvent = findById(eventId);
+		if (foundEvent != null) {
+			foundEvent.addTimeslot(newTimeslot);
+			return foundEvent;
+		}
+		throw new ResourceNotFoundException("Event not found with id: " + eventId);
+	}
+
+	@Override
+	public void deleteEvent(long id) {
+		Optional<Event> foundEvent = eventRepository.findById(id);
+		if (foundEvent.isPresent()) {
+			eventRepository.delete(foundEvent.get());
 		}
 	}
 
 	@Override
-	public void addTimeslot(Long id, Timeslot newTimeslot) {
-		Event foundEvent = findById(id);
+	@Transactional
+	public Event removePhotographer(long eventId, User photographer) {
+		Optional<Event> foundEvent = eventRepository.findById(eventId);
+		if (foundEvent.isPresent()) {
+			Event eventToUpdate = foundEvent.get();
+			eventToUpdate.removePhotographer(photographer);
+
+			eventToUpdate.getTimeslots().stream().filter(timeslot -> timeslot.getPhotographers().contains(photographer))
+					.forEach(timeslot -> timeslot.removePhotographer(photographer));
+
+			return eventToUpdate;
+		}
+		throw new ResourceNotFoundException("Event not found with id: " + eventId);
+	}
+
+	@Override
+	public Event deleteTimeslot(long eventId, long timeslotId) {
+		Event foundEvent = eventRepository.findById(eventId).get();
 		if (foundEvent != null) {
-			foundEvent.addTimeslot(newTimeslot);
+			Timeslot foundTimeslot = timeslotService.findTimeslotById(timeslotId);
+			foundEvent.removeTimeslot(foundTimeslot);
+			return foundEvent;
+		}
+		throw new ResourceNotFoundException("Event not found with id: " + eventId);
+	}
+
+	@Override
+	public Event updateEvent(Event event) {
+		Optional<Event> foundEvent = this.eventRepository.findById(event.getId());
+		if (foundEvent.isPresent()) {
+			Event eventUpdate = foundEvent.get();
+			eventUpdate.setDate(event.getDate());
+			eventUpdate.setEventName(event.getEventName());
+			eventUpdate.setEventType(event.getEventType());
+			eventUpdate.setExtraCost(event.getExtraCost());
+			eventUpdate.setId(event.getId());
+			eventUpdate.setMileage(event.getMileage());
+			eventUpdate.setNotes(event.getNotes());
+			eventUpdate.setPhotographers(event.getPhotographers());
+			eventUpdate.setTimeslots(event.getTimeslots());
+			eventRepository.save(eventUpdate);
+			return eventUpdate;
+		} else {
+			throw new ResourceNotFoundException("Event not found with id: " + event.getId());
 		}
 	}
 
