@@ -1,17 +1,15 @@
 package com.defrainPhoto.pictime.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import org.aopalliance.intercept.Invocation;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

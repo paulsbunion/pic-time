@@ -77,10 +77,12 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
+	@Transactional
 	public Event addTimeslot(long eventId, Timeslot newTimeslot) {
 		Event foundEvent = findById(eventId);
 		if (foundEvent != null) {
 			foundEvent.addTimeslot(newTimeslot);
+			eventRepository.save(foundEvent);
 			return foundEvent;
 		}
 		throw new ResourceNotFoundException("Event not found with id: " + eventId);
@@ -140,6 +142,11 @@ public class EventServiceImpl implements EventService {
 		} else {
 			throw new ResourceNotFoundException("Event not found with id: " + event.getId());
 		}
+	}
+
+	@Override
+	public List<Event> getAllEventsForPhotographer(long id) {
+		return eventRepository.findAllByPhotographersId(id);
 	}
 
 }

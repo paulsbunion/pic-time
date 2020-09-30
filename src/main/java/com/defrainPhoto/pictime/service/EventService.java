@@ -28,4 +28,6 @@ public interface EventService {
 
 	public Event updateEvent(Event event);
 
+	public List<Event> getAllEventsForPhotographer(long id);
+
 }
