@@ -113,6 +113,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
+	@Transactional
 	public Event deleteTimeslot(long eventId, long timeslotId) {
 		Event foundEvent = eventRepository.findById(eventId).get();
 		if (foundEvent != null) {
