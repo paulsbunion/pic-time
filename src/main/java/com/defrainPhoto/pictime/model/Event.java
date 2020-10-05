@@ -21,6 +21,9 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Event {
 
@@ -36,6 +39,8 @@ public class Event {
 	@ManyToOne
 	private EventType eventType;
 
+//	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Timeslot> timeslots = new ArrayList<Timeslot>();
 
@@ -45,6 +50,8 @@ public class Event {
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
 	private Mileage mileage;
 
+//	@JsonBackReference
+//	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> photographers;

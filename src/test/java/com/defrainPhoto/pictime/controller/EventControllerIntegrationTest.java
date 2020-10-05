@@ -1,7 +1,9 @@
 package com.defrainPhoto.pictime.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -97,8 +99,21 @@ public class EventControllerIntegrationTest {
 	public void testUpdateEvent() throws Exception {
 		
 		when(eventService.addEvent(e1)).thenReturn(e1);
+		when(eventService.updateEvent(e1)).thenReturn(e1);
 		
-		mvc.perform(put("/events/1").with(csrf()).content(asJsonString("e1")).contentType(MediaType.APPLICATION_JSON))
+		e1.addPhotographer(p1);
+		e1.addPhotographer(p2);
+		e1.addTimeslot(ts1);
+		
+		mvc.perform(post("/events/").with(csrf()).content(asJsonString(e1)).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(e1.getId().intValue())))
+				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
+				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
+				.andExpect(jsonPath("$.photographers.[*]", hasSize(2)));
+		
+		
+		
+		mvc.perform(put("/events/1").with(csrf()).content(asJsonString(e1)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(e1.getId().intValue())))
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
 				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())));

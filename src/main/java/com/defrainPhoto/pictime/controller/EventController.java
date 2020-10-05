@@ -2,6 +2,7 @@ package com.defrainPhoto.pictime.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -51,6 +52,13 @@ public class EventController {
 	public Event addEvent(@Valid @RequestBody Event event) {
 		log.info("Event REST controller adding new Event");
 		return eventService.addEvent(event);
+	}
+	
+	@PutMapping("{id}")
+	public Event updateEvent(@Valid @RequestBody Event updateEvent) {
+		log.info("Event REST controller updating Event with ID: " + updateEvent.getId());
+		return eventService.updateEvent(updateEvent);
+		 
 	}
 	
 	@DeleteMapping("{id}")

@@ -17,6 +17,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Timeslot {
 
@@ -27,6 +29,7 @@ public class Timeslot {
 
 	private EventTime time;
 
+//	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Event event;
