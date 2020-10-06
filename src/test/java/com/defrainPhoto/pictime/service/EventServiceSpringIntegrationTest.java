@@ -61,7 +61,7 @@ public class EventServiceSpringIntegrationTest {
 		assertEquals(timeslots.get(0).getPhotographers().stream().findFirst().get(), photographer1);
 		assertEquals(timeslots.get(1).getPhotographers().stream().findFirst().get(), photographer2);
 
-		eventService.switchPhotographer(foundEvent.getId(), photographer1, photographer2);
+		eventService.switchPhotographer(foundEvent.getId(), photographer1.getId(), photographer2.getId());
 		foundEvent = eventService.findById(1l);
 		assertEquals(event1, foundEvent);
 		assertEquals(1, foundEvent.getPhotographers().size());

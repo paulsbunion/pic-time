@@ -22,7 +22,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -38,6 +41,7 @@ public class User {
 
 	@NaturalId
 	private String email;
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

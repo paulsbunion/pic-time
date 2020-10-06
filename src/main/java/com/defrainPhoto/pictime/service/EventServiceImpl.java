@@ -22,6 +22,9 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	EventRepository eventRepository;
+	
+	@Autowired
+	UserService userService;
 
 	@Override
 	public List<Event> findAll() {
@@ -35,11 +38,13 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	@Transactional
-	public Event switchPhotographer(long eventId, User oldPhotographer, User newPhotographer) {
+	public Event switchPhotographer(long eventId, Long oldPhotographerId, Long newPhotographerId) {
 		
 		Optional<Event> event = eventRepository.findById(eventId);
 		if (event.isPresent()) {
 			Event foundEvent = event.get();
+			User oldPhotographer = foundEvent.getPhotographers().stream().filter(p -> p.getId() == oldPhotographerId).findFirst().orElse(null);
+			User newPhotographer = userService.findById(newPhotographerId);
 			
 			if (oldPhotographer.equals(newPhotographer)) {
 				return foundEvent;

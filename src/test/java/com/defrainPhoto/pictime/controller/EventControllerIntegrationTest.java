@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -73,6 +74,8 @@ public class EventControllerIntegrationTest {
 		e2 = new Event(2l, "Small Event", LocalDate.now(), eventType);
 		p1 = new User("Bob", "Walters", "bw@email.com", "pwd");
 		p2 = new User("Sally", "Smith", "ss@email.com", "pwd");
+		p1.setId(1l);
+		p2.setId(2l);
 		ts1 = new Timeslot(1l, new EventTime(1200, 15), e1, "first ts", "", null, new HashSet<User>(Arrays.asList(p1)), null, false);
 		ts2 = new Timeslot(2l, new EventTime(1215, 15), e1, "first ts", "", null, new HashSet<User>(Arrays.asList(p1, p2)), null, false);
 		ts3 = new Timeslot(3l, new EventTime(1230, 15), e2, "first ts", "", null, new HashSet<User>(Arrays.asList(p1, p2)), null, false);
@@ -100,6 +103,9 @@ public class EventControllerIntegrationTest {
 		
 		when(eventService.addEvent(e1)).thenReturn(e1);
 		when(eventService.updateEvent(e1)).thenReturn(e1);
+		when(eventService.switchPhotographer(1l, 1l, 2l)).thenReturn(e1);
+		when(userService.findById(1l)).thenReturn(p1);
+		when(userService.findById(2l)).thenReturn(p2);
 		
 		e1.addPhotographer(p1);
 		e1.addPhotographer(p2);
@@ -109,14 +115,23 @@ public class EventControllerIntegrationTest {
 				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(e1.getId().intValue())))
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
 				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
-				.andExpect(jsonPath("$.photographers.[*]", hasSize(2)));
+				.andExpect(jsonPath("$.photographers.[*]", hasSize(2)))
+				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)))
+				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("bw@email.com")));
 		
 		
+		ts1.addPhotographer(p2);
+		ts1.removePhotographer(p1);
+		e1.setTimeslots(Arrays.asList(ts1));
+		e1.removePhotographer(p1);
 		
-		mvc.perform(put("/events/1").with(csrf()).content(asJsonString(e1)).contentType(MediaType.APPLICATION_JSON))
+		mvc.perform(put("/events/1/switchPhotographer/oldPhotographerId/1/newPhotographerId/2").with(csrf()).content(asJsonString(e1)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(e1.getId().intValue())))
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
-				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())));
+				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
+				.andExpect(jsonPath("$.photographers.[*]", hasSize(1)))
+				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)))
+				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("ss@email.com")));
 	}
 	
 	@WithMockUser
@@ -178,7 +193,11 @@ public class EventControllerIntegrationTest {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.registerModule(new JavaTimeModule());
 			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-			return mapper.writeValueAsString(obj);
+			String result = mapper.writeValueAsString(obj); 
+			
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println(result);
+			return result;
 //			return new ObjectMapper().writeValueAsString(obj);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

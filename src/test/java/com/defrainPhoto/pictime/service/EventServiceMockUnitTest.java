@@ -45,6 +45,9 @@ public class EventServiceMockUnitTest {
 	TimeslotService timeslotService = new TimeslotServiceImpl();
 	
 	@Mock
+	UserService userService;
+	
+	@Mock
 	EventRepository eventRepository;
 	
 	@Mock
@@ -58,6 +61,8 @@ public class EventServiceMockUnitTest {
 		eventThree = new Event(1l, "Bobs Third Event", LocalDate.of(2020, 1, 15), eventType);
 		photographerOne = new User("Ben", "Walters", "bw@email.com", "pwd");
 		photographerTwo = new User("Sally", "Smith", "ss@email.com", "pwd2");
+		photographerOne.setId(1l);
+		photographerTwo.setId(2l);
 		
 		timeslotOne = new Timeslot(1l, new EventTime(1230, 15), eventOne, "guests arrive", "client wants pictures of their cars", 
 				null, new HashSet<User>(Arrays.asList(photographerOne)), null, false);
@@ -92,6 +97,9 @@ public class EventServiceMockUnitTest {
 		assertEquals(photographerOne, foundEvent.getTimeslots().get(0).getPhotographers().parallelStream().findFirst().get());
 		assertEquals(photographerTwo, foundEvent.getTimeslots().get(1).getPhotographers().parallelStream().findFirst().get());
 		
+//		when(userService.findById(1l)).thenReturn(photographerOne);
+		when(userService.findById(2l)).thenReturn(photographerTwo);
+		
 		doAnswer(invocation -> {
 			timeslotOne = timeslotOnePt2;
 			Timeslot found = eventOne.getTimeslots().get(0);
@@ -100,7 +108,7 @@ public class EventServiceMockUnitTest {
 			eventOne.getTimeslots().set(0, found);
 			return null;
 		}).when(timeslotService).changePhotographer(timeslotOne, photographerOne, photographerTwo);
-		eventService.switchPhotographer(eventOne.getId(), photographerOne, photographerTwo);
+		eventService.switchPhotographer(eventOne.getId(), photographerOne.getId(), photographerTwo.getId());
 		
 		foundEvent = eventService.findById(1l);
 		assertEquals(1, foundEvent.getPhotographers().size());

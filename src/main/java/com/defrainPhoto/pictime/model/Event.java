@@ -22,8 +22,11 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Event {
 
@@ -40,7 +43,7 @@ public class Event {
 	private EventType eventType;
 
 //	@JsonBackReference
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Timeslot> timeslots = new ArrayList<Timeslot>();
 

@@ -55,9 +55,18 @@ public class EventController {
 	}
 	
 	@PutMapping("{id}")
-	public Event updateEvent(@Valid @RequestBody Event updateEvent) {
+	public Event updateEvent(@Valid @RequestBody Event updateEvent, @PathVariable(name = "id") Long id) {
 		log.info("Event REST controller updating Event with ID: " + updateEvent.getId());
+		updateEvent.setId(id);
 		return eventService.updateEvent(updateEvent);
+		 
+	}
+	
+	@PutMapping("{eventId}/switchPhotographer/oldPhotographerId/{oldId}/newPhotographerId/{newId}")
+	public Event ChangeEventPhotographer(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "oldId") Long oldId,
+			@PathVariable(name = "newId") Long newId) {
+		log.info("Event REST controller swapping old photographer {} with new photographer {} for Event {} ",oldId, newId, eventId);
+		return eventService.switchPhotographer(eventId, oldId, newId);
 		 
 	}
 	

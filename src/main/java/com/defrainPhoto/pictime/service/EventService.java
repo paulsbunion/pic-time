@@ -20,7 +20,7 @@ public interface EventService {
 
 	public Event removePhotographer(long eventId, User photographer);
 
-	public Event switchPhotographer(long eventId, User photographerOne, User photographerTwo);
+	public Event switchPhotographer(long eventId, Long oldId, Long newId);
 
 	public Event addTimeslot(long eventId, Timeslot timeslot);
 
