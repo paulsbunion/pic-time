@@ -22,12 +22,16 @@ public interface EventService {
 
 	public Event switchPhotographer(long eventId, Long oldId, Long newId);
 
-	public Event addTimeslot(long eventId, Timeslot timeslot);
+	public Timeslot addTimeslot(long eventId, Timeslot timeslot);
 
 	public Event deleteTimeslot(long eventId, long timeslotId);
 
 	public Event updateEvent(Event event);
 
 	public List<Event> getAllEventsForPhotographer(long id);
+
+	public List<Timeslot> getAllTimeslots(long eventId);
+
+	public Timeslot getTimeslot(Long timeslotId);
 
 }

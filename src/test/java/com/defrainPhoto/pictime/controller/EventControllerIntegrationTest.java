@@ -3,6 +3,7 @@ package com.defrainPhoto.pictime.controller;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -77,8 +78,8 @@ public class EventControllerIntegrationTest {
 		p1.setId(1l);
 		p2.setId(2l);
 		ts1 = new Timeslot(1l, new EventTime(1200, 15), e1, "first ts", "", null, new HashSet<User>(Arrays.asList(p1)), null, false);
-		ts2 = new Timeslot(2l, new EventTime(1215, 15), e1, "first ts", "", null, new HashSet<User>(Arrays.asList(p1, p2)), null, false);
-		ts3 = new Timeslot(3l, new EventTime(1230, 15), e2, "first ts", "", null, new HashSet<User>(Arrays.asList(p1, p2)), null, false);
+		ts2 = new Timeslot(2l, new EventTime(1215, 15), e1, "second ts", "", null, new HashSet<User>(Arrays.asList(p1, p2)), null, false);
+		ts3 = new Timeslot(3l, new EventTime(1230, 15), e2, "third ts", "", null, new HashSet<User>(Arrays.asList(p1, p2)), null, false);
 	}
 
 	@Before
@@ -99,7 +100,7 @@ public class EventControllerIntegrationTest {
 	
 	@WithMockUser
 	@Test
-	public void testUpdateEvent() throws Exception {
+	public void testUpdateEventSwitchPhotographer() throws Exception {
 		
 		when(eventService.addEvent(e1)).thenReturn(e1);
 		when(eventService.updateEvent(e1)).thenReturn(e1);
@@ -136,38 +137,45 @@ public class EventControllerIntegrationTest {
 	
 	@WithMockUser
 	@Test
-	public void testDeleteEvent() throws Exception {
-		mvc.perform(delete("/events/1").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
-	}
-	
-	@WithMockUser
-	@Test
 	public void testGetAllEvents() throws Exception {
-		mvc.perform(get("/events").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
+		when(eventService.findAll()).thenReturn(Arrays.asList(e1, e2));
+		
+		mvc.perform(get("/events/").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk()).andExpect(jsonPath("$.[*]", hasSize(2)));
 	}
 
 	@WithMockUser
 	@Test
-	public void testSwitchPhotographer() throws Exception {
-		mvc.perform(put("/events/1/switchphotographer?old=1&new=2").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
-	}
-	
-	@WithMockUser
-	@Test
 	public void testGetAllTimeslots() throws Exception {
-		mvc.perform(get("/events/1/timeslots").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
+		
+		e1.addTimeslot(ts1);
+		e1.addTimeslot(ts2);
+		when(eventService.getAllTimeslots(1l)).thenReturn(Arrays.asList(ts1, ts2));
+		
+		mvc.perform(get("/events/1/timeslots").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.[*]", hasSize(2)));
 	}
 	
 	@WithMockUser
 	@Test
 	public void testGetTimeslot() throws Exception {
-		mvc.perform(get("/events/1/timeslots/1").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
+		
+		e1.addTimeslot(ts1);
+		
+		when(eventService.getTimeslot(1l)).thenReturn(ts1);
+		
+		mvc.perform(get("/events/1/timeslots/1").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.title", is("first ts")));
 	}
 	
 	@WithMockUser
 	@Test
 	public void testAddTimeslot() throws Exception {
-		mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
+		
+		when(eventService.addTimeslot(1l, ts1)).thenReturn(ts1);
+		mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.id", is(1)));
 	}
 	
 	@WithMockUser

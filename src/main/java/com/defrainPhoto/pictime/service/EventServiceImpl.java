@@ -81,14 +81,22 @@ public class EventServiceImpl implements EventService {
 		throw new ResourceNotFoundException("Event not found with id: " + eventId);
 	}
 
+	// The new timeslot should have id set, then returned
+	
 	@Override
 	@Transactional
-	public Event addTimeslot(long eventId, Timeslot newTimeslot) {
+	public Timeslot addTimeslot(long eventId, Timeslot newTimeslot) {
 		Event foundEvent = findById(eventId);
 		if (foundEvent != null) {
 			foundEvent.addTimeslot(newTimeslot);
 			eventRepository.save(foundEvent);
-			return foundEvent;
+			Long newId = null;
+			Optional<Timeslot> addedTimeslot =  foundEvent.getTimeslots().stream().filter(ts -> ts.equals(newTimeslot)).findFirst();
+			if (addedTimeslot.isPresent()) {
+				newId = addedTimeslot.get().getId();
+			}
+			newTimeslot.setId(newId);
+			return newTimeslot;
 		}
 		throw new ResourceNotFoundException("Event not found with id: " + eventId);
 	}
@@ -153,6 +161,16 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public List<Event> getAllEventsForPhotographer(long id) {
 		return eventRepository.findAllByPhotographersId(id);
+	}
+
+	@Override
+	public List<Timeslot> getAllTimeslots(long eventId) {
+		return timeslotService.getAllTimeslotsByEventId(eventId);
+	}
+
+	@Override
+	public Timeslot getTimeslot(Long timeslotId) {
+		return timeslotService.findTimeslotById(timeslotId);
 	}
 
 }
