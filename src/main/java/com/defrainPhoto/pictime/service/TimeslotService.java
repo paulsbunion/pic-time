@@ -18,4 +18,8 @@ public interface TimeslotService {
 	public Timeslot findTimeslotById(long id);
 
 	public void changePhotographer(Timeslot timeslot, User photographerTwo, User photographerThree);
+
+	public Timeslot updateTimeslot(Timeslot updatedTimeslot);
+
+	public void deleteTimeslot(long timeslotId);
 }

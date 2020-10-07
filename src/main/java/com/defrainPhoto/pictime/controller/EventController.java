@@ -98,4 +98,16 @@ public class EventController {
 	public Timeslot addTimeslot(@PathVariable(name = "eventId") Long eventId, @Valid @RequestBody Timeslot newTimeslot) {
 		return eventService.addTimeslot(eventId, newTimeslot);
 	}
+	
+	@PutMapping("/{eventId}/timeslots/{timeslotId}")
+	public Timeslot updateTimeslot(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "eventId") Long timeslotId,
+			@Valid @RequestBody Timeslot updatedTimeslot) {
+		updatedTimeslot.setId(timeslotId);
+		return eventService.updateTimeslot(updatedTimeslot);
+	}
+	
+	@DeleteMapping("/{eventId}/timeslots/{timeslotId}")
+	public void DeleteTimeslot(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "eventId") Long timeslotId) {
+		eventService.deleteTimeslot(timeslotId);
+	}
 }

@@ -126,18 +126,6 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	@Transactional
-	public Event deleteTimeslot(long eventId, long timeslotId) {
-		Event foundEvent = eventRepository.findById(eventId).get();
-		if (foundEvent != null) {
-			Timeslot foundTimeslot = timeslotService.findTimeslotById(timeslotId);
-			foundEvent.removeTimeslot(foundTimeslot);
-			return foundEvent;
-		}
-		throw new ResourceNotFoundException("Event not found with id: " + eventId);
-	}
-
-	@Override
 	public Event updateEvent(Event event) {
 		Optional<Event> foundEvent = this.eventRepository.findById(event.getId());
 		if (foundEvent.isPresent()) {
@@ -171,6 +159,25 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Timeslot getTimeslot(Long timeslotId) {
 		return timeslotService.findTimeslotById(timeslotId);
+	}
+
+	@Override
+	@Transactional
+	public Timeslot updateTimeslot(Timeslot updatedTimeslot) {
+		return timeslotService.updateTimeslot(updatedTimeslot);
+	}
+	
+	@Override
+	@Transactional
+	public void deleteTimeslot(long timeslotId) {
+//		Event foundEvent = eventRepository.findById(eventId).get();
+//		if (foundEvent != null) {
+//			Timeslot foundTimeslot = timeslotService.findTimeslotById(timeslotId);
+//			foundEvent.removeTimeslot(foundTimeslot);
+//			return foundEvent;
+//		}
+//		throw new ResourceNotFoundException("Event not found with id: " + eventId);
+		timeslotService.deleteTimeslot(timeslotId);
 	}
 
 }

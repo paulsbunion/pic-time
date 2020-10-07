@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -181,13 +180,25 @@ public class EventControllerIntegrationTest {
 	@WithMockUser
 	@Test
 	public void testUpdateTimeslot() throws Exception {
-		mvc.perform(put("/events/1/timeslots/1").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
+		when(eventService.updateTimeslot(ts1)).thenReturn(ts1);
+		when(eventService.addTimeslot(1l, ts1)).thenReturn(ts1);
+		
+		mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.id", is(1)));
+		ts1.setNotes("New Notes");
+		
+		mvc.perform(put("/events/1/timeslots/1").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.notes", is("New Notes")));
 	}
 	
 	@WithMockUser
 	@Test
-	public void testRemoveTimeslot() throws Exception {
-		mvc.perform(delete("/events/1/timeslots/2").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON));
+	public void testDeleteTimeslot() throws Exception {
+		
+		doNothing().when(eventService).deleteEvent(2l);
+		
+		mvc.perform(delete("/events/1/timeslots/2").with(csrf()).content(asJsonString("")).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk());
 	}
 	
 	/**

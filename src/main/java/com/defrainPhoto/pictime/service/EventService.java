@@ -24,7 +24,7 @@ public interface EventService {
 
 	public Timeslot addTimeslot(long eventId, Timeslot timeslot);
 
-	public Event deleteTimeslot(long eventId, long timeslotId);
+	public void deleteTimeslot(long timeslotId);
 
 	public Event updateEvent(Event event);
 
@@ -33,5 +33,7 @@ public interface EventService {
 	public List<Timeslot> getAllTimeslots(long eventId);
 
 	public Timeslot getTimeslot(Long timeslotId);
+
+	public Timeslot updateTimeslot(Timeslot updatedTimeslot);
 
 }
