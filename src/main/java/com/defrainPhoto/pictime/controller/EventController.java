@@ -1,10 +1,12 @@
 package com.defrainPhoto.pictime.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.service.EventService;
@@ -26,49 +29,51 @@ import com.defrainPhoto.pictime.service.EventService;
 @RequestMapping("/events")
 public class EventController {
 	
+	@Autowired
+	ModelMapper modelMapper;
+	
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	EventService eventService;
 	
 	@GetMapping("/{id}")
-	public Event getEvent(@PathVariable("id") long id) {
+	public EventDTO getEvent(@PathVariable("id") long id) {
 		log.info("Event REST controller getting Event with ID: " + id);
-		return eventService.findById(id);
+		return modelMapper.map(eventService.findById(id), EventDTO.class);
 	}
 	
 	@GetMapping
-	public List<Event> getAllEvents() {
+	public List<EventDTO> getAllEvents() {
 		log.info("Event REST controller getting all Events");
-		return eventService.findAll();
+		return Arrays.asList(modelMapper.map(eventService.findAll() ,EventDTO.class));
 	}
 	
 	@GetMapping("/user/{id}")
-	public List<Event> getAllEventsForUser(@PathVariable("id") long id) {
+	public List<EventDTO> getAllEventsForUser(@PathVariable("id") long id) {
 		log.info("Event REST controller getting all Events for User with ID: " + id);
-		return eventService.getAllEventsForPhotographer(id);
+		return Arrays.asList(modelMapper.map(eventService.getAllEventsForPhotographer(id), EventDTO.class));
 	}
 	
 	@PostMapping
-	public Event addEvent(@Valid @RequestBody Event event) {
+	public EventDTO addEvent(@Valid @RequestBody Event event) {
 		log.info("Event REST controller adding new Event");
-		return eventService.addEvent(event);
+		return modelMapper.map(eventService.addEvent(event), EventDTO.class);
 	}
 	
 	@PutMapping("/{id}")
-	public Event updateEvent(@Valid @RequestBody Event updateEvent, @PathVariable(name = "id") Long id) {
+	public EventDTO updateEvent(@Valid @RequestBody Event updateEvent, @PathVariable(name = "id") Long id) {
 		log.info("Event REST controller updating Event with ID: " + updateEvent.getId());
 		updateEvent.setId(id);
-		return eventService.updateEvent(updateEvent);
+		return modelMapper.map(eventService.updateEvent(updateEvent), EventDTO.class);
 		 
 	}
 	
 	@PutMapping("/{eventId}/switchPhotographer/oldPhotographerId/{oldId}/newPhotographerId/{newId}")
-	public Event ChangeEventPhotographer(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "oldId") Long oldId,
+	public EventDTO ChangeEventPhotographer(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "oldId") Long oldId,
 			@PathVariable(name = "newId") Long newId) {
 		log.info("Event REST controller swapping old photographer {} with new photographer {} for Event {} ",oldId, newId, eventId);
-		return eventService.switchPhotographer(eventId, oldId, newId);
-		 
+		return modelMapper.map(eventService.switchPhotographer(eventId, oldId, newId), EventDTO.class);
 	}
 	
 	@DeleteMapping("/{id}")
