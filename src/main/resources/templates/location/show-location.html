@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" href="../../../css/bootstrap.min.css">
+
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" /> -->
+<link rel="stylesheet" type="text/css" th:href="@{../../../css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{../../../css/slider.css}" />
+
+<title>Location Details</title>
+</head>
+<body>
+	<div class="container my-5">
+		<div class="row">
+
+			<h1>Location Details</h1>
+
+			<div th:switch="${location}" class="container">
+				<div class="col-md-10">
+					<h2 th:case="null">No Location Record Found!</h2>
+					<h2 th:case="NoData">No Location Record Found!</h2>
+
+					<div th:case="*">
+
+						<div class="form-group col-md-6">
+							<label for="street" class="col-form-label">Street</label> 
+							<input type="text" th:field="${location.street}" class="form-control" disabled> 
+						</div>
+						
+						<div class="form-group col-md-6">
+							<label for="city" class="col-form-label">City</label> 
+							<input type="text" th:field="${location.city}" class="form-control" disabled> 
+						</div>
+						
+						<div class="form-group col-md-6">
+							<label for="state" class="col-form-label">State</label> 
+<!-- 							<input type="text" th:field="${location.state}" class="form-control" disabled>  -->
+							<select class="form-control" th:field="${location.state}" id="state" disabled>
+								<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+							</select>
+						</div>
+						
+						<div class="form-group col-md-6">
+							<label for="zipcode" class="col-form-label">ZIP Code</label> 
+							<input type="text" th:field="${location.zipcode}" class="form-control" disabled> 
+						</div>
+						
+						<div class="form-group col-md-6">
+							<label for="description" class="col-form-label">Description (Optional)</label> 
+							<input type="text" th:field="${location.description}" class="form-control" disabled> 
+						</div>
+						
+						
+                         <td><a th:href="@{/mvc/locations/edit/{id}(id=${location.id})}"
+											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
+										</a></td>
+						<td><a th:href="@{/mvc/locations/list}"
+							class="btn btn-primary delete"> <i
+								class="fas fa-user-times m1-2">Back</i>
+						</a></td>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+</body>
+</html>
