@@ -46,13 +46,13 @@ public class EventController {
 	@GetMapping
 	public List<EventDTO> getAllEvents() {
 		log.info("Event REST controller getting all Events");
-		return Arrays.asList(modelMapper.map(eventService.findAll() ,EventDTO.class));
+		return Arrays.asList(modelMapper.map(eventService.findAll() ,EventDTO[].class));
 	}
 	
 	@GetMapping("/user/{id}")
 	public List<EventDTO> getAllEventsForUser(@PathVariable("id") long id) {
 		log.info("Event REST controller getting all Events for User with ID: " + id);
-		return Arrays.asList(modelMapper.map(eventService.getAllEventsForPhotographer(id), EventDTO.class));
+		return Arrays.asList(modelMapper.map(eventService.getAllEventsForPhotographer(id), EventDTO[].class));
 	}
 	
 	@PostMapping
