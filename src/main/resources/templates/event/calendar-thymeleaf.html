@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+<title>Insert title here</title>
+</head>
+<body>
+
+<!-- <p th:each="i : ${#numbers.sequence(1, daysInMonth)}" th:value="${i}" th:text="${i}"></p> -->
+
+<div class="container">
+		<div class="navigation">
+			<span class="nav-back">back</span>
+			<span class="nav-header">Month</span>
+			<span class="nav-forward">forward</span>
+		</div>
+		<div class="calendar">
+			<div class="header"></div>
+			<div class="weekday-header" role="row">
+
+				<div class="weekday-title">
+					<span>MON</span>
+				</div>
+				<div class="weekday-title">
+					<span>TUE</span>
+				</div>
+				<div class="weekday-title">
+					<span>WED</span>
+				</div>
+				<div class="weekday-title">
+					<span>THU</span>
+				</div>
+				<div class="weekday-title">
+					<span>FRI</span>
+				</div>
+				<div class="weekday-title">
+					<span>SAT</span>
+				</div>
+				<div class="weekday-title">
+					<span>SUN</span>
+				</div>
+			</div>
+
+			<div class="calendar-content">
+<!-- 				<div class="week-row" th:style="'grid-column-start: 2' "> -->
+				<div class="week-row" >
+					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, weekStartDay)}">
+						<span></span>
+					</div>
+					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, daysInMonth)}" th:value="${i}" th:inline="text">[[${i}]]
+					<button class="calendar-event" th:each="eventDay : ${events}"
+							th:object="${eventDay}"
+							th:if="${eventDay} == ${i}">Bobs Wedding</button>
+<!-- 					<button class="calendar-event">Bobs Wedding</button> -->
+<!-- 					<button class="calendar-event">Bobs Wedding</button> -->
+<!-- 						<span>1</span> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
