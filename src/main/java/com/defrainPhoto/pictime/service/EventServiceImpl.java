@@ -1,5 +1,6 @@
 package com.defrainPhoto.pictime.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
+	@Transactional
 	public Event addEvent(Event event) {
 		return eventRepository.save(event);
 	}
@@ -178,6 +180,27 @@ public class EventServiceImpl implements EventService {
 //		}
 //		throw new ResourceNotFoundException("Event not found with id: " + eventId);
 		timeslotService.deleteTimeslot(timeslotId);
+	}
+
+	@Override
+	public List<Event> findAllByYearAndMonth(Integer year, Integer month) {
+		LocalDate fromDate = LocalDate.of(year, month, 1);
+		
+		if (month == 12) {
+			year += 1;
+			month = 1;
+		}
+		else {
+			month++;
+		}
+		LocalDate toDate = LocalDate.of(year, month, 1);
+		return eventRepository.findAlByDateGreaterThanEqualAndDateLessThan(fromDate, toDate);
+	}
+
+	@Override
+	public List<Event> findAllByYearAndMonthAndDay(Integer year, Integer month, Integer day) {
+		LocalDate date = LocalDate.of(year, month, day);
+		return eventRepository.findAlByDate(date);
 	}
 
 }

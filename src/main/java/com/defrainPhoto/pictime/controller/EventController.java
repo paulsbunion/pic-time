@@ -49,6 +49,18 @@ public class EventController {
 		return Arrays.asList(modelMapper.map(eventService.findAll() ,EventDTO[].class));
 	}
 	
+	@GetMapping("/year/{year}/month/{month}")
+	public List<EventDTO> getAllEventsByYearAndMonth(@PathVariable("year") Integer year, @PathVariable("month") Integer month) {
+		log.info("Event REST controller getting all Events by year {} and month {}", year, month);
+		return Arrays.asList(modelMapper.map(eventService.findAllByYearAndMonth(year, month) ,EventDTO[].class));
+	}
+	
+	@GetMapping("/year/{year}/month/{month}/day/{day}")
+	public List<EventDTO> getAllEventsByYearAndMonthAndDay(Integer year, Integer month, Integer day) {
+		log.info("Event REST controller getting all Events by year {} and month {} and day {}", year, month, day);
+		return Arrays.asList(modelMapper.map(eventService.findAllByYearAndMonthAndDay(year, month, day) ,EventDTO[].class));
+	}
+	
 	@GetMapping("/user/{id}")
 	public List<EventDTO> getAllEventsForUser(@PathVariable("id") long id) {
 		log.info("Event REST controller getting all Events for User with ID: " + id);
@@ -115,4 +127,5 @@ public class EventController {
 	public void DeleteTimeslot(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "eventId") Long timeslotId) {
 		eventService.deleteTimeslot(timeslotId);
 	}
+
 }

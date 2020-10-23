@@ -4,17 +4,20 @@
 <meta charset="ISO-8859-1">
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<script type="text/javascript" th:src="@{/js/mouseScroll.js}" > </script>
+
 <title>Insert title here</title>
 </head>
 <body>
 
-<!-- <p th:each="i : ${#numbers.sequence(1, daysInMonth)}" th:value="${i}" th:text="${i}"></p> -->
-
 <div class="container">
 		<div class="navigation">
-			<span class="nav-back">back</span>
-			<span class="nav-header">Month</span>
-			<span class="nav-forward">forward</span>
+			<span class="nav-back" ><a id="back" th:href="@{/mvc/events/calendar/{year}/{month}(year=${month.previousYearLink}, month=${month.previousMonthLink})}"><</a></span> 
+			<span class="nav-header" th:text="${month.monthName} + ', ' + ${month.year}">Month</span>
+			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{year}/{month}(year=${month.nextYearLink}, month=${month.nextMonthLink})}">></a></span>
 		</div>
 		<div class="calendar">
 			<div class="header"></div>
@@ -46,16 +49,19 @@
 			<div class="calendar-content">
 <!-- 				<div class="week-row" th:style="'grid-column-start: 2' "> -->
 				<div class="week-row" >
-					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, weekStartDay)}">
+					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, month.weekStartDay - 1, 1)}" >
 						<span></span>
 					</div>
-					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, daysInMonth)}" th:value="${i}" th:inline="text">[[${i}]]
-					<button class="calendar-event" th:each="eventDay : ${events}"
-							th:object="${eventDay}"
-							th:if="${eventDay} == ${i}">Bobs Wedding</button>
-<!-- 					<button class="calendar-event">Bobs Wedding</button> -->
-<!-- 					<button class="calendar-event">Bobs Wedding</button> -->
-<!-- 						<span>1</span> -->
+					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, month.daysInMonth)}" th:value="${i}" th:inline="text"><a th:href="@{/mvc/events/calendar/{year}/{month}/{day}(year=${month.year}, month=${month.month}, day=${i})}" class="link">[[${i}]]</a>
+<!-- 					<button class="calendar-event" th:each="event : ${events}" -->
+<!-- 							th:object="${event}" -->
+<!-- 							th:if="${#temporals.day(event.date)} == ${i}" th:text="${event.eventName}">Event Today!</button> -->
+							
+							<td class="td-btn"><a th:each="event : ${events}"
+							th:object="${event}"
+							th:if="${#temporals.day(event.date)} == ${i}"
+							th:href="@{/mvc/clients/edit/{id}(id=${event.id})}"
+											class="btn btn-primary calendar-event"> <i class="fas fa-user-edit m1-2" th:title="${event.eventName}" th:text="${event.eventName}">Edit</i></a></td>
 					</div>
 				</div>
 			</div>

@@ -36,4 +36,8 @@ public interface EventService {
 
 	public Timeslot updateTimeslot(Timeslot updatedTimeslot);
 
+	public List<Event> findAllByYearAndMonth(Integer year, Integer month);
+
+	public List<Event> findAllByYearAndMonthAndDay(Integer year, Integer month, Integer day);
+
 }
