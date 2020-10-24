@@ -2,11 +2,52 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/switchContentDisplay.js}">
+	
+</script>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/event-calendar.css}" />
+
+
 <title>Insert title here</title>
 </head>
 <body>
-	<p th:each="event : ${events}"
-		th:text="${event.eventName}"></p>
+	<script type="text/javascript" th:src="@{/js/delayLoad.js}">
+		
+	</script>
+
+	<select id="sel" name="test">
+		<option th:each="event : ${events}" th:value="${event.id}"
+			th:utext="${event.eventName}" />
+	</select>
+
+	<!-- 	<div th:id="'eventId' + ${events[0].id} + displayNone"  -->
+	<!-- 			th:text="${events[0].eventName}"></div> -->
+
+	<div id="container">
+		<div id="navigation"></div>
+		<div id="day-calender">
+			<div id="header"></div>
+			<div id="day-calendar-content">
+				<div id="hour-row">
+					<div id="hour"></div>
+					<div id="event-detail"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:each="event, iter : ${events}">
+		<!-- 		<div th:if="${iter.index} != -10" th:id="'eventId' + ${event.id}"  -->
+		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div>
+	</th:block>
 
 </body>
 </html>
