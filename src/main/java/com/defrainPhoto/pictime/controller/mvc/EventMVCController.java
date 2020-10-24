@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.defrainPhoto.pictime.controller.EventController;
+import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.dto.MonthDTO;
 import com.defrainPhoto.pictime.model.Event;
@@ -47,7 +48,7 @@ public class EventMVCController {
 //		eventController.addEvent(event);
 //		eventController.addEvent(event2);
 		
-		List<EventDTO> eventDTOs = eventController.getAllEventsByYearAndMonth(year, month);
+		List<CalendarEventDTO> eventDTOs = eventController.getAllEventsByYearAndMonth(year, month);
 		MonthDTO monthDTO = new MonthDTO(year, month);
 		
 		params.put("daysInWeek", 7);

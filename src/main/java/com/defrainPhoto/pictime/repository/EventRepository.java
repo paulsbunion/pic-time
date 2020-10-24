@@ -11,8 +11,8 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 
 	List<Event> findAllByPhotographersId(long id);
 
-	List<Event> findAlByDateGreaterThanEqualAndDateLessThan(LocalDate fromDate, LocalDate toDate);
+	List<Event> findAllByDateGreaterThanEqualAndDateLessThan(LocalDate fromDate, LocalDate toDate);
 
-	List<Event> findAlByDate(LocalDate date);
+	List<Event> findAllByDate(LocalDate date);
 
 }

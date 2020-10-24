@@ -194,13 +194,13 @@ public class EventServiceImpl implements EventService {
 			month++;
 		}
 		LocalDate toDate = LocalDate.of(year, month, 1);
-		return eventRepository.findAlByDateGreaterThanEqualAndDateLessThan(fromDate, toDate);
+		return eventRepository.findAllByDateGreaterThanEqualAndDateLessThan(fromDate, toDate);
 	}
 
 	@Override
 	public List<Event> findAllByYearAndMonthAndDay(Integer year, Integer month, Integer day) {
 		LocalDate date = LocalDate.of(year, month, day);
-		return eventRepository.findAlByDate(date);
+		return eventRepository.findAllByDate(date);
 	}
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
@@ -50,9 +51,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/year/{year}/month/{month}")
-	public List<EventDTO> getAllEventsByYearAndMonth(@PathVariable("year") Integer year, @PathVariable("month") Integer month) {
+	public List<CalendarEventDTO> getAllEventsByYearAndMonth(@PathVariable("year") Integer year, @PathVariable("month") Integer month) {
 		log.info("Event REST controller getting all Events by year {} and month {}", year, month);
-		return Arrays.asList(modelMapper.map(eventService.findAllByYearAndMonth(year, month) ,EventDTO[].class));
+		return Arrays.asList(modelMapper.map(eventService.findAllByYearAndMonth(year, month) ,CalendarEventDTO[].class));
 	}
 	
 	@GetMapping("/year/{year}/month/{month}/day/{day}")
