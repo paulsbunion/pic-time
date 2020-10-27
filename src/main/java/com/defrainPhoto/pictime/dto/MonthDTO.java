@@ -10,22 +10,32 @@ public class MonthDTO {
 	private String monthName;
 	private int year;
 	private int month;
+	private int day;
+	private String dayName;
 
 	private int previousMonthLink;
 	private int nextMonthLink;
 	private int previousYearLink;
 	private int nextYearLink;
-
+	private int previousDay;
+	private int nextDay;
+	
 	public MonthDTO() {
 	}
 
 	public MonthDTO(int year, int month) {
-		LocalDate date = LocalDate.of(year, month, 1);
+		this(year, month, 1);
+	}
+
+	public MonthDTO(Integer year, Integer month, Integer day) {
+		LocalDate date = LocalDate.of(year, month, day);
 		daysInMonth = daysInEveryMonth[month - 1];
 		weekStartDay = date.getDayOfWeek().getValue();
 		monthName = date.getMonth().toString();
 		this.year = date.getYear();
 		this.month = date.getMonth().getValue();
+		this.day = date.getDayOfMonth();
+		this.dayName = date.getDayOfWeek().toString();
 
 		int tempYear = year;
 		int tempMonth = month;
@@ -90,6 +100,22 @@ public class MonthDTO {
 	public void setMonth(int month) {
 		this.month = month;
 	}
+	
+	public int getDay() {
+		return day;
+	}
+
+	public void setDay(int day) {
+		this.day = day;
+	}
+
+	public String getDayName() {
+		return dayName;
+	}
+
+	public void setDayName(String dayName) {
+		this.dayName = dayName;
+	}
 
 	public int getPreviousMonthLink() {
 		return previousMonthLink;
@@ -121,6 +147,22 @@ public class MonthDTO {
 
 	public void setNextYearLink(int nextYearLink) {
 		this.nextYearLink = nextYearLink;
+	}
+
+	public int getPreviousDay() {
+		return previousDay;
+	}
+
+	public void setPreviousDay(int previousDay) {
+		this.previousDay = previousDay;
+	}
+
+	public int getNextDay() {
+		return nextDay;
+	}
+
+	public void setNextDay(int nextDay) {
+		this.nextDay = nextDay;
 	}
 
 }

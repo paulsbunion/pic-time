@@ -67,6 +67,8 @@ public class EventMVCController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		List<EventDTO> eventDTOs = eventController.getAllEventsByYearAndMonthAndDay(year, month, day);
+		MonthDTO monthDTO = new MonthDTO(year, month, day);
+		params.put("month", monthDTO);
 		
 		params.put("events", eventDTOs);
 		

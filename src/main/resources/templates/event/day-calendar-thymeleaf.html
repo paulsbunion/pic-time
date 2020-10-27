@@ -19,35 +19,60 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script type="text/javascript" th:src="@{/js/delayLoad.js}">
+<!-- 	<script type="text/javascript" th:src="@{/js/delayLoad.js}"> -->
 		
 	</script>
 
-	<select id="sel" name="test">
-		<option th:each="event : ${events}" th:value="${event.id}"
-			th:utext="${event.eventName}" />
-	</select>
+<!-- 	<select id="sel" name="test"> -->
+<!-- 		<option th:each="event : ${events}" th:value="${event.id}" -->
+<!-- 			th:utext="${event.eventName}" /> -->
+<!-- 	</select> -->
 
 	<!-- 	<div th:id="'eventId' + ${events[0].id} + displayNone"  -->
 	<!-- 			th:text="${events[0].eventName}"></div> -->
 
-	<div id="container">
-		<div id="navigation"></div>
-		<div id="day-calender">
-			<div id="header"></div>
-			<div id="day-calendar-content">
-				<div id="hour-row">
-					<div id="hour"></div>
-					<div id="event-detail"></div>
-				</div>
-			</div>
-		</div>
-	</div>
+<!-- 	<div class="container"> -->
+<!-- 		<div class="navigation"> <span><</span><span class="nav-header">navigation</span><span>></span></div> -->
+<!-- 		<div class="day-calendar"> -->
+<!-- 			<div class="day-header"><span>Header</span></div> -->
+<!-- 			<div class="day-calendar-content"> -->
+<!-- 				<div class="hour-row" th:each="i : ${#numbers.sequence(1, 24)}"> -->
+<!-- 					<div class="hour"><span th:text="${i} + hr">hour</span></div> -->
+<!-- 					<div class="event-detail"> -->
+<!-- 					<div class="test">eventDetails</div><span class="test">eventDetails</span><span class="test">eventDetails</span><span class="test">eventDetails</span> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 
 	<th:block th:each="event, iter : ${events}">
 		<!-- 		<div th:if="${iter.index} != -10" th:id="'eventId' + ${event.id}"  -->
 		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div>
 	</th:block>
 
+	<div class="container2">
+		<div class="navigation"> <span class="nav-back"><</span><span class="nav-header">navigation</span><span class="nav-forward">></span></div>
+		<div class="day-calendar">
+			<div class="day-header"><span>
+<!-- 			Header -->
+			<select id="sel" name="test">
+		<option th:each="event : ${events}" th:value="${event.id}"
+			th:utext="${event.eventName}" />
+	</select>
+			</span></div>
+			<div class="day-calendar-content">
+				<th:block th:each="i : ${#numbers.sequence(1, 24)}">
+					<div class="hour"><span th:text="${i} + hr">hour</span></div>
+<!-- 					<div class="event-detail" th:each="j : ${#numbers.sequence(1,4)}" th:style="${(j % 2 == 0)} ? 'border-bottom: 1px solid; grid-row: 1 / 2; grid-column: 2 / 3 ;' : 'background: yellow; grid-row: 1 / 2; grid-column: 2 / 3 ;'"> -->
+					<div class="event-detail" th:each="j : ${#numbers.sequence(1,4)}" th:style="${(j % 2 == 0)} ? 'border-bottom: 1px solid;' : 'background: yellow;'">
+<!-- 					<div class="test">eventDetails</div><span class="test">eventDetails</span><span class="test">eventDetails</span><span class="test">eventDetails</span> -->
+					</div>
+				</th:block>
+				<div class="testEntry">Howdy</div>
+			</div>
+		</div>
+	</div>
+	<div>Footer</div>
 </body>
 </html>
