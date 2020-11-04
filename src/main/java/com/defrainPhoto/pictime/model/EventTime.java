@@ -36,6 +36,14 @@ public class EventTime {
 		return totalMinutes;
 	}
 	
+	public long getstartHour() {
+		return startTime / 100;
+	}
+	
+	public long getstartMinute() {
+		return startTime % 100;
+	}
+	
 	public long getDurationHour() {
 		return totalMinutes / 60;
 	}

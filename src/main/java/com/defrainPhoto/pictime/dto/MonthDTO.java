@@ -1,6 +1,8 @@
 package com.defrainPhoto.pictime.dto;
 
 import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class MonthDTO {
 
@@ -31,11 +33,13 @@ public class MonthDTO {
 		LocalDate date = LocalDate.of(year, month, day);
 		daysInMonth = daysInEveryMonth[month - 1];
 		weekStartDay = date.getDayOfWeek().getValue();
-		monthName = date.getMonth().toString();
+		monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
+//		monthName = date.getMonth().toString();
 		this.year = date.getYear();
 		this.month = date.getMonth().getValue();
 		this.day = date.getDayOfMonth();
-		this.dayName = date.getDayOfWeek().toString();
+		this.dayName = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+//		this.dayName = date.getDayOfWeek().toString();
 
 		int tempYear = year;
 		int tempMonth = month;

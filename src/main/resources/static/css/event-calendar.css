@@ -8,7 +8,7 @@
 .container2 {
 	display: grid;
 	grid-template-columns: 90vw;
-	grid-template-rows: 100%;
+/* 	grid-template-rows: 100%; */
 	justify-content: center;
 }
 
@@ -146,13 +146,17 @@
 	display: grid;
 	grid-template-columns: 10% 90%;
 	grid-template-rows: repeat(96, 1.4vh);
+	
+	grid-template-areas:
+	"a 12:00AM"
+	
 }
 
 .hour {
 	text-align: right;
 	vertical-align:top;
 	grid-row: span 4;
-	background: lime;
+	background: rgb(172, 194, 253);
 	border: 1px solid;
 }
 
@@ -169,16 +173,19 @@
 .testEntry {
 	display: flex;
 	z-index: 2;
-	grid-row: 5 /span 60;
-	grid-column: 2 / span 1;
-	margin: 20px;
-	background: aqua;
+	margin-left: 20px;
+	margin-right: 20px;
+	background: rgb(0,123,255);
+	color: white;
 /* 	text-align: center; */
 /* 	vertical-align: middle; */
 align-content: center;
 flex-direction: column;
 /* justify-content: center; */
-padding: 10%;
+/* padding: 10%; */
+border: 1px solid;
+border-color: red;
+overflow: hidden;
 }
 .test {
 	align-self: center;

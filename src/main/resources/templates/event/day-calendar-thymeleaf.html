@@ -27,7 +27,7 @@
 	</th:block>
 
 	<div class="container2">
-		<div class="navigation"> <span class="nav-back"><</span><span class="nav-header">navigation</span><span class="nav-forward">></span></div>
+		<div class="navigation"> <span class="nav-back"><</span><span class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span><span class="nav-forward">></span></div>
 		<div class="day-calendar">
 			<div class="day-header"><span>
 			
@@ -37,7 +37,19 @@
 	</select>
 			</span></div>
 			<div class="day-calendar-content" id="cal">
-				<div class="testEntry"><span>Howdy</span></div>
+			
+<!-- 				<div class="testEntry"><span>Howdy</span></div> -->
+				
+				<th:block th:each="eventTimeslotEntry : ${eventTimeslots}">
+					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
+<!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
+						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).startRow} /span ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).span}; grid-column: 2 / span 1;|">
+							<span th:text="${timeslot.title}"></span>
+						</div>
+					</th:block>
+					
+				</th:block>
+				
 				
 			</div>
 		</div>

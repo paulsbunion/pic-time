@@ -60,7 +60,7 @@ public class Timeslot {
 
 	}
 
-	public Timeslot(Long id, EventTime time, Event event, String title, String notes, Client client,
+	public Timeslot(long id, EventTime time, Event event, String title, String notes, Client client,
 			Set<User> photographers, Location location, boolean trackMileage) {
 		super();
 		this.id = id;

@@ -63,3 +63,5 @@ function getMinute(quarter) {
 	}
 	return minute;
 }
+
+//load timeslots
