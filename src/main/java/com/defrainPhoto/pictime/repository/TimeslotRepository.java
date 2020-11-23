@@ -20,4 +20,7 @@ public interface TimeslotRepository extends JpaRepository<Timeslot, Long>{
 
 	@Query
 	public List<Timeslot> findAllByEventId(Long id);
+	
+	@Query
+	public List<Timeslot> findAllByEventIdOrderByTimeStartTime(Long id);
 }
