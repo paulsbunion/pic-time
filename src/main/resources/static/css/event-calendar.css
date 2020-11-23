@@ -183,7 +183,7 @@ align-content: center;
 flex-direction: column;
 /* justify-content: center; */
 /* padding: 10%; */
-border: 1px solid;
+border: 2px solid;
 border-color: red;
 overflow: hidden;
 }

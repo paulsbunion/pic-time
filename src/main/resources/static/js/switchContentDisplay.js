@@ -77,6 +77,63 @@ function toggleDivDisplay(matches, prev, selected) {
 			matches[j].style.display='none';
 		}
 	}
+	
+	// check overlap
+	adjustForOverlap(matches);
+}
+
+function adjustForOverlap(matches) {
+	box1 = null;
+	box2 = null;
+	
+	for (var index = 0; index < matches.length; index++) {
+		if (matches[index].style.display == 'block') {
+			
+			box1 = matches[index].getBoundingClientRect();
+			
+			var pointer = index + 1;
+			var widthOffset = 20;
+			var topOffset = 5;
+			var collisions = 0;
+			var border = 2;
+			
+			while (pointer < matches.length) {
+				if (matches[pointer].style.display == 'block') {
+					box2 = matches[pointer].getBoundingClientRect();
+					
+					// check collision
+					if (collision(box1, box2, border)) {
+						// update collisions
+						collisions++;
+						
+//						alert(getComputedStyle(matches[index]).borderTopWidth);
+						// adjsut box2 offset
+						matches[pointer].style['margin-left'] = collisions * widthOffset + 20 + "px";
+						
+						// add offset if same start time
+						if (box1.top == box2.top) {
+							matches[pointer].style['margin-top'] = collisions * topOffset + "px";
+						}
+//						alert(matches[pointer].style['left']);
+//						alert(matches[index].children[0].innerText);
+//						alert(matches[pointer].children[0].innerText);
+						// update pointers
+						index = pointer;
+					}
+				}
+				pointer++;
+			}
+		}
+	}
+}
+
+function collision(box1, box2, border) {
+	if (box2.top >= box1.top && box2.top < box1.bottom - border) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 //function toggleDisplay() {
