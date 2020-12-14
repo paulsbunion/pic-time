@@ -70,7 +70,7 @@ function toggleDivDisplay(matches, prev, selected) {
 //		}
 
 		if (matches[j].id.match(regexShow)){
-			matches[j].style.display='block';
+			matches[j].style.display='inline-block';
 		}
 		else {
 //			alert("prev:" + prev + " selected:" + selected);
@@ -87,7 +87,7 @@ function adjustForOverlap(matches) {
 	box2 = null;
 	
 	for (var index = 0; index < matches.length; index++) {
-		if (matches[index].style.display == 'block') {
+		if (matches[index].style.display == 'inline-block') {
 			
 			box1 = matches[index].getBoundingClientRect();
 			
@@ -98,7 +98,7 @@ function adjustForOverlap(matches) {
 			var border = 2;
 			
 			while (pointer < matches.length) {
-				if (matches[pointer].style.display == 'block') {
+				if (matches[pointer].style.display == 'inline-block') {
 					box2 = matches[pointer].getBoundingClientRect();
 					
 					// check collision
