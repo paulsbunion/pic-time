@@ -46,7 +46,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
 						<div class="testEntry open-EditModal" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}" th:styleappend="|grid-row: ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).startRow} /span ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).span}; grid-column: 2 / span 1;|" th:title= "${timeslot.time.printStartEnd() +': ' +   timeslot.title}"
-						th:attr="data-id=${timeslot.id}, data-starttime=${timeslot.time.printStartTime()}, data-endtime=${timeslot.time.printEndTime()}, data-title=${timeslot.title}">
+						th:attr="data-id=${timeslot.id}, data-starttime=${timeslot.time.printStartTime()}, data-endtime=${timeslot.time.printEndTime()}, data-timeslottitle=${timeslot.title}, data-notes=${timeslot.notes}">
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
 						
@@ -126,11 +126,13 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 	var _self = $(this);
 	var startTime = _self.data('starttime');
 	var endTime = _self.data('endtime');
-	var notes = _self.data('title');
+	var title = _self.data('timeslottitle');
+	var notes = _self.data('notes');
 
 // 	var startTime = $(event.relatedTarget).data('val');
 // 	window.alert(st);
 // 	$(this).find(".modal-body").text(st);
+$("#timeslotTitle").val(title);
 $("#startTime").val(startTime);
 $("#endTime").val(endTime);
 $("#notes").val(notes);
