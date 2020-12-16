@@ -44,22 +44,19 @@ public class TimeslotTimeSpan {
 		int stop = -1;
 		int startTimeHour = (int) eventTime.getstartHour();
 		int startTimeMinute = (int) eventTime.getstartMinute();
-		int endHour = startTimeHour + (int) eventTime.getDurationHour();
-		int endMinute = startTimeMinute + (int) eventTime.getDurationMinute();
-		
-		if (endMinute > 60) {
-			endHour++;
-			endMinute -= 60;
-		}
-		
-		System.out.println(startTimeHour + ":" + startTimeMinute);
-		System.out.println(endHour+ ":" + endMinute);
+		int endHour = (int) eventTime.getEndHour();
+		int endMinute =(int) eventTime.getEndMinute();
+						
+//		System.out.println("DURATION: " + eventTime.getTotalMinutes());
+//		System.out.println("endtimed: " + eventTime.getEndTime());
+//		System.out.println(startTimeHour + ":" + startTimeMinute);
+//		System.out.println(endHour+ ":" + endMinute);
 		start = startTimeHour * 4 + startTimeMinute / 15 + 1;
 		stop = endHour * 4 + endMinute / 15;
-		System.out.println("*************************************************************************");
-		System.out.println(start);
-		System.out.println(stop);
-		System.out.println(stop - start);
+//		System.out.println("*************************************************************************");
+//		System.out.println(start);
+//		System.out.println(stop);
+//		System.out.println(stop - start);
 		
 		return new TimeslotTimeSpan(start, stop + 1);
 	}

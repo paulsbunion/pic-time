@@ -7,12 +7,28 @@ public class EventTime {
 
 	private long startTime;
 	private long totalMinutes;
+	private long endTime;
 	
 	public EventTime() {}
 	
 	public EventTime(long startTime, long totalMinutes) {
 		this.startTime = startTime;
 		this.totalMinutes = totalMinutes;
+		calculateEndTime();
+	}
+
+	private void calculateEndTime() {
+		int startTimeHour = (int)getstartHour();
+		int startTimeMinute = (int) getstartMinute();
+		int endHour = startTimeHour + (int) getDurationHour();
+		int endMinute = startTimeMinute + (int) getDurationMinute();
+		
+		if (endMinute > 60) {
+			endHour++;
+			endMinute -= 60;
+		}
+		
+		this.endTime = endHour*100 + endMinute;
 	}
 
 	/**
@@ -26,6 +42,27 @@ public class EventTime {
 
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
+	}
+	
+	public long getEndTime() {
+		if (endTime <= 0) {
+			calculateEndTime();
+		}
+		return endTime;
+	}
+	
+	public long getEndHour() {
+		if (endTime <= 0) {
+			calculateEndTime();
+		}
+		return endTime / 100;
+	}
+	
+	public long getEndMinute() {
+		if (endTime <= 0) {
+			calculateEndTime();
+		}
+		return endTime % 100;
 	}
 
 	/**
@@ -54,10 +91,56 @@ public class EventTime {
 	
 	public void setTotalMinutes(long minutes) {
 		this.totalMinutes = minutes;
+		calculateEndTime();
 	}
 	
 	public void setTotalMinutes(long hours, long minutes) {
 		this.totalMinutes = hours * 60 + minutes;
+		calculateEndTime();
+	}
+	
+	public String printStartTime() {
+		String ampm = "AM";
+		String startMin = "" + getstartMinute();
+		if (startMin.length() < 2) {
+			startMin = "0" + startMin;
+		}
+		
+		long stHr = getstartHour();
+		if (stHr > 12) {
+			stHr %= 12;
+			ampm = "PM";
+		}
+		
+		if (stHr == 0) {
+			stHr = 12;
+		}
+				
+		return stHr + ":" + startMin + " " +  ampm; 
+	}
+	
+	public String printEndTime() {
+		String ampm = "AM";
+		String endMin = "" + getEndMinute();
+		if (endMin.length() < 2) {
+			endMin = "0" + endMin;
+		}
+		
+		long endHr = getEndHour();
+		if (endHr > 12) {
+			endHr %= 12;
+			ampm = "PM";
+		}
+		
+		if (endHr == 0) {
+			endHr = 12;
+		}
+				
+		return endHr + ":" + endMin + " " +  ampm; 
+	}
+	
+	public String printStartEnd() {
+		return printStartTime() + "-" + printEndTime();
 	}
 	
 }

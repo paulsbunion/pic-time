@@ -14,6 +14,8 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 <link rel="stylesheet" type="text/css"
 	th:href="@{/css/event-calendar.css}" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
 <title>Insert title here</title>
@@ -43,8 +45,37 @@
 				<th:block th:each="eventTimeslotEntry : ${eventTimeslots}">
 					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
-						<div class="testEntry" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}" th:styleappend="|grid-row: ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).startRow} /span ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).span}; grid-column: 2 / span 1;|" th:title= "${timeslot.title}">
-							<span th:text="${timeslot.title}"></span>
+						<div class="testEntry open-EditModal" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}" th:styleappend="|grid-row: ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).startRow} /span ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).span}; grid-column: 2 / span 1;|" th:title= "${timeslot.time.printStartEnd() +': ' +   timeslot.title}"
+						th:attr="data-id=${timeslot.id}, data-starttime=${timeslot.time.printStartTime()}, data-endtime=${timeslot.time.printEndTime()}, data-title=${timeslot.title}">
+<!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
+<!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
+						
+							<div class = "timeslotTime" th:text="${timeslot.time.printStartEnd()} + ' -- ' + ${timeslot.title}"></div>
+							
+							<span th:text="${timeslot.notes}"></span>
+							
+<!-- 							Modal -->
+<!-- 							<div class="modal fade" th:id="${'editModal_' + timeslot.id}" role="dialog" style="color: black;"> -->
+<!-- 							  <div class="modal-dialog" > -->
+<!-- 							    <div class="modal-content"> -->
+<!-- 							      <div class="modal-header"> -->
+							        
+<!-- 							        <button type="button" class="close" data-dismiss="modal"> -->
+<!-- 							          &times;</button> -->
+<!-- 							      </div> -->
+<!-- 							      <div class="modal-body"> -->
+<!-- 							        ... -->
+<!-- 							        <input type="text" name="value" id="id" th:value="${timeslot.time.printStartEnd()}" class="form-control" > -->
+<!-- 							        <input type="text" name="value" id="id" th:value="${timeslot.id}" class="form-control" > -->
+<!-- 							      </div> -->
+<!-- 							      <div class="modal-footer"> -->
+<!-- 							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+<!-- 							        <button type="button" class="btn btn-primary">Save changes</button> -->
+<!-- 							      </div> -->
+<!-- 							    </div> -->
+<!-- 							  </div> -->
+<!-- 							</div> -->
+							
 						</div>
 					</th:block>
 					
@@ -55,6 +86,62 @@
 		</div>
 	</div>
 	<div>Footer</div>
+	<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary open-EditModal">
+  Launch demo modal
+</button>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<input type="text" name="timeslotTitle" id="timeslotTitle" value="Title" class="form-control" >
+<!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+      	<span>Start Time</span>
+        <input type="text" name="startTime" id="startTime" value="" class="form-control" >
+        <span>End Time</span>
+        <input type="text" name="endTime" id="endTime" value="" class="form-control" >
+        <span>Notes</span>
+        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="btn btn-info btn-lg open-EditModal" data-startTime="12:30PM" href="#editModal">Click Here To Open Modal</button>
+
+
+<script type="text/javascript">
+   $(document).on("click", ".open-EditModal", function (event) {
+// 	   window.alert();
+	var _self = $(this);
+	var startTime = _self.data('starttime');
+	var endTime = _self.data('endtime');
+	var notes = _self.data('title');
+
+// 	var startTime = $(event.relatedTarget).data('val');
+// 	window.alert(st);
+// 	$(this).find(".modal-body").text(st);
+$("#startTime").val(startTime);
+$("#endTime").val(endTime);
+$("#notes").val(notes);
+	 var x = new Date(); 
+     var myHeading = "<p>I Am Added Dynamically </p>";
+//      $("#modal-body").html(myHeading + x);   
+     $('#editModal').modal('show');
+    });
+
+</script>
 	<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>
+	
 </body>
 </html>
