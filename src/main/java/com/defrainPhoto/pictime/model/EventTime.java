@@ -119,6 +119,17 @@ public class EventTime {
 		return stHr + ":" + startMin + " " +  ampm; 
 	}
 	
+	public String printStartTimeMilitary() {
+		String startMin = "" + getstartMinute();
+		if (startMin.length() < 2) {
+			startMin = "0" + startMin;
+		}
+		
+		long stHr = getstartHour();
+						
+		return stHr + ":" + startMin; 
+	}
+	
 	public String printEndTime() {
 		String ampm = "AM";
 		String endMin = "" + getEndMinute();
@@ -137,6 +148,17 @@ public class EventTime {
 		}
 				
 		return endHr + ":" + endMin + " " +  ampm; 
+	}
+	
+	public String printEndTimeMilitary() {
+		String endMin = "" + getEndMinute();
+		if (endMin.length() < 2) {
+			endMin = "0" + endMin;
+		}
+		
+		long endHr = getEndHour();
+				
+		return endHr + ":" + endMin; 
 	}
 	
 	public String printStartEnd() {

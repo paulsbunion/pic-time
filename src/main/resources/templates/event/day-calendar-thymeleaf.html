@@ -5,17 +5,15 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" th:src="@{/js/switchContentDisplay.js}">
-	
-</script>
+<script type="text/javascript" th:src="@{/js/switchContentDisplay.js}"></script>
+<script type="text/javascript" th:src="@{/js/wickedpicker.min.js}"></script>
 
-<link rel="stylesheet" type="text/css"
-	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
-<link rel="stylesheet" type="text/css"
-	th:href="@{/css/event-calendar.css}" />
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
-integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" />
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
 <title>Insert title here</title>
@@ -46,7 +44,11 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
 						<div class="testEntry open-EditModal" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}" th:styleappend="|grid-row: ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).startRow} /span ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).span}; grid-column: 2 / span 1;|" th:title= "${timeslot.time.printStartEnd() +': ' +   timeslot.title}"
-						th:attr="data-id=${timeslot.id}, data-starttime=${timeslot.time.printStartTime()}, data-endtime=${timeslot.time.printEndTime()}, data-timeslottitle=${timeslot.title}, data-notes=${timeslot.notes}">
+						th:attr="data-id=${timeslot.id}, 
+						data-starttime=${timeslot.time.printStartTimeMilitary()}, 
+						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
+						data-timeslottitle=${timeslot.title}, 
+						data-notes=${timeslot.notes}">
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
 						
@@ -104,9 +106,21 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
       </div>
       <div class="modal-body" id="modal-body">
       	<span>Start Time</span>
-        <input type="text" name="startTime" id="startTime" value="" class="form-control" >
+<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
+        
+       	<input id="timepicker1" name="startTime" type="text" class="form-control timepicker">
+ 
+        <script type="text/javascript">
+        var options = {
+        		now: "12:35"
+        };
+            $('.timepicker').wickedpicker(options);
+        </script>
+        
         <span>End Time</span>
-        <input type="text" name="endTime" id="endTime" value="" class="form-control" >
+<!--         <input type="text" name="endTime" id="endTime" value="" class="form-control" > -->
+        <input id="timepicker2" name="endTime" type="text" class="form-control timepicker">
+        
         <span>Notes</span>
         <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
       </div>
@@ -139,8 +153,24 @@ $("#notes").val(notes);
 	 var x = new Date(); 
      var myHeading = "<p>I Am Added Dynamically </p>";
 //      $("#modal-body").html(myHeading + x);   
+
+
+// update timepicker
+var myPicker = $('.timepicker').wickedpicker();
+var str = "hi";
+// console.log(myPicker);
+// console.log(myPicker.wickedpicker('time', 0));
+myPicker.wickedpicker('setTime', 0, startTime);
+myPicker.wickedpicker('setTime', 1, endTime);
+
      $('#editModal').modal('show');
     });
+//    $('.hasWickedpicker').val(startTime.toString());
+//    var options = {
+//    		now: starttime
+//    };
+//        $('.timepicker').wickedpicker(options);
+
 
 </script>
 	<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>

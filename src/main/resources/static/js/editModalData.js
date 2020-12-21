@@ -4,5 +4,7 @@
 		var myHeading = "<p>I am added Date</p>";
 		$("#modal-body").html(myHeading + x);
 		$('#modal').modal('show');
+		window.alert($('.hasWickedpicker').val());
+		$('.hasWickedpicker').val('');
 	});
 </script>
