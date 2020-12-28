@@ -18,7 +18,10 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -33,6 +36,10 @@ public class Timeslot {
 	private EventTime time;
 
 //	@JsonManagedReference
+//	@JsonUnwrapped
+	@JsonProperty("eventId")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Event event;

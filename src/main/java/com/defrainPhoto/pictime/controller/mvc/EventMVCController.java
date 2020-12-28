@@ -23,6 +23,8 @@ import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.EventTime;
 import com.defrainPhoto.pictime.model.EventType;
 import com.defrainPhoto.pictime.model.Timeslot;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/mvc/events/calendar")
@@ -82,6 +84,20 @@ public class EventMVCController {
 		timeslotGridSpans = mapTimeslots(eventTimeslots, timeslotGridSpans);
 		MonthDTO monthDTO = new MonthDTO(year, month, day);
 
+		ObjectMapper mapper = new ObjectMapper();
+		eventTimeslots.values().stream().filter(e -> !e.isEmpty()).forEach(e -> {
+			e.forEach(et -> {
+			try {
+				if (et.getId() == 4) {
+				System.out.println(mapper.writeValueAsString(et));
+				}
+			} catch (JsonProcessingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return;
+			});});
+		
 		params.put("month", monthDTO);
 		params.put("events", eventDTOs);
 		params.put("eventTimeslots", eventTimeslots);

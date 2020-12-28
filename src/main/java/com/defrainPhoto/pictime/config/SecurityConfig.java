@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers(
+//					"/**",
 					"/registration",
 					"/mvc/clients/**",
 					"/mvc/**",
@@ -30,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					"/css/**",
 					"/fonts/**",
 					"/webjars/**").permitAll()
-			.anyRequest().authenticated()
+//			.anyRequest().authenticated()
 			.and()
 			.formLogin().loginPage("/login").permitAll()
 			.and()
@@ -39,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/login?logout")
 			.permitAll();
+//		http.csrf().disable();
 	}
 	
 	@Bean

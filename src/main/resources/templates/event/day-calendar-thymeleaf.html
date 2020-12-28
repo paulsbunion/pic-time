@@ -3,6 +3,10 @@
 <head>
 <meta charset="ISO-8859-1">
 
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" th:src="@{/js/switchContentDisplay.js}"></script>
@@ -45,6 +49,7 @@
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
 						<div class="testEntry open-EditModal" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}" th:styleappend="|grid-row: ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).startRow} /span ${timeslotGridSpans.get(eventTimeslotEntry.key + '_' + timeslot.id).span}; grid-column: 2 / span 1;|" th:title= "${timeslot.time.printStartEnd() +': ' +   timeslot.title}"
 						th:attr="data-id=${timeslot.id}, 
+						data-event-id=${eventTimeslotEntry.key},
 						data-starttime=${timeslot.time.printStartTimeMilitary()}, 
 						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
 						data-timeslottitle=${timeslot.title}, 
@@ -105,28 +110,35 @@
         </button>
       </div>
       <div class="modal-body" id="modal-body">
-      	<span>Start Time</span>
-<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
-        
-       	<input id="timepicker1" name="startTime" type="text" class="form-control timepicker">
- 
-        <script type="text/javascript">
-        var options = {
-        		now: "12:35"
-        };
-            $('.timepicker').wickedpicker(options);
-        </script>
-        
-        <span>End Time</span>
-<!--         <input type="text" name="endTime" id="endTime" value="" class="form-control" > -->
-        <input id="timepicker2" name="endTime" type="text" class="form-control timepicker">
-        
-        <span>Notes</span>
-        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
+      <form id="myForm" method="post">
+	      <span>event id</span>
+	      <input id="eventId" name="startTime" type="text" class="form-control" disabled="true">
+	      <span>timeslot id</span>
+	      <input id="timeslotId" name="startTime" type="text" class="form-control" disabled="true">
+	      
+	      	<span>Start Time</span>
+	<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
+	        
+	       	<input id="editStartTime" name="startTime" type="text" class="form-control timepicker">
+	 
+	        <script type="text/javascript">
+	        var options = {
+	        		now: "12:35"
+	        };
+	            $('.timepicker').wickedpicker(options);
+	        </script>
+	        
+	        <span>End Time</span>
+	<!--         <input type="text" name="endTime" id="endTime" value="" class="form-control" > -->
+	        <input id="editEndtime" name="endTime" type="text" class="form-control timepicker">
+	        
+	        <span>Notes</span>
+	        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
+      </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary" id="edit-modal-submit">Save changes</button>
       </div>
     </div>
   </div>
@@ -138,6 +150,8 @@
    $(document).on("click", ".open-EditModal", function (event) {
 // 	   window.alert();
 	var _self = $(this);
+	var eventId = _self.data('event-id');
+	var timeslotId = _self.data('id');
 	var startTime = _self.data('starttime');
 	var endTime = _self.data('endtime');
 	var title = _self.data('timeslottitle');
@@ -146,6 +160,9 @@
 // 	var startTime = $(event.relatedTarget).data('val');
 // 	window.alert(st);
 // 	$(this).find(".modal-body").text(st);
+$("#eventId").val(eventId);
+$("#timeslotId").val(timeslotId);
+
 $("#timeslotTitle").val(title);
 $("#startTime").val(startTime);
 $("#endTime").val(endTime);
@@ -165,13 +182,148 @@ myPicker.wickedpicker('setTime', 1, endTime);
 
      $('#editModal').modal('show');
     });
-//    $('.hasWickedpicker').val(startTime.toString());
-//    var options = {
-//    		now: starttime
-//    };
-//        $('.timepicker').wickedpicker(options);
 
+// 	$(function() {
+   	$(document).on("click", "#edit-modal-submit", function (event) {
+		event.preventDefault();
+// 		console.log(event.target.parentNode.parentNode.childNodes[3]);
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		console.log("ajax");
+		console.log($('#editStartTime'));
+		
+// 		var _self = $('.open-EditModal');
+		var _self = $('#myForm');
+		var formData = {};
+// 		formData.timeslot = {};
+// 		formData.timeslot.start_time = parseTime($('#editStartTime').val());
+// 		formData.timeslot.end_time =  parseTime($('#editEndtime').val());
+// 		formData.timeslot.duration = $('#editEndtime').val();
 
+// 		formData.start_time = parseTime($('#editStartTime').val());
+// 		formData.end_time =  parseTime($('#editEndtime').val());
+// 		formData.duration = $('#editEndtime').val();
+
+		formData.start_time = parseTime($('#editStartTime').val());
+		formData.end_time =  parseTime($('#editEndtime').val());
+		formData.duration = $('#editEndtime').val();
+
+// 		console.log(_self);
+		console.log(formData);
+		console.log(JSON.stringify(formData));
+// 		var startTime = _self.data('endtime');
+		
+		
+// 		console.log($('.open-EditModal').data('endtime'));
+// 		console.log(startTime);
+		
+// 		parseData(_self);
+		var startTime = $('#editStartTime').val();
+// 		console.log(startTime);
+		
+// 		format data
+		
+		$.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+            }
+        });
+		console.log("before ajax");
+		$.ajax({
+			type: "POST",
+			contentType: "application/json",
+// 			url: "{{ path('addTag') }}",
+			url: "/events/181/timeslots",
+// 			data: $('form.tagForm').serialize(),
+// 			data: JSON.stringify(startTime),
+			data: JSON.stringify(formData),
+// 			data: formData,
+			dataTpye: 'json',
+			
+			beforeSend: function(xhr) {
+				console.log("before req: " + token);
+				xhr.setRequestHeader(header, token);
+				console.log("token set");
+			},
+			
+			success: function(response) {
+				alert(response['response']);
+				console.log("ajax1");
+				console.log(response);
+				if (response.redirect) {
+					window.location.href = response.redirect;
+				}
+			},
+			error: function (e) {
+				alert('Error');
+				console.log(e);
+				console.log("ajax2");
+			}
+		});
+
+// $.ajax({
+// 			type: "GET",
+// 			contentType: "application/json",
+// // 			url: "{{ path('addTag') }}",
+// 			url: "/events",
+// // 			data: $('form.tagForm').serialize(),
+// // 			data: JSON.stringify(startTime),
+// // 			dataTpye: 'json',
+// 			success: function(response) {
+// 				alert(response['response']);
+// 				console.log("ajax1");
+// 			},
+// 			error: function () {
+// 				alert('Error');
+// 				console.log("ajax2");
+// 			}
+// 		});
+		
+// 		console.log("ajax3");
+// 		return false;
+// 	});
+	});
+</script>
+
+<script type="text/javascript">
+	function parseData(self) {
+// 		console.log(self);
+		this.startTime = $('#editStartTime');
+		startTime.val("700");
+// 		this.startTime = 1200;
+
+// 		$('#editStartTime').val() = 700;
+		
+// 		$("#startTime").val(1200);
+// 		self.data('starttime').value = "1200";
+// 		self.attr("starttime", "1200");
+		console.log("in edit " + self.data('starttime'));
+		console.log($('#editStartTime').val());
+	}
+	
+	function parseTime(timeString) {
+		var timeData = timeString.split(" ");
+		
+		var hr = parseInt(timeData[0]);
+		var mn = timeData[2];
+		var merid = timeData[3];
+		
+		if(merid.toUpperCase().normalize() === "PM") {
+			hr += 12;
+		}
+		else {
+		}
+		
+// 		console.log(hr);
+// 		console.log(mn);
+// 		console.log(merid);
+		var intTime = "" + hr + mn;
+		console.log(intTime);
+		return intTime;
+		
+	}
 </script>
 	<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>
 	
