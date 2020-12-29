@@ -2,6 +2,8 @@ package com.defrainPhoto.pictime.model;
 
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Embeddable
 public class EventTime {
 
@@ -51,6 +53,7 @@ public class EventTime {
 		return endTime;
 	}
 	
+	@JsonIgnore
 	public long getEndHour() {
 		if (endTime <= 0) {
 			calculateEndTime();
@@ -58,6 +61,7 @@ public class EventTime {
 		return endTime / 100;
 	}
 	
+	@JsonIgnore
 	public long getEndMinute() {
 		if (endTime <= 0) {
 			calculateEndTime();
@@ -73,18 +77,22 @@ public class EventTime {
 		return totalMinutes;
 	}
 	
+	@JsonIgnore
 	public long getstartHour() {
 		return startTime / 100;
 	}
 	
+	@JsonIgnore
 	public long getstartMinute() {
 		return startTime % 100;
 	}
 	
+	@JsonIgnore
 	public long getDurationHour() {
 		return totalMinutes / 60;
 	}
 	
+	@JsonIgnore
 	public long getDurationMinute() {
 		return totalMinutes % 60;
 	}

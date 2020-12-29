@@ -4,6 +4,7 @@ import com.defrainPhoto.pictime.model.EventTime;
 
 public class TimeslotTimeSpan {
 
+	private static final int TIMESLOT_OVERFLOW_MINUTE = 6;
 	private int startRow;
 	private int stopRow;
 	private int span;
@@ -53,6 +54,10 @@ public class TimeslotTimeSpan {
 //		System.out.println(endHour+ ":" + endMinute);
 		start = startTimeHour * 4 + startTimeMinute / 15 + 1;
 		stop = endHour * 4 + endMinute / 15;
+		// adjust for partial quadrant
+		if (endMinute % 15 > TIMESLOT_OVERFLOW_MINUTE) {
+			stop++;
+		}
 //		System.out.println("*************************************************************************");
 //		System.out.println(start);
 //		System.out.println(stop);

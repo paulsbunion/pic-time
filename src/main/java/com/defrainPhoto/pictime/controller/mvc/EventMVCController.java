@@ -88,7 +88,7 @@ public class EventMVCController {
 		eventTimeslots.values().stream().filter(e -> !e.isEmpty()).forEach(e -> {
 			e.forEach(et -> {
 			try {
-				if (et.getId() == 4) {
+				if (et.getId() == 7) {
 				System.out.println(mapper.writeValueAsString(et));
 				}
 			} catch (JsonProcessingException e1) {

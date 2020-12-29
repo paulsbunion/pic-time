@@ -118,7 +118,7 @@ public class EventController {
 	}
 	
 	@PutMapping("/{eventId}/timeslots/{timeslotId}")
-	public Timeslot updateTimeslot(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "eventId") Long timeslotId,
+	public Timeslot updateTimeslot(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "timeslotId") Long timeslotId,
 			@Valid @RequestBody Timeslot updatedTimeslot) {
 		updatedTimeslot.setId(timeslotId);
 		return eventService.updateTimeslot(updatedTimeslot);

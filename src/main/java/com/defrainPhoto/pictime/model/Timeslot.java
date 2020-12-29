@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -38,7 +39,7 @@ public class Timeslot {
 //	@JsonManagedReference
 //	@JsonUnwrapped
 	@JsonProperty("eventId")
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -46,6 +47,7 @@ public class Timeslot {
 
 	private String title;
 
+	@Lob
 	private String notes;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -99,6 +101,13 @@ public class Timeslot {
 		return event;
 	}
 
+	// testing Jackson backrefernce error, refactor to static factory method: https://keepgrowing.in/java/springboot/how-to-get-json-response-only-with-an-id-of-the-related-entity/
+	@JsonProperty("eventId")
+	public void setEventById(Long eventId) {
+		this.event = new Event();
+		this.event.setId(eventId);
+	}
+	
 	public void setEvent(Event event) {
 		this.event = event;
 	}
