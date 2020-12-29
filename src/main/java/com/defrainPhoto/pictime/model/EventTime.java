@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class EventTime {
 
 	private long startTime;
-	private long totalMinutes;
 	private long endTime;
 	
 	public EventTime() {}
