@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +61,7 @@ public class TimeslotServiceMockUnitTest {
 		User photographerOne = new User("Sally", "Butters", "sb@b.com", "pwd");
 		event.addPhotographer(photographerOne);
 
-		Timeslot timeslot = new Timeslot(1l, new EventTime(1200, 15), event, "Test shoot", "", null, null, null, false);
+		Timeslot timeslot = new Timeslot(1l, new EventTime(LocalTime.of(12, 0, 0), LocalTime.of(12,15,0)), event, "Test shoot", "", null, null, null, false);
 
 		when(timeslotRepository.findById(1l)).thenReturn(Optional.of(timeslot)).thenReturn(Optional.of(timeslot));
 
@@ -83,7 +85,7 @@ public class TimeslotServiceMockUnitTest {
 		event.addPhotographer(photographerTwo);
 		event.addPhotographer(photographerThree);
 
-		Timeslot timeslot = new Timeslot(1l, new EventTime(1200, 15), event, "Test shoot", "", null, null, null, false);
+		Timeslot timeslot = new Timeslot(1l, new EventTime(LocalTime.of(12, 0, 0), LocalTime.of(12,15,0)), event, "Test shoot", "", null, null, null, false);
 
 		when(timeslotRepository.findById(1l)).thenReturn(Optional.of(timeslot)).thenReturn(Optional.of(timeslot));
 
@@ -108,7 +110,7 @@ public class TimeslotServiceMockUnitTest {
 		event.addPhotographer(photographerOne);
 		Location location = new Location(1l, "Pittsburg", "PA", "32147", "12 Street", "");
 
-		Timeslot timeslot = new Timeslot(1l, new EventTime(1200, 15), event, "Test shoot", "", null, null, null, false);
+		Timeslot timeslot = new Timeslot(1l, new EventTime(LocalTime.of(12, 0, 0), LocalTime.of(12,15,0)), event, "Test shoot", "", null, null, null, false);
 		
 		when(timeslotRepository.findById(1l)).thenReturn(Optional.of(timeslot)).thenReturn(Optional.of(timeslot));
 		
@@ -125,7 +127,7 @@ public class TimeslotServiceMockUnitTest {
 	public void testAddNotes() {
 		Event event = new Event();
 
-		Timeslot timeslot = new Timeslot(1l, new EventTime(1200, 15), event, "Test shoot", "", null, null, null, false);
+		Timeslot timeslot = new Timeslot(1l, new EventTime(LocalTime.of(12, 0, 0), LocalTime.of(12,15,0)), event, "Test shoot", "", null, null, null, false);
 		
 		when(timeslotRepository.findById(1l)).thenReturn(Optional.of(timeslot)).thenReturn(Optional.of(timeslot));
 		
@@ -144,7 +146,7 @@ public class TimeslotServiceMockUnitTest {
 		Event event = new Event();
 		Client client = new Client(2l, "Betty", "Adams", "123 E main", "123-222-3333", "a@b.com", false);
 
-		Timeslot timeslot = new Timeslot(1l, new EventTime(1200, 15), event, "Test shoot", "", null, null, null, false);
+		Timeslot timeslot = new Timeslot(1l, new EventTime(LocalTime.of(12, 0, 0), LocalTime.of(12,15,0)), event, "Test shoot", "", null, null, null, false);
 		
 		when(timeslotRepository.findById(1l)).thenReturn(Optional.of(timeslot)).thenReturn(Optional.of(timeslot));
 		

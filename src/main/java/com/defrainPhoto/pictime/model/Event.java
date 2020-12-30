@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@JsonIdentityReference(alwaysAsId = true)
+//@JsonIdentityReference(alwaysAsId = true)
 @Entity
 public class Event {
 
@@ -45,7 +45,7 @@ public class Event {
 	private EventType eventType;
 
 //	@JsonBackReference
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Timeslot> timeslots = new ArrayList<Timeslot>();
 

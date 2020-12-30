@@ -43,10 +43,10 @@ public class TimeslotTimeSpan {
 	static TimeslotTimeSpan mapTimeToGridSpan(EventTime eventTime) {
 		int start = -1;
 		int stop = -1;
-		int startTimeHour = (int) eventTime.getstartHour();
-		int startTimeMinute = (int) eventTime.getstartMinute();
-		int endHour = (int) eventTime.getEndHour();
-		int endMinute =(int) eventTime.getEndMinute();
+		int startTimeHour = eventTime.getStartTime().getHour();
+		int startTimeMinute = (int) eventTime.getStartTime().getMinute();
+		int endHour = (int) eventTime.getEndTime().getHour();
+		int endMinute =(int) eventTime.getEndTime().getMinute();
 						
 //		System.out.println("DURATION: " + eventTime.getTotalMinutes());
 //		System.out.println("endtimed: " + eventTime.getEndTime());

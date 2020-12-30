@@ -3,6 +3,8 @@ package com.defrainPhoto.pictime.service;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigInteger;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -88,8 +90,8 @@ public class TimeslotServiceSpringIntegrationTest {
 	private void createTimeslots() {
 		System.out.println("CREATING DB ENTRIES");
 		EventTime eventTime = new EventTime();
-		eventTime.setStartTime(1200);
-		eventTime.setTotalMinutes(45);
+		eventTime.setStartTime(LocalTime.of(12, 0, 0));
+		eventTime.setEndTime(LocalTime.of(12, 45, 0));
 
 		Client client = new Client(1l, "bob", "bread", "address", "123-333-4444", "bob@bread.com", false);
 		clientService.addClient(client);
@@ -122,8 +124,8 @@ public class TimeslotServiceSpringIntegrationTest {
 				photographers, location, false);
 		timeslotService.addTimeslot(timeslot);
 
-		eventTime.setStartTime(eventTime.getStartTime() + eventTime.getTotalMinutes());
-		eventTime.setTotalMinutes(10);
+		eventTime.setStartTime(eventTime.getEndTime());
+		eventTime.setEndTime(eventTime.getEndTime().plusMinutes(10));
 
 		timeslot = new Timeslot(2l, eventTime, event, "secend Spot", null, null, null, null, false);
 		timeslotService.addTimeslot(timeslot);

@@ -1,5 +1,7 @@
 package com.defrainPhoto.pictime.model;
 
+import java.time.LocalTime;
+
 import javax.persistence.Embeddable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,114 +9,49 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Embeddable
 public class EventTime {
 
-	private long startTime;
-	private long endTime;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	
 	public EventTime() {}
 	
-	public EventTime(long startTime, long totalMinutes) {
+	public EventTime(LocalTime startTime, LocalTime endTime) {
 		this.startTime = startTime;
-		this.totalMinutes = totalMinutes;
-		calculateEndTime();
+		this.endTime = endTime;
 	}
 
-	private void calculateEndTime() {
-		int startTimeHour = (int)getstartHour();
-		int startTimeMinute = (int) getstartMinute();
-		int endHour = startTimeHour + (int) getDurationHour();
-		int endMinute = startTimeMinute + (int) getDurationMinute();
-		
-		if (endMinute > 60) {
-			endHour++;
-			endMinute -= 60;
-		}
-		
-		this.endTime = endHour*100 + endMinute;
-	}
-
-	/**
-	 * get the start time of the event in  military time, where 0 is midnight, 100 is 1:00 am,
-	 * 1200 is noon, 2120 is 9:30 pm etc.
-	 * @return the military time as a long ex. 1315 is 1:15 pm.
-	 */
-	public long getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(long startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	
-	public long getEndTime() {
-		if (endTime <= 0) {
-			calculateEndTime();
-		}
+
+	public LocalTime getEndTime() {
 		return endTime;
 	}
-	
-	@JsonIgnore
-	public long getEndHour() {
-		if (endTime <= 0) {
-			calculateEndTime();
-		}
-		return endTime / 100;
-	}
-	
-	@JsonIgnore
-	public long getEndMinute() {
-		if (endTime <= 0) {
-			calculateEndTime();
-		}
-		return endTime % 100;
-	}
 
-	/**
-	 * Get the total time in minutes
-	 * @return the time represented as minutes
-	 */
-	public long getTotalMinutes() {
-		return totalMinutes;
-	}
-	
-	@JsonIgnore
-	public long getstartHour() {
-		return startTime / 100;
-	}
-	
-	@JsonIgnore
-	public long getstartMinute() {
-		return startTime % 100;
-	}
-	
-	@JsonIgnore
-	public long getDurationHour() {
-		return totalMinutes / 60;
-	}
-	
-	@JsonIgnore
-	public long getDurationMinute() {
-		return totalMinutes % 60;
-	}
-	
-	public void setTotalMinutes(long minutes) {
-		this.totalMinutes = minutes;
-		calculateEndTime();
-	}
-	
-	public void setTotalMinutes(long hours, long minutes) {
-		this.totalMinutes = hours * 60 + minutes;
-		calculateEndTime();
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 	
 	public String printStartTime() {
+		return printTime(startTime);
+	}
+	
+	public String printEndTime() {
+		return printTime(endTime);
+	}
+	
+	public String printTime(LocalTime time) {
 		String ampm = "AM";
-		String startMin = "" + getstartMinute();
+		String startMin = "" + time.getMinute();
 		if (startMin.length() < 2) {
 			startMin = "0" + startMin;
 		}
 		
-		long stHr = getstartHour();
-		if (stHr > 12) {
+		long stHr = time.getHour();
+		if (stHr >= 12) {
 			stHr %= 12;
 			ampm = "PM";
 		}
@@ -127,43 +64,20 @@ public class EventTime {
 	}
 	
 	public String printStartTimeMilitary() {
-		String startMin = "" + getstartMinute();
-		if (startMin.length() < 2) {
-			startMin = "0" + startMin;
-		}
-		
-		long stHr = getstartHour();
-						
-		return stHr + ":" + startMin; 
-	}
-	
-	public String printEndTime() {
-		String ampm = "AM";
-		String endMin = "" + getEndMinute();
-		if (endMin.length() < 2) {
-			endMin = "0" + endMin;
-		}
-		
-		long endHr = getEndHour();
-		if (endHr > 12) {
-			endHr %= 12;
-			ampm = "PM";
-		}
-		
-		if (endHr == 0) {
-			endHr = 12;
-		}
-				
-		return endHr + ":" + endMin + " " +  ampm; 
+		return printTimeMilitary(startTime);
 	}
 	
 	public String printEndTimeMilitary() {
-		String endMin = "" + getEndMinute();
+		return printTimeMilitary(endTime);
+	}
+	
+	public String printTimeMilitary(LocalTime time) {
+		String endMin = "" + time.getMinute();
 		if (endMin.length() < 2) {
 			endMin = "0" + endMin;
 		}
 		
-		long endHr = getEndHour();
+		long endHr = time.getHour();
 				
 		return endHr + ":" + endMin; 
 	}

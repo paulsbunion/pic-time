@@ -130,7 +130,7 @@
 	        
 	        <span>End Time</span>
 	<!--         <input type="text" name="endTime" id="endTime" value="" class="form-control" > -->
-	        <input id="editEndtime" name="endTime" type="text" class="form-control timepicker">
+	        <input id="editEndTime" name="endTime" type="text" class="form-control timepicker">
 	        
 	        <span>Notes</span>
 	        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
@@ -188,6 +188,8 @@ myPicker.wickedpicker('setTime', 1, endTime);
 		event.preventDefault();
 // 		console.log(event.target.parentNode.parentNode.childNodes[3]);
 		
+		validateForm(this);
+		
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
@@ -213,17 +215,17 @@ myPicker.wickedpicker('setTime', 1, endTime);
 		
 // 		formData.timeslot = {};
 // 		formData.timeslot.start_time = parseTime($('#editStartTime').val());
-// 		formData.timeslot.end_time =  parseTime($('#editEndtime').val());
-// 		formData.timeslot.duration = $('#editEndtime').val();
+// 		formData.timeslot.end_time =  parseTime($('#editEndTime').val());
+// 		formData.timeslot.duration = $('#editEndTime').val();
 
 // 		formData.start_time = parseTime($('#editStartTime').val());
-// 		formData.end_time =  parseTime($('#editEndtime').val());
-// 		formData.duration = $('#editEndtime').val();
+// 		formData.end_time =  parseTime($('#editEndTime').val());
+// 		formData.duration = $('#editEndTime').val();
 
 		formData.id = $('#timeslotId').val();
 		formData.time.startTime = parseTime($('#editStartTime').val());
-		formData.time.endTime =  parseTime($('#editEndtime').val());
-		formData.time.totalMinutes = getDuration($('#editStartTime').val(), $('#editEndtime').val());
+		formData.time.endTime =  parseTime($('#editEndTime').val());
+// 		formData.time.totalMinutes = getDuration($('#editStartTime').val(), $('#editEndTime').val());
 		formData.title=$('#timeslotTitle').val();
 		formData.notes=$('#notes').val();
 		formData.client=null;
@@ -316,11 +318,11 @@ myPicker.wickedpicker('setTime', 1, endTime);
 </script>
 
 <script type="text/javascript">
-$(document).ajaxStop(function() {
-    setInterval(function() {
-        location.reload();
-    }, 300);
-});
+// $(document).ajaxStop(function() {
+//     setInterval(function() {
+//         location.reload();
+//     }, 300);
+// });
 
 </script>
 
@@ -341,13 +343,14 @@ $(document).ajaxStop(function() {
 	}
 	
 	function parseTime(timeString) {
+		console.log(timeString);
 		var timeData = timeString.split(" ");
 		
 		var hr = parseInt(timeData[0]);
 		var mn = timeData[2];
 		var merid = timeData[3];
 		
-		if (merid.toUpperCase().normalize() === "PM") {
+		if (merid.toUpperCase().normalize() === "PM" && hr != 12) {
 			hr += 12;
 		}
 		if (merid.toUpperCase().normalize() === "AM" && hr == 12) {
@@ -359,10 +362,28 @@ $(document).ajaxStop(function() {
 // 		console.log(hr);
 // 		console.log(mn);
 // 		console.log(merid);
-		var intTime = "" + hr + mn;
+		var intTime = "" + hr + ":" + mn;
 		console.log(intTime);
 		return intTime;
 		
+	}
+	
+	function validateForm(obj) {
+		if (timeToMinutes($('#editStartTime').val()) > timeToMinutes($('#editEndTime').val())) {
+			console.log("error, start time cannot be after end time");
+		}
+	}
+	
+	function timeToMinutes(time) {
+		var result = 0;
+		
+		var tempTime = parseTime(time);
+		var data = tempTime.split(":");
+		
+		result = parseInt(data[0]) * 60;
+		result += parseInt(data[1]);
+		console.log("parsed time: " + result);
+		return result;
 	}
 	
 	function getDuration(timeStart, timeEnd) {
