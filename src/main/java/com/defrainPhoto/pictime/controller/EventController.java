@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
+import com.defrainPhoto.pictime.exception.UpdateEventException;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.service.EventService;
@@ -119,7 +121,11 @@ public class EventController {
 	
 	@PutMapping("/{eventId}/timeslots/{timeslotId}")
 	public Timeslot updateTimeslot(@PathVariable(name = "eventId") Long eventId, @PathVariable(name = "timeslotId") Long timeslotId,
-			@Valid @RequestBody Timeslot updatedTimeslot) {
+			@Valid @RequestBody Timeslot updatedTimeslot, BindingResult result) {
+		if(result.hasErrors()) {
+			throw new UpdateEventException(result);
+		}
+		
 		updatedTimeslot.setId(timeslotId);
 		return eventService.updateTimeslot(updatedTimeslot);
 	}

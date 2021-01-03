@@ -4,9 +4,11 @@ import java.time.LocalTime;
 
 import javax.persistence.Embeddable;
 
+import com.defrainPhoto.pictime.constraint.StartTimeEndTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Embeddable
+@StartTimeEndTime
 public class EventTime {
 
 	private LocalTime startTime;

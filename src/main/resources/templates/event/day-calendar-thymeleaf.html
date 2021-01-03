@@ -116,10 +116,11 @@
 	      <span>timeslot id</span>
 	      <input id="timeslotId" name="startTime" type="text" class="form-control" disabled="true">
 	      
-	      	<span>Start Time</span>
+	      	<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
 	<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
 	        
 	       	<input id="editStartTime" name="startTime" type="text" class="form-control timepicker">
+<!-- 	       	<div id="rsp_start_time"></div> -->
 	 
 	        <script type="text/javascript">
 	        var options = {
@@ -269,7 +270,7 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 			data:"{\"id\":55,\"time\":{\"startTime\":600,\"totalMinutes\":240,\"endTime\":1000},\"title\":\"" + $('#timeslotTitle').val() + "\",\"notes\":null,\"client\":null,\"photographers\":[],\"location\":null,\"trackMileage\":false,\"eventId\":11}",
 
 // 			data: formData,
-			dataTpye: 'json',
+			dataTpye: 'JSON',
 			
 			beforeSend: function(xhr) {
 				console.log("before req: " + token);
@@ -278,6 +279,7 @@ myPicker.wickedpicker('setTime', 1, endTime);
 			},
 			
 			success: function(response) {
+				$('#rsp_start_time').text("");
 // 				alert(response['response']);
 				console.log("ajax1");
 				console.log(response);
@@ -287,7 +289,9 @@ myPicker.wickedpicker('setTime', 1, endTime);
 			},
 			error: function (e) {
 // 				alert('Error');
-				console.log(e);
+				$('#rsp_start_time').text(e.responseJSON.rsp_start_time);
+// 				alert(e.status);
+// 				console.log(e.responseJSON.rsp_start_time);
 				console.log("ajax2");
 			}
 		});
@@ -362,6 +366,12 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 		console.log(hr);
 // 		console.log(mn);
 // 		console.log(merid);
+
+		console.log("checking hour length: " + hr.toString().length);
+		if(hr.toString().length == 1) {
+			console.log("length < 2");
+			hr = "0" + hr;
+		}
 		var intTime = "" + hr + ":" + mn;
 		console.log(intTime);
 		return intTime;

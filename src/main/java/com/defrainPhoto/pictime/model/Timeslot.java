@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
@@ -34,6 +35,7 @@ public class Timeslot {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
 
+	@Valid
 	private EventTime time;
 
 //	@JsonManagedReference
