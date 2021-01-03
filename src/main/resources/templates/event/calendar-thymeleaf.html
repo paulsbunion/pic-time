@@ -15,9 +15,10 @@
 
 <div class="container">
 		<div class="navigation">
-			<span class="nav-back" ><a id="back" th:href="@{/mvc/events/calendar/{year}/{month}(year=${month.previousYearLink}, month=${month.previousMonthLink})}"><</a></span> 
+<!-- 			<span class="nav-back" ><a id="back" th:href="@{/mvc/events/calendar/{year}/{month}(year=${month.previousYearLink}, month=${month.previousMonthLink})}"><</a></span>  -->
+			<span class="nav-back" ><a id="back" th:href="@{/mvc/events/calendar/{date}(date=${month.previousMonthLink})}"><</a></span>
 			<span class="nav-header" th:text="${month.monthName} + ', ' + ${month.year}">Month</span>
-			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{year}/{month}(year=${month.nextYearLink}, month=${month.nextMonthLink})}">></a></span>
+			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{date}(date=${month.nextMonthLink})}">></a></span>
 		</div>
 		<div class="calendar">
 			<div class="header"></div>

@@ -31,7 +31,11 @@
 	</th:block>
 
 	<div class="container2">
-		<div class="navigation"> <span class="nav-back"><</span><span class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span><span class="nav-forward">></span></div>
+		<div class="navigation"> 
+			<span class="nav-back"><a id="back" th:href="@{/mvc/events/calendar/{date}(date=${month.previousDayLink})}"><</a></span>
+			<span class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span>
+			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{date}(date=${month.nextDayLink})}">></a></span>
+		</div>
 		<div class="day-calendar">
 			<div class="day-header"><span>
 			
@@ -161,6 +165,7 @@
 // 	var startTime = $(event.relatedTarget).data('val');
 // 	window.alert(st);
 // 	$(this).find(".modal-body").text(st);
+$('#rsp_start_time').text("");
 $("#eventId").val(eventId);
 $("#timeslotId").val(timeslotId);
 
