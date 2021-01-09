@@ -45,7 +45,7 @@ public class Event {
 	private EventType eventType;
 
 //	@JsonBackReference
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Timeslot> timeslots = new ArrayList<Timeslot>();
 

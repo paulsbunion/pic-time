@@ -63,7 +63,7 @@ public class Timeslot {
 	private Location location;
 	private boolean trackMileage;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

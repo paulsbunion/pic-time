@@ -90,14 +90,15 @@ public class EventServiceImpl implements EventService {
 	public Timeslot addTimeslot(long eventId, Timeslot newTimeslot) {
 		Event foundEvent = findById(eventId);
 		if (foundEvent != null) {
+//			newTimeslot.setEvent(foundEvent);
 			foundEvent.addTimeslot(newTimeslot);
 			eventRepository.save(foundEvent);
-			Long newId = null;
-			Optional<Timeslot> addedTimeslot =  foundEvent.getTimeslots().stream().filter(ts -> ts.equals(newTimeslot)).findFirst();
-			if (addedTimeslot.isPresent()) {
-				newId = addedTimeslot.get().getId();
-			}
-			newTimeslot.setId(newId);
+//			Long newId = null;
+//			Optional<Timeslot> addedTimeslot =  foundEvent.getTimeslots().stream().filter(ts -> ts.equals(newTimeslot)).findFirst();
+//			if (addedTimeslot.isPresent()) {
+//				newId = addedTimeslot.get().getId();
+//			}
+//			newTimeslot.setId(newId);
 			return newTimeslot;
 		}
 		throw new ResourceNotFoundException("Event not found with id: " + eventId);

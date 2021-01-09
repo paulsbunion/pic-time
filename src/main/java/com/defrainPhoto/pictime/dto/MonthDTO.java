@@ -14,6 +14,8 @@ public class MonthDTO {
 	private int month;
 	private int day;
 	private String dayName;
+	
+	private LocalDate today;
 
 	private LocalDate previousDay;
 	private LocalDate previousMonth;
@@ -36,6 +38,7 @@ public class MonthDTO {
 
 	public MonthDTO(Integer year, Integer month, Integer day) {
 		LocalDate date = LocalDate.of(year, month, day);
+		today = date;
 		
 		previousDay = date.minusDays(1);
 		previousMonth = date.minusMonths(1);
@@ -124,5 +127,13 @@ public class MonthDTO {
 	
 	public String getNextMonthLink() {
 		return  nextMonth.format(monthformatter);
+	}
+	
+	public LocalDate getToday() {
+		return today;
+	}
+
+	public void setToday(LocalDate today) {
+		this.today = today;
 	}
 }

@@ -37,13 +37,24 @@
 			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{date}(date=${month.nextDayLink})}">></a></span>
 		</div>
 		<div class="day-calendar">
-			<div class="day-header"><span>
-			
-			<select id="sel" name="test">
-		<option th:each="event : ${events}" th:value="${event.id}"
-			th:utext="${event.eventName}" />
-	</select>
-			</span></div>
+			<div class="day-header">
+				<div class="newEvent">
+				<a th:href="@{/mvc/events/{date}(date=${month.today})}"
+											class="btn btn-primary gray"> <i class="fas fa-user-edit m1-2">New Event</i></a>
+				</div>
+				
+				<div class="eventDropdown">
+					<select id="sel" name="test">
+					<option th:each="event : ${events}" th:value="${event.id}"
+						th:utext="${event.eventName}" />
+					</select>
+				</div>
+				
+				<div class="addTimeslot">
+					<a th:href="@{/mvc/events/{date}(date=${month.today})}" id="newTimeslotModal"
+											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a>
+				</div>
+			</div>
 			<div class="day-calendar-content" id="cal">
 			
 <!-- 				<div class="testEntry"><span>Howdy</span></div> -->
@@ -97,10 +108,6 @@
 		</div>
 	</div>
 	<div>Footer</div>
-	<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary open-EditModal">
-  Launch demo modal
-</button>
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,9 +123,9 @@
       <div class="modal-body" id="modal-body">
       <form id="myForm" method="post">
 	      <span>event id</span>
-	      <input id="eventId" name="startTime" type="text" class="form-control" disabled="true">
+	      <input id="eventId" name="eventId" type="text" class="form-control" disabled="true">
 	      <span>timeslot id</span>
-	      <input id="timeslotId" name="startTime" type="text" class="form-control" disabled="true">
+	      <input id="timeslotId" name="timeslotId" type="text" class="form-control" disabled="true">
 	      
 	      	<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
 	<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
@@ -148,10 +155,91 @@
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-info btn-lg open-EditModal" data-startTime="12:30PM" href="#editModal">Click Here To Open Modal</button>
+
+<!-- New Modal -->
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<input type="text" name="timeslotTitle" id="timeslotTitleNew" value="Title" class="form-control" >
+<!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+      <form id="myFormNew" method="post">
+	      <span>event id</span>
+	      <input id="eventIdNew" name="eventId" type="text" class="form-control" disabled="true">
+	      
+	      	<span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+	        
+	       	<input id="editStartTimeNew" name="startTime2" type="text" class="form-control timepicker2">
+<!-- 	       	<div id="rsp_start_time_new"></div> -->
+	 
+	        <script type="text/javascript">
+	        var options = {
+	        		now: "12:35"
+	        };
+// 				$('.timepicker2').wickedpicker();
+	        </script>
+	        
+	        <span>End Time</span>
+	        <input id="editEndTimeNew" name="endTime2" type="text" class="form-control timepicker2">
+	        
+	        <span>Notes</span>
+	        <textarea rows="5" cols="33" name="notes" id="notesNew" class="form-control"></textarea>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="new-modal-submit">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script type="text/javascript">
+   $(document).on("click", "#newTimeslotModal", function (event) {
+	   event.preventDefault();
+	   
+	var _self = $(this);
+	console.log(_self);
+	var eventId = _self.data('event-id');
+// 	var timeslotId = _self.data('id');
+// 	var startTime = 0;
+// 	var endTime = 0;
+// 	var title = _self.data('timeslottitle');
+// 	var notes = _self.data('notes');
+
+$('#rsp_start_time_new').text("");
+console.log("value");
+console.log($("#sel").val());
+$("#eventIdNew").val($("#sel").val());
+
+// $("#timeslotTitle").val(title);
+// $("#startTime").val(startTime);
+// $("#endTime").val(endTime);
+// $("#notes").val(notes);
+// 	 var x = new Date(); 
+
+// update timepicker
+var myPicker2 = $('.timepicker2').wickedpicker();
+// myPicker2.wickedpicker('setTime', 2, startTime);
+// myPicker2.wickedpicker('setTime', 1, endTime);
+
+     $('#newModal').modal('show');
+    });
+
+   
+   
+   
+   
+   
+   
+   
+   
    $(document).on("click", ".open-EditModal", function (event) {
 // 	   window.alert();
 	var _self = $(this);
@@ -188,13 +276,14 @@ myPicker.wickedpicker('setTime', 1, endTime);
 
      $('#editModal').modal('show');
     });
-
+   
+   
 // 	$(function() {
    	$(document).on("click", "#edit-modal-submit", function (event) {
 		event.preventDefault();
 // 		console.log(event.target.parentNode.parentNode.childNodes[3]);
 		
-		validateForm(this);
+// 		validateForm(this);
 		
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -256,6 +345,8 @@ myPicker.wickedpicker('setTime', 1, endTime);
 		
 // 		format data
 		
+		const RELOAD_TIMER = 50000;
+		
 		$.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': '<?= csrf_token() ?>'
@@ -291,6 +382,10 @@ myPicker.wickedpicker('setTime', 1, endTime);
 				if (response.redirect) {
 					window.location.href = response.redirect;
 				}
+				
+				setTimeout(function() {
+					location.reload();
+					}, RELOAD_TIMER);
 			},
 			error: function (e) {
 // 				alert('Error');
@@ -323,6 +418,123 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 		return false;
 // 	});
 	});
+	
+	
+	
+	
+	
+   	$(document).on("click", "#new-modal-submit", function (event) {
+		event.preventDefault();
+		
+// 		validateForm(this);
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		console.log("ajaxNew");
+		console.log($('#editStartTimeNew'));
+		
+		var _self = $('#myFormNew');
+		
+		var formData = {};
+		formData.id = null;
+		formData.time={};
+		formData.time.startTime=0;
+		formData.time.totalMinutes=0;
+		formData.time.endTime=0;
+		formData.title="";
+		formData.notes=null;
+		formData.client=null;
+		formData.photographers=[];
+		formData.location=null;
+		formData.trackMileage=false;
+		formData.eventId=0;
+		
+// 		formData.id = $('#timeslotIdNew').val();
+console.log("parsing start TIme")
+		formData.time.startTime = parseTime($('#editStartTimeNew').val());
+		formData.time.endTime =  parseTime($('#editEndTimeNew').val());
+		formData.title=$('#timeslotTitleNew').val();
+		formData.notes=$('#notesNew').val();
+		formData.client=null;
+		formData.photographers=[];
+		formData.location=null;
+		formData.trackMileage=false;
+		formData.eventId=$('#eventIdNew').val();
+
+// 		console.log(_self);
+		console.log("data here");
+		console.log(formData);
+		console.log(JSON.stringify(formData));
+
+		var startTime = $('#editStartTimeNew').val();
+		
+		$.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+            }
+        });
+		console.log("before ajaxNew");
+		console.log("before ajaxNew" + $('#timeslotIdNew').val());
+		$.ajax({
+			type: "POST",
+			contentType: "application/json",
+			url: "/events/" + $('#eventIdNew').val() + "/timeslots/",
+			data: JSON.stringify(formData),
+
+			dataTpye: 'JSON',
+			
+			beforeSend: function(xhr) {
+				console.log("before req: " + token);
+				xhr.setRequestHeader(header, token);
+				console.log("token set");
+			},
+			
+			success: function(response) {
+				$('#rsp_start_time_new').text("");
+				console.log("ajax1New");
+				console.log(response);
+				if (response.redirect) {
+					window.location.href = response.redirect;
+				}
+				
+				setTimeout(function() {
+					location.reload();
+					}, RELOAD_TIMER);
+			},
+			error: function (e) {
+				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
+				console.log("ajax2New");
+			}
+		});
+
+// $.ajax({
+// 			type: "GET",
+// 			contentType: "application/json",
+// // 			url: "{{ path('addTag') }}",
+// 			url: "/events",
+// // 			data: $('form.tagForm').serialize(),
+// // 			data: JSON.stringify(startTime),
+// // 			dataTpye: 'json',
+// 			success: function(response) {
+// 				alert(response['response']);
+// 				console.log("ajax1");
+// 			},
+// 			error: function () {
+// 				alert('Error');
+// 				console.log("ajax2");
+// 			}
+// 		});
+		
+// 		console.log("ajax3");
+// 		return false;
+// 	});
+	});
+	
+	
+	
+	
+	
 	
 </script>
 
@@ -383,11 +595,11 @@ myPicker.wickedpicker('setTime', 1, endTime);
 		
 	}
 	
-	function validateForm(obj) {
-		if (timeToMinutes($('#editStartTime').val()) > timeToMinutes($('#editEndTime').val())) {
-			console.log("error, start time cannot be after end time");
-		}
-	}
+// 	function validateForm(obj) {
+// 		if (timeToMinutes($('#editStartTime').val()) > timeToMinutes($('#editEndTime').val())) {
+// 			console.log("error, start time cannot be after end time");
+// 		}
+// 	}
 	
 	function timeToMinutes(time) {
 		var result = 0;

@@ -17,7 +17,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleUpdateEventException(UpdateEventException ex, WebRequest request) {
 		Map<String, Object> body = new LinkedHashMap<String, Object>();
 //		body.put("rsp_start_time", ex.getBindingResult().getFieldErrors());
-		body.put("rsp_start_time", "End Time cannot be before Start Time!");
+		body.put("rsp_start_time", "Start Time must be before End Time!");
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 		
 	}
