@@ -14,9 +14,9 @@ public class UserDTO {
 	private String email;
 
 //	@JsonBackReference
-	private Set<Event> events = new HashSet<Event>();
+//	private Set<Event> events = new HashSet<Event>();
 
-	private Set<Timeslot> timeslots = new HashSet<Timeslot>();
+//	private Set<Timeslot> timeslots = new HashSet<Timeslot>();
 
 	public UserDTO() {
 		
@@ -54,22 +54,22 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public Set<Event> getEvents() {
-		return events;
-	}
-
-	public void setEvents(Set<Event> events) {
-		this.events = events;
-	}
-
-	public Set<Timeslot> getTimeslots() {
-		return timeslots;
-	}
-
-	public void setTimeslots(Set<Timeslot> timeslots) {
-		this.timeslots = timeslots;
-	}
-	
+//	public Set<Event> getEvents() {
+//		return events;
+//	}
+//
+//	public void setEvents(Set<Event> events) {
+//		this.events = events;
+//	}
+//
+//	public Set<Timeslot> getTimeslots() {
+//		return timeslots;
+//	}
+//
+//	public void setTimeslots(Set<Timeslot> timeslots) {
+//		this.timeslots = timeslots;
+//	}
+//	
 	
 
 }

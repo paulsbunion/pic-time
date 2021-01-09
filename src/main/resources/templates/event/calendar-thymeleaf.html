@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+
+<script type="text/javascript" th:src="@{/js/mouseScroll.js}" > </script>
+
+<title>Insert title here</title>
+</head>
+<body>
+
+<div class="container">
+		<div class="navigation">
+<!-- 			<span class="nav-back" ><a id="back" th:href="@{/mvc/events/calendar/{year}/{month}(year=${month.previousYearLink}, month=${month.previousMonthLink})}"><</a></span>  -->
+			<span class="nav-back" ><a id="back" th:href="@{/mvc/events/calendar/{date}(date=${month.previousMonthLink})}"><</a></span>
+			<span class="nav-header" th:text="${month.monthName} + ', ' + ${month.year}">Month</span>
+			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{date}(date=${month.nextMonthLink})}">></a></span>
+		</div>
+		<div class="calendar">
+			<div class="header"></div>
+			<div class="weekday-header" role="row">
+
+				<div class="weekday-title">
+					<span>MON</span>
+				</div>
+				<div class="weekday-title">
+					<span>TUE</span>
+				</div>
+				<div class="weekday-title">
+					<span>WED</span>
+				</div>
+				<div class="weekday-title">
+					<span>THU</span>
+				</div>
+				<div class="weekday-title">
+					<span>FRI</span>
+				</div>
+				<div class="weekday-title">
+					<span>SAT</span>
+				</div>
+				<div class="weekday-title">
+					<span>SUN</span>
+				</div>
+			</div>
+
+			<div class="calendar-content">
+<!-- 				<div class="week-row" th:style="'grid-column-start: 2' "> -->
+				<div class="week-row" >
+					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, month.weekStartDay - 1, 1)}" >
+						<span></span>
+					</div>
+					<div class="date-of-week" th:each="i : ${#numbers.sequence(1, month.daysInMonth)}" th:value="${i}" th:inline="text"><a th:href="@{/mvc/events/calendar/{year}/{month}/{day}(year=${month.year}, month=${month.month}, day=${i})}" class="link">[[${i}]]</a>
+							
+							<a th:each="event : ${events}"
+							th:object="${event}"
+							th:if="${#temporals.day(event.date)} == ${i}"
+							th:href="@{/mvc/clients/edit/{id}(id=${event.id})}"
+											class="btn btn-primary calendar-event"> <i class="fas fa-user-edit m1-2" th:title="${event.eventName}" th:text="${event.eventName}">Edit</i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -10,15 +10,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -30,15 +35,21 @@ public class Timeslot {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
 
+	@Valid
 	private EventTime time;
 
 //	@JsonManagedReference
+//	@JsonUnwrapped
+	@JsonProperty("eventId")
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Event event;
 
 	private String title;
 
+	@Lob
 	private String notes;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -52,7 +63,7 @@ public class Timeslot {
 	private Location location;
 	private boolean trackMileage;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -60,7 +71,7 @@ public class Timeslot {
 
 	}
 
-	public Timeslot(Long id, EventTime time, Event event, String title, String notes, Client client,
+	public Timeslot(long id, EventTime time, Event event, String title, String notes, Client client,
 			Set<User> photographers, Location location, boolean trackMileage) {
 		super();
 		this.id = id;
@@ -92,6 +103,13 @@ public class Timeslot {
 		return event;
 	}
 
+	// testing Jackson backrefernce error, refactor to static factory method: https://keepgrowing.in/java/springboot/how-to-get-json-response-only-with-an-id-of-the-related-entity/
+	@JsonProperty("eventId")
+	public void setEventById(Long eventId) {
+		this.event = new Event();
+		this.event.setId(eventId);
+	}
+	
 	public void setEvent(Event event) {
 		this.event = event;
 	}

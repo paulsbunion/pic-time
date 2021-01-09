@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -64,11 +66,11 @@ public class EventServiceMockUnitTest {
 		photographerOne.setId(1l);
 		photographerTwo.setId(2l);
 		
-		timeslotOne = new Timeslot(1l, new EventTime(1230, 15), eventOne, "guests arrive", "client wants pictures of their cars", 
+		timeslotOne = new Timeslot(1l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), eventOne, "guests arrive", "client wants pictures of their cars", 
 				null, new HashSet<User>(Arrays.asList(photographerOne)), null, false);
-		timeslotOnePt2 = new Timeslot(1l, new EventTime(1230, 15), eventOne, "guests arrive", "client wants pictures of their cars", 
+		timeslotOnePt2 = new Timeslot(1l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), eventOne, "guests arrive", "client wants pictures of their cars", 
 				null, new HashSet<User>(Arrays.asList(photographerTwo)), null, false);
-		timeslotTwo = new Timeslot(2l, new EventTime(1230, 15), eventOne, "guests leave", "", 
+		timeslotTwo = new Timeslot(2l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), eventOne, "guests leave", "", 
 				null,  new HashSet<User>(Arrays.asList(photographerTwo)), null, false);
 		eventOne.setTimeslots(Arrays.asList(timeslotOne, timeslotTwo));
 	}

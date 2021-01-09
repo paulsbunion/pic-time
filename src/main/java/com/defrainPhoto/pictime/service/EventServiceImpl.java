@@ -1,5 +1,6 @@
 package com.defrainPhoto.pictime.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
+	@Transactional
 	public Event addEvent(Event event) {
 		return eventRepository.save(event);
 	}
@@ -88,14 +90,15 @@ public class EventServiceImpl implements EventService {
 	public Timeslot addTimeslot(long eventId, Timeslot newTimeslot) {
 		Event foundEvent = findById(eventId);
 		if (foundEvent != null) {
+//			newTimeslot.setEvent(foundEvent);
 			foundEvent.addTimeslot(newTimeslot);
 			eventRepository.save(foundEvent);
-			Long newId = null;
-			Optional<Timeslot> addedTimeslot =  foundEvent.getTimeslots().stream().filter(ts -> ts.equals(newTimeslot)).findFirst();
-			if (addedTimeslot.isPresent()) {
-				newId = addedTimeslot.get().getId();
-			}
-			newTimeslot.setId(newId);
+//			Long newId = null;
+//			Optional<Timeslot> addedTimeslot =  foundEvent.getTimeslots().stream().filter(ts -> ts.equals(newTimeslot)).findFirst();
+//			if (addedTimeslot.isPresent()) {
+//				newId = addedTimeslot.get().getId();
+//			}
+//			newTimeslot.setId(newId);
 			return newTimeslot;
 		}
 		throw new ResourceNotFoundException("Event not found with id: " + eventId);
@@ -178,6 +181,27 @@ public class EventServiceImpl implements EventService {
 //		}
 //		throw new ResourceNotFoundException("Event not found with id: " + eventId);
 		timeslotService.deleteTimeslot(timeslotId);
+	}
+
+	@Override
+	public List<Event> findAllByYearAndMonth(Integer year, Integer month) {
+		LocalDate fromDate = LocalDate.of(year, month, 1);
+		
+		if (month == 12) {
+			year += 1;
+			month = 1;
+		}
+		else {
+			month++;
+		}
+		LocalDate toDate = LocalDate.of(year, month, 1);
+		return eventRepository.findAllByDateGreaterThanEqualAndDateLessThan(fromDate, toDate);
+	}
+
+	@Override
+	public List<Event> findAllByYearAndMonthAndDay(Integer year, Integer month, Integer day) {
+		LocalDate date = LocalDate.of(year, month, day);
+		return eventRepository.findAllByDate(date);
 	}
 
 }

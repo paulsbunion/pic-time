@@ -3,7 +3,9 @@ package com.defrainPhoto.pictime.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -134,9 +136,9 @@ public class EventServiceSpringIntegrationTest {
 		photographer1 = createUser("bw@email.com", "pwd1", "Ben", "Walters");
 		photographer2 = createUser("jd@email.com", "pwd2", "Jen", "Davis");
 		event1 = new Event(1l, "The first Event", LocalDate.now(), eventType);
-		timeslot1 = new Timeslot(1l, new EventTime(1230, 15), event1, "guests arrive", "", null,
+		timeslot1 = new Timeslot(1l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), event1, "guests arrive", "", null,
 				new HashSet<User>(Arrays.asList(photographer1)), null, false);
-		timeslot2 = new Timeslot(2l, new EventTime(1230, 15), event1, "guests leave", "", null,
+		timeslot2 = new Timeslot(2l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), event1, "guests leave", "", null,
 				new HashSet<User>(Arrays.asList(photographer2)), null, false);
 
 		eventTypeService.addEventType(eventType);
@@ -160,9 +162,9 @@ public class EventServiceSpringIntegrationTest {
 		event2 = eventService.addEvent(event2);
 		eventService.addPhotographer(event2.getId(), photographer1);
 		eventService.addPhotographer(event2.getId(), photographer2);
-		Timeslot tsTwo = new Timeslot(1l, new EventTime(1230, 15), event1, "guests arrive", "", null,
+		Timeslot tsTwo = new Timeslot(1l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), event1, "guests arrive", "", null,
 				new HashSet<User>(Arrays.asList(photographer1)), null, false);
-		Timeslot tsThree = new Timeslot(2l, new EventTime(1230, 15), event1, "guests arrive", "", null,
+		Timeslot tsThree = new Timeslot(2l, new EventTime(LocalTime.of(12, 30, 0), LocalTime.of(12,45,0)), event1, "guests arrive", "", null,
 				new HashSet<User>(Arrays.asList(photographer2)), null, false);
 		eventService.addTimeslot(event2.getId(), tsTwo);
 		eventService.addTimeslot(event2.getId(), tsThree);

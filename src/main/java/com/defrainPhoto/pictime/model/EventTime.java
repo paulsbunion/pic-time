@@ -1,55 +1,91 @@
 package com.defrainPhoto.pictime.model;
 
+import java.time.LocalTime;
+
 import javax.persistence.Embeddable;
 
+import com.defrainPhoto.pictime.constraint.StartTimeEndTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Embeddable
+@StartTimeEndTime
 public class EventTime {
 
-	private long startTime;
-	private long totalMinutes;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	
 	public EventTime() {}
 	
-	public EventTime(long startTime, long totalMinutes) {
+	public EventTime(LocalTime startTime, LocalTime endTime) {
 		this.startTime = startTime;
-		this.totalMinutes = totalMinutes;
+		this.endTime = endTime;
 	}
 
-	/**
-	 * get the start time of the event in  military time, where 0 is midnight, 100 is 1:00 am,
-	 * 1200 is noon, 2120 is 9:30 pm etc.
-	 * @return the military time as a long ex. 1315 is 1:15 pm.
-	 */
-	public long getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(long startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
 
-	/**
-	 * Get the total time in minutes
-	 * @return the time represented as minutes
-	 */
-	public long getTotalMinutes() {
-		return totalMinutes;
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 	
-	public long getDurationHour() {
-		return totalMinutes / 60;
+	public String printStartTime() {
+		return printTime(startTime);
 	}
 	
-	public long getDurationMinute() {
-		return totalMinutes % 60;
+	public String printEndTime() {
+		return printTime(endTime);
 	}
 	
-	public void setTotalMinutes(long minutes) {
-		this.totalMinutes = minutes;
+	public String printTime(LocalTime time) {
+		String ampm = "AM";
+		String startMin = "" + time.getMinute();
+		if (startMin.length() < 2) {
+			startMin = "0" + startMin;
+		}
+		
+		long stHr = time.getHour();
+		if (stHr >= 12) {
+			stHr %= 12;
+			ampm = "PM";
+		}
+		
+		if (stHr == 0) {
+			stHr = 12;
+		}
+				
+		return stHr + ":" + startMin + " " +  ampm; 
 	}
 	
-	public void setTotalMinutes(long hours, long minutes) {
-		this.totalMinutes = hours * 60 + minutes;
+	public String printStartTimeMilitary() {
+		return printTimeMilitary(startTime);
+	}
+	
+	public String printEndTimeMilitary() {
+		return printTimeMilitary(endTime);
+	}
+	
+	public String printTimeMilitary(LocalTime time) {
+		String endMin = "" + time.getMinute();
+		if (endMin.length() < 2) {
+			endMin = "0" + endMin;
+		}
+		
+		long endHr = time.getHour();
+				
+		return endHr + ":" + endMin; 
+	}
+	
+	public String printStartEnd() {
+		return printStartTime() + "-" + printEndTime();
 	}
 	
 }
