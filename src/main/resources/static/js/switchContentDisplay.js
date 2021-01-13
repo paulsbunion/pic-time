@@ -6,7 +6,22 @@ $(document).ready(function() {
 	for (var i = 0; i < allEventDivs.length; i++) {
 		allEventDivs[i].style.display='none';
 	}
-	toggleDivDisplay(allEventDivs, 0, $("#sel").val());
+//	get URL parameter
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	
+	var eventId =urlParams.get('eventId');
+	console.log("event id is :  " + eventId);
+	if (isNaN(eventId) || eventId < 0) {
+		console.log("bad data");
+//		if no URL parameter, set to selected event id
+		eventId = $("#sel").val();
+	}
+	else {
+		// select event from dropdown
+		document.getElementById("sel").value = eventId;
+	}
+	toggleDivDisplay(allEventDivs, 0, eventId);
 	
 	sel.change(function(data){
 		var jqThis = $(this);

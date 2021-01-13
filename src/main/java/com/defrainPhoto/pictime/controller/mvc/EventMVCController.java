@@ -7,14 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,6 +39,8 @@ public class EventMVCController {
 	
 	private static final String NEW_EVENT_URL = "event/new-event";
 
+	private static final String MVC_EVENT_URL_BASE = "/mvc/events/calendar/";
+
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
@@ -54,6 +60,18 @@ public class EventMVCController {
 		event.setDate(LocalDate.of(year, month, day));
 		model.addAttribute("event", event);
 		return NEW_EVENT_URL;
+	}
+	
+	@PostMapping("/save")
+	public String saveNewEvent(@Valid Event event, BindingResult result, Model model) {
+		log.info("MVC user saving new Event");
+		
+		if(result.hasErrors()) {
+			log.error("Error(s) saving new Event: " + result.getAllErrors());
+			return NEW_EVENT_URL;
+		}
+		EventDTO eventDTO = eventController.addEvent(event);
+		return "redirect:" + MVC_EVENT_URL_BASE + event.getDate().format(MonthDTO.dayformatter) + "?eventId=" +eventDTO.getId();
 	}
 	
 	@GetMapping("/calendar/{year}/{month}")

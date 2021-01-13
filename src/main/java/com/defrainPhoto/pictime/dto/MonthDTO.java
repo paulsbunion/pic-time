@@ -25,8 +25,8 @@ public class MonthDTO {
 	private LocalDate nextMonth;
 	private LocalDate nextYear;
 	
-	private DateTimeFormatter monthformatter = DateTimeFormatter.ofPattern("YYYY/M");
-	private DateTimeFormatter dayformatter = DateTimeFormatter.ofPattern("YYYY/M/d");
+	public static final DateTimeFormatter monthformatter = DateTimeFormatter.ofPattern("YYYY/M");
+	public static final DateTimeFormatter dayformatter = DateTimeFormatter.ofPattern("YYYY/M/d");
 	
 	
 	public MonthDTO() {
