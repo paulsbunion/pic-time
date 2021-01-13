@@ -18,8 +18,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -39,6 +42,7 @@ public class Event {
 
 	private String eventName;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
 	@ManyToOne

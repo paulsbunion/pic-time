@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +30,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-@RequestMapping("/mvc/events/calendar")
+@RequestMapping("/mvc/events")
 public class EventMVCController {
+	
+	private static final String NEW_EVENT_URL = "event/new-event";
+
+	Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	EventController eventController;
@@ -40,7 +47,16 @@ public class EventMVCController {
 //	private final String NEW_CLIENT_URL = "client/new-client";
 //	private final String SHOW_CLIENT_URL = "client/show-client";
 	
-	@GetMapping("/{year}/{month}")
+	@GetMapping("/new/{year}/{month}/{day}")
+	public String newEventForm(Model model, @PathVariable("year") Integer year, @PathVariable("month") Integer month, @PathVariable("day") Integer day) {
+		log.info("MVC user creating new Event");
+		Event event = new Event();
+		event.setDate(LocalDate.of(year, month, day));
+		model.addAttribute("event", event);
+		return NEW_EVENT_URL;
+	}
+	
+	@GetMapping("/calendar/{year}/{month}")
 	public ModelAndView showMonthCalendar(@PathVariable("year") Integer year, @PathVariable("month") Integer month) {
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -72,7 +88,7 @@ public class EventMVCController {
 		return new ModelAndView(LIST_EVENTS_URL, params) ;
 	}
 	
-	@GetMapping("/{year}/{month}/{day}")
+	@GetMapping("/calendar/{year}/{month}/{day}")
 	public ModelAndView showDayCalendar(@PathVariable("year") Integer year, @PathVariable("month") Integer month, @PathVariable("day") Integer day) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -84,19 +100,26 @@ public class EventMVCController {
 		timeslotGridSpans = mapTimeslots(eventTimeslots, timeslotGridSpans);
 		MonthDTO monthDTO = new MonthDTO(year, month, day);
 
-		ObjectMapper mapper = new ObjectMapper();
-		eventTimeslots.values().stream().filter(e -> !e.isEmpty()).forEach(e -> {
-			e.forEach(et -> {
-			try {
-				if (et.getId() == 7) {
-				System.out.println(mapper.writeValueAsString(et));
-				}
-			} catch (JsonProcessingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			return;
-			});});
+//		ObjectMapper mapper = new ObjectMapper();
+//		eventTimeslots.values().stream().filter(e -> !e.isEmpty()).forEach(e -> {
+//			e.forEach(et -> {
+//			try {
+//				if (et.getId() == 7) {
+//				System.out.println(mapper.writeValueAsString(et));
+//				}
+//			} catch (JsonProcessingException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			return;
+//			});});
+		
+		if (eventDTOs.isEmpty()) {
+			params.put("eventExists", "false");
+		}
+		else {
+			params.put("eventExists", "true");
+		}
 		
 		params.put("month", monthDTO);
 		params.put("events", eventDTOs);

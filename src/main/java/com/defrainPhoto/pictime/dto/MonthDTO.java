@@ -112,6 +112,10 @@ public class MonthDTO {
 	public void setDayName(String dayName) {
 		this.dayName = dayName;
 	}
+	
+	public String getTodayLink() {
+		return today.format(dayformatter);
+	}
 
 	public String getPreviousDayLink() {
 		return  previousDay.format(dayformatter);

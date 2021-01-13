@@ -39,8 +39,8 @@
 		<div class="day-calendar">
 			<div class="day-header">
 				<div class="newEvent">
-				<a th:href="@{/mvc/events/{date}(date=${month.today})}"
-											class="btn btn-primary gray"> <i class="fas fa-user-edit m1-2">New Event</i></a>
+				<a th:href="@{/mvc/events/new/{date}(date=${month.todayLink})}"
+											class="btn btn-primary gray" id="newEventAnchor"> <i class="fas fa-user-edit m1-2">New Event</i></a>
 				</div>
 				
 				<div class="eventDropdown">
@@ -50,10 +50,17 @@
 					</select>
 				</div>
 				
-				<div class="addTimeslot">
-					<a th:href="@{/mvc/events/{date}(date=${month.today})}" id="newTimeslotModal"
-											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a>
-				</div>
+<!-- 				<th:block th:if="${eventExists}"> -->
+					<div class="addTimeslot">
+						<a  id="newTimeslotModal"
+												class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a>
+					</div>
+<!-- 				</th:block> -->
+<!-- 				<th:block th:unless="${eventExists}"> -->
+<!-- 					<div class="addTimeslot"> -->
+<!-- 						<a class="btn btn-primary disabled gray" role="button" aria-disabled="true"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a> -->
+<!-- 					</div> -->
+<!-- 				</th:block> -->
 			</div>
 			<div class="day-calendar-content" id="cal">
 			
@@ -199,38 +206,46 @@
   </div>
 </div>
 
-
 <script type="text/javascript">
    $(document).on("click", "#newTimeslotModal", function (event) {
 	   event.preventDefault();
 	   
 	var _self = $(this);
 	console.log(_self);
-	var eventId = _self.data('event-id');
-// 	var timeslotId = _self.data('id');
-// 	var startTime = 0;
-// 	var endTime = 0;
-// 	var title = _self.data('timeslottitle');
-// 	var notes = _self.data('notes');
-
-$('#rsp_start_time_new').text("");
-console.log("value");
-console.log($("#sel").val());
-$("#eventIdNew").val($("#sel").val());
-
-// $("#timeslotTitle").val(title);
-// $("#startTime").val(startTime);
-// $("#endTime").val(endTime);
-// $("#notes").val(notes);
-// 	 var x = new Date(); 
-
-// update timepicker
-var myPicker2 = $('.timepicker2').wickedpicker();
-// myPicker2.wickedpicker('setTime', 2, startTime);
-// myPicker2.wickedpicker('setTime', 1, endTime);
-
-     $('#newModal').modal('show');
-    });
+// 	var eventId = _self.data('event-id');
+	
+	var eventId = $("#sel").val()
+	// if id null, call create event
+	if (eventId == '' || eventId == null) {
+		window.location.href = document.getElementById("newEventAnchor").href;
+	}
+	else {
+	
+		// 	var timeslotId = _self.data('id');
+		// 	var startTime = 0;
+		// 	var endTime = 0;
+		// 	var title = _self.data('timeslottitle');
+		// 	var notes = _self.data('notes');
+		
+		$('#rsp_start_time_new').text("");
+		console.log("value");
+		console.log($("#sel").val());
+		$("#eventIdNew").val($("#sel").val());
+		
+		// $("#timeslotTitle").val(title);
+		// $("#startTime").val(startTime);
+		// $("#endTime").val(endTime);
+		// $("#notes").val(notes);
+		// 	 var x = new Date(); 
+		
+		// update timepicker
+		var myPicker2 = $('.timepicker2').wickedpicker();
+		// myPicker2.wickedpicker('setTime', 2, startTime);
+		// myPicker2.wickedpicker('setTime', 1, endTime);
+	
+	     $('#newModal').modal('show');
+  	}
+	});
 
    
    

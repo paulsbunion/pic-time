@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="#" th:action="@{/mvc/clients/save}" th:object="${event}" method="post">
+
+		<div class="form-group col-md-6">
+			<label for="firstName" class="col-form-label">First Name</label> 
+			<input type="date" th:field="*{date}" class="form-control" id="date" placeholder="First Name"> 
+			<p th:text="${event.date}"></p>
+<!-- 			<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span> -->
+		</div> 
+	</form>
+</body>
+</html>
