@@ -15,6 +15,13 @@
 <title>Create New Event</title>
 </head>
 <body>
+
+<div class="container my-5">
+		<div class="row">
+
+			<h1>New Event</h1>
+
+			<div class="col-md-10">
 	<form action="#" th:action="@{/mvc/events/save}" th:object="${event}" method="post">
 
 		<div class="form-group col-md-6">
@@ -58,11 +65,14 @@
 
 		<td><input type="submit" class="btn btn-primary" value="Save"></td>
 				
-		<td><a th:href="@{/mvc/clients/list}"
+		<td><a th:href="@{/mvc/events/list}"
 			class="btn btn-primary delete"> 
 			<i class="fas fa-user-times m1-2">Cancel</i>
 		</a></td>
 		
 	</form>
+	</div>
+	</div>
+	</div>
 </body>
 </html>

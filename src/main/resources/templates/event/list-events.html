@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{../../css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{../../css/main.css}" />
+
+<title>All Events</title>
+</head>
+<body>
+
+	<div class="container my-5">
+		<div class="row">
+
+			<h1>All Events</h1>
+			<div th:switch="${events}" class="container">
+				<p class="my-5">
+					<a th:href="@{/mvc/events/new/{date}(date=${month.TodayLink})}" class="btn btn-primary"> <i
+						class="fas fa-user-plus m1-2">Add Event</i></a>
+				</p>
+				<div class="col-md-10">
+					<div th:if="${events != ''}">
+						<h2 th:case="null">No Event Records Found!</h2>
+						<h2 th:case="NoData">No Event Records Found!</h2>
+
+						<div th:case="*" class="event-table">
+							<table class="table-striped">
+								<thead>
+									<tr>
+										<th class="row-1 row-name">Name</th>
+<!-- 										<th>Address</th> -->
+										<th class="row-2 row-email">Date</th>
+										<th class="row-3 row-button-edit">Edit</th>
+										<th class="row-4 row-button-delete">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="event: ${events}">
+											<td>
+												<a th:href="@{/mvc/events/show/{id}(id=${event.id})}" th:text="${event.eventName}"></a>
+											</td>
+										<td th:text="${#temporals.format(event.date,'E, MMMM d, yyyy')}"></td>
+										<td class="td-btn"><a th:href="@{/mvc/events/edit/{id}(id=${event.id})}"
+											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
+										</a></td>
+										<td class="td-btn"><a th:href="@{/mvc/events/delete/{id}(id=${event.id})}"
+											class="btn btn-primary delete" 
+											th:data-confirm-delete="|Are you sure you want to delete event ${event.eventName}?|"
+											onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"> <i
+												class="fas fa-user-times m1-2">Delete</i>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

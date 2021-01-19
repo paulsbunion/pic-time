@@ -1,6 +1,7 @@
 package com.defrainPhoto.pictime.controller.mvc;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import com.defrainPhoto.pictime.controller.EventController;
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.dto.MonthDTO;
+import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.EventTime;
 import com.defrainPhoto.pictime.model.EventType;
@@ -39,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class EventMVCController {
 	
 	private static final String NEW_EVENT_URL = "event/new-event";
+	private static final String MVC_ALL_EVENT_URL_BASE = "/mvc/events/";
 
 	private static final String MVC_EVENT_URL_BASE = "/mvc/events/calendar/";
 
@@ -48,11 +51,70 @@ public class EventMVCController {
 	EventController eventController;
 
 //	private final String MVC_CLIENT_URL_BASE = "/mvc/clients/";
+	private final String LIST_ALL_EVENTS_URL = "event/list-events";
+	
 	private final String LIST_EVENTS_URL = "event/calendar-thymeleaf";
 	private final String LIST_EVENTS_FOR_DAY_URL = "event/day-calendar-thymeleaf";
-//	private final String EDIT_CLIENT_URL = "client/edit-client";
+	private final String EDIT_EVENT_URL = "event/edit-event";
 //	private final String NEW_CLIENT_URL = "client/new-client";
-//	private final String SHOW_CLIENT_URL = "client/show-client";
+	private final String SHOW_EVENT_URL = "event/show-event";
+	
+	@GetMapping("list")
+	public String listAllEvents(Model model) {
+		log.info("MVC user calling get all Events");
+		List<EventDTO> allEvents = eventController.getAllEvents();
+//		while (allEvents == null || allEvents.isEmpty()) {
+//			log.info("Addind Dummy Client Data for testing");
+//			addClients();
+//			allClients = clientController.getAllClients();
+//		}
+		model.addAttribute("events", allEvents);
+		LocalDate now = LocalDate.now();
+		MonthDTO month = new MonthDTO(now);
+		model.addAttribute("month", month);
+		return LIST_ALL_EVENTS_URL;
+	}
+	
+	@GetMapping("show/{id}")
+	public String showEventDetails(@PathVariable("id") long id, Model model) {
+		log.info("MVC user calling show event details for ID: " + id);
+		model.addAttribute("event", eventController.getEvent(id));
+		return SHOW_EVENT_URL;
+	}
+	
+	@GetMapping("edit/{id}")
+	public String showEditEventForm(@PathVariable("id") long id, Model model) {
+		log.info("MVC user editing existing event with ID: " + id);
+		Event event = eventController.getEvent(id);
+		model.addAttribute("event", event);
+		return EDIT_EVENT_URL;
+	}
+	
+	@PostMapping("update/{id}")
+	public String updateEditedEvent(@Valid Event event, BindingResult result, @PathVariable("id") Long id, Model model) {
+		log.info("MVC user saving edits to existing event with ID: " + id);
+		if (result.hasErrors()) {
+			log.error("Error saving event changes: " + result.getAllErrors());
+			event.setId(id);
+			return EDIT_EVENT_URL;
+		}
+		Event oldEvent = eventController.getEvent(id);
+		event.setTimeslots(oldEvent.getTimeslots());
+		eventController.updateEvent(event, id);
+		return "redirect:" + MVC_ALL_EVENT_URL_BASE + "list";
+	}
+	
+	@GetMapping("delete/{id}")
+	public String deleteEvent(@PathVariable("id") long id) {
+		log.info("entering delete Event controller from event MVC");
+		try {
+			eventController.deleteEvent(id);
+		}
+		catch (EmptyResultDataAccessException e) {
+			log.error("Error occured in calling delete event by ID, Empty Result for ID: " + id, e);
+		}
+		return "redirect:" + MVC_ALL_EVENT_URL_BASE + "list";
+	}
 	
 	@GetMapping("/new/{year}/{month}/{day}")
 	public String newEventForm(Model model, @PathVariable("year") Integer year, @PathVariable("month") Integer month, @PathVariable("day") Integer day) {

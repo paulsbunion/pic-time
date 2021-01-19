@@ -57,6 +57,10 @@ public class MonthDTO {
 		this.dayName = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
 	}
 
+	public MonthDTO(LocalDate now) {
+		this(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+	}
+
 	public int getDaysInMonth() {
 		return daysInMonth;
 	}

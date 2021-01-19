@@ -1,6 +1,12 @@
 $(document).ready(function() {
 	var sel = $("#sel");
 	sel.data("prev", sel.val());
+	
+	// if empty selector, hide dropdown
+	if ($('#sel option').length == 0) {
+		$('#sel').hide();
+	}
+	
 	var allEventDivs = document.querySelectorAll('div[id^="eventId"]');
 	
 	for (var i = 0; i < allEventDivs.length; i++) {

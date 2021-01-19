@@ -58,7 +58,7 @@
 							<a th:each="event : ${events}"
 							th:object="${event}"
 							th:if="${#temporals.day(event.date)} == ${i}"
-							th:href="@{/mvc/clients/edit/{id}(id=${event.id})}"
+							th:href="@{/mvc/events/calendar/{year}/{month}/{day}?eventId={eventId}(year=${month.year}, month=${month.month}, day=${i}, eventId=${event.id})}"
 											class="btn btn-primary calendar-event"> <i class="fas fa-user-edit m1-2" th:title="${event.eventName}" th:text="${event.eventName}">Edit</i></a>
 					</div>
 				</div>
