@@ -156,6 +156,25 @@
       </form>
       </div>
       <div class="modal-footer">
+      
+      <button
+		class="btn btn-primary btn_danger" 
+		th:data-confirm-delete="|Are you sure you want to delete the Timeslot?|"
+		onclick="if (!confirm(this.getAttribute('data-confirm-delete'))){return false}
+		else {
+			var _self = $('#myForm');
+			var eventId = $('#eventId').val();
+			var timeslotId = $('#timeslotId').val();
+			console.log(_self);
+			console.log(eventId);
+			console.log(timeslotId);
+			console.log(_self.href);
+			window.location.href='/mvc/events/' + eventId + '/timeslots/' + timeslotId + '/delete';
+		}
+			"> <i
+			class="fas fa-user-times m1-2">Delete</i>
+	  </button>
+      
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary" id="edit-modal-submit">Save changes</button>
       </div>
@@ -205,6 +224,37 @@
     </div>
   </div>
 </div>
+
+
+<script type="text/javascript">
+// https://stackoverflow.com/questions/5997450/append-to-url-and-refresh-page
+	function URL_add_parameter(url, param, value){
+	    var hash       = {};
+	    var parser     = document.createElement('a');
+	
+	    parser.href    = url;
+	
+	    var parameters = parser.search.split(/\?|&/);
+	
+	    for(var i=0; i < parameters.length; i++) {
+	        if(!parameters[i])
+	            continue;
+	
+	        var ary      = parameters[i].split('=');
+	        hash[ary[0]] = ary[1];
+	    }
+	
+	    hash[param] = value;
+	
+	    var list = [];  
+	    Object.keys(hash).forEach(function (key) {
+	        list.push(key + '=' + hash[key]);
+	    });
+	
+	    parser.search = '?' + list.join('&');
+	    return parser.href;
+	}
+</script>
 
 <script type="text/javascript">
    $(document).on("click", "#newTimeslotModal", function (event) {
@@ -360,7 +410,7 @@ myPicker.wickedpicker('setTime', 1, endTime);
 		
 // 		format data
 		
-		const RELOAD_TIMER = 50000;
+		const RELOAD_TIMER = 10;
 		
 		$.ajaxSetup({
             headers: {
@@ -394,6 +444,8 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 				alert(response['response']);
 				console.log("ajax1");
 				console.log(response);
+				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+				alert(location.href);
 				if (response.redirect) {
 					window.location.href = response.redirect;
 				}
@@ -435,7 +487,9 @@ myPicker.wickedpicker('setTime', 1, endTime);
 	});
 	
 	
-	
+	$(document).on("click", "#deleteTimeslot", function (event) {
+		alert("really?");
+	});
 	
 	
    	$(document).on("click", "#new-modal-submit", function (event) {
@@ -483,6 +537,7 @@ console.log("parsing start TIme")
 		console.log(JSON.stringify(formData));
 
 		var startTime = $('#editStartTimeNew').val();
+		const RELOAD_TIMER = 10;
 		
 		$.ajaxSetup({
             headers: {
@@ -509,6 +564,7 @@ console.log("parsing start TIme")
 				$('#rsp_start_time_new').text("");
 				console.log("ajax1New");
 				console.log(response);
+				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
 				if (response.redirect) {
 					window.location.href = response.redirect;
 				}

@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -145,6 +146,19 @@ public class EventMVCController {
 		params.put("timeslotGridSpans", timeslotGridSpans);
 		
 		return new ModelAndView(LIST_EVENTS_FOR_DAY_URL, params) ;
+	}
+	
+	@GetMapping("/{eventId}/timeslots/{timeslotId}/delete")
+	public String deleteTimeslot(@PathVariable("eventId") long eventId, @PathVariable("timeslotId") long timeslotId) {
+		log.info("entering delete Timeslot controller from event MVC");
+		try {
+			eventController.deleteTimeslot(eventId, timeslotId);
+		}
+		catch (EmptyResultDataAccessException e) {
+			log.error("Error occured in calling delete Timeslot by ID, Empty Result for ID: " + timeslotId, e);
+		}
+		String eventDate = eventController.getEvent(eventId).getDate().format(MonthDTO.dayformatter);
+		return "redirect:" + MVC_EVENT_URL_BASE + eventDate + "?eventId=" + eventId;
 	}
 
 	private HashMap<String, TimeslotTimeSpan> mapTimeslots(HashMap<Long, List<Timeslot>> eventTimeslots, HashMap<String, TimeslotTimeSpan> timeslotGridSpans) {

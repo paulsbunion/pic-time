@@ -11,15 +11,27 @@ $(document).ready(function() {
 	const urlParams = new URLSearchParams(queryString);
 	
 	var eventId =urlParams.get('eventId');
-	console.log("event id is :  " + eventId);
-	if (isNaN(eventId) || eventId < 0) {
-		console.log("bad data");
+	console.log(eventId);
+	if (eventId == null ||isNaN(eventId) || eventId < 0) {
 //		if no URL parameter, set to selected event id
 		eventId = $("#sel").val();
 	}
 	else {
-		// select event from dropdown
-		document.getElementById("sel").value = eventId;
+		// check if exists in dropdown
+		var exists = false;
+		$('#sel option').each(function() {
+			if (this.value == eventId) {
+				exists = true;
+				return false;
+			}
+		})
+		if (!exists) {
+			eventId = $("#sel").val();
+		}
+		else {
+			// select event from dropdown
+			document.getElementById("sel").value = eventId;
+		}
 	}
 	toggleDivDisplay(allEventDivs, 0, eventId);
 	

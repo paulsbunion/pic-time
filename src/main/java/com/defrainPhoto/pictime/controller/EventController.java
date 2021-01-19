@@ -141,7 +141,7 @@ public class EventController {
 	}
 
 	@DeleteMapping("/{eventId}/timeslots/{timeslotId}")
-	public void DeleteTimeslot(@PathVariable(name = "eventId") Long eventId,
+	public void deleteTimeslot(@PathVariable(name = "eventId") Long eventId,
 			@PathVariable(name = "eventId") Long timeslotId) {
 		eventService.deleteTimeslot(timeslotId);
 	}
