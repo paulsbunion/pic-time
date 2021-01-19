@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigInteger;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -100,6 +101,7 @@ public class TimeslotServiceSpringIntegrationTest {
 
 		Event event = new Event();
 		event.setId(1l);
+		event.setDate(LocalDate.now());
 
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
@@ -113,7 +115,7 @@ public class TimeslotServiceSpringIntegrationTest {
 		entityManager.getTransaction().commit();
 
 		entityManager.getTransaction().begin();
-		entityManager.createNativeQuery("INSERT into event (id) VALUES (1)").executeUpdate();
+		entityManager.createNativeQuery("INSERT into event (id, date) VALUES (1, '2015-12-17')").executeUpdate();
 		entityManager.getTransaction().commit();
 
 		Set<User> photographers = Collections.singleton(user);
