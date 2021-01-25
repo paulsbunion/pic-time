@@ -116,6 +116,13 @@ public class EventMVCController {
 		return "redirect:" + MVC_ALL_EVENT_URL_BASE + "list";
 	}
 	
+	@GetMapping("/new")
+	public String newEventFormToday(Model model) {
+		log.info("MVC user creating new Event for Today");
+		LocalDate today = LocalDate.now();
+		return "redirect:" + "/mvc/events/new/"  + today.format(MonthDTO.dayformatter);
+	}
+	
 	@GetMapping("/new/{year}/{month}/{day}")
 	public String newEventForm(Model model, @PathVariable("year") Integer year, @PathVariable("month") Integer month, @PathVariable("day") Integer day) {
 		log.info("MVC user creating new Event");
@@ -167,6 +174,12 @@ public class EventMVCController {
 		params.put("events", eventDTOs);
 		
 		return new ModelAndView(LIST_EVENTS_URL, params) ;
+	}
+	
+	@GetMapping("/calendar")
+	public String showTodayCalendar() {
+		LocalDate today = LocalDate.now();
+		return "redirect:" + "/mvc/events/calendar/" + today.format(MonthDTO.monthformatter);
 	}
 	
 	@GetMapping("/calendar/{year}/{month}/{day}")

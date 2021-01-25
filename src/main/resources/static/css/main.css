@@ -1,3 +1,23 @@
+/* dark theme dropdown */
+.dropdown-menu {
+	background-color: #111111;
+	color: #ffffff;
+/* 	border-color: maroon; */
+/* 	border: 3px solid maroon; */
+}
+
+.dropdown-menu .dropdown-item {
+	color: #eeeeee;
+}
+
+.dropdown-menu .dropdown-item:hover{
+	background-color: #555555;
+}
+
+.dropdown-divider {
+/* 	border-color: red; */
+}
+
 h1 {
 	/*     color: #78ab46; */
 	color: #007bff;
@@ -67,9 +87,19 @@ table {
 	white-space: nowrap;
 }
 
+.row-email-header {
+	width: 35%;
+	overflow: hidden;
+}
+
 .row-email {
 	width: 35%;
 	overflow: scroll;
+}
+
+.row-date {
+	width: 35%;
+	overflow: hidden;
 }
 
 .row-cost {
