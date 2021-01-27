@@ -3,9 +3,12 @@
 <head>
 <meta charset="ISO-8859-1">
 
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/no-scroll.css}" />
 
 <script type="text/javascript" th:src="@{/js/mouseScroll.js}" > </script>
 
@@ -13,24 +16,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
-	<a class="navbar-brand" href="#">Brand</a>
-	
-	<ul class="navbar-nav">
-    	<li class="nav-item">
-      		<a class="nav-item nav-link active" href="#">Link 1</a>
-    	</li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="#">Link 2</a>
-	    </li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="#">Link 3</a>
-	    </li>
-	    <li class="nav-item" style="display: flex; align-items: center;">
-	    	<button onclick="location.href='/mvc/events/list'" style="background-color: transparent; background-repeat: no-repeat; border: none; overflow: hidden; outline: none;"><svg width="30" height="30" style="color: red;" ><use xlink:href="/img/calendar.svg#calendar"></use></svg></button>
-	    </li>
-  	</ul>
-</nav>
+<th:block th:insert="fragments/nav :: nav"></th:block>
 
 <div class="container">
 		<div class="navigation">
