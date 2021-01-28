@@ -150,20 +150,39 @@
 	      
 	      	<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
 	<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
-	        
-	       	<input id="editStartTime" name="startTime" type="text" class="form-control timepicker">
+	        <br>
+<!-- 	       	<input type="number" id="editStartTime" name="startTimeHr" class="" style="width: 20%; margin-top: 5px; "> -->
+	       	<select id="editStartTimeHr" name="startTimeHr" class="" style="width: 20%; margin-top: 5px; ">
+	       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       	</select>
+	       	:
+<!-- 	       	<input id="editStartTime" name="startTimeMin" type="text" class="" style="width: 20%"> -->
+	       	<select id="editStartTimeMin" name="startTimeMin" class="" style="width: 20%">
+	       		<option th:each="i : ${#numbers.sequence(0, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+	       	</select>
+	       	
+	       	<select id="editStartTimeMeridian">
+	       		<option value="AM">AM</option>
+	       		<option value="PM">PM</option>
+	       	</select>
+	       	<br>
 <!-- 	       	<div id="rsp_start_time"></div> -->
 	 
-	        <script type="text/javascript">
-	        var options = {
-	        		now: "12:35"
-	        };
-	            $('.timepicker').wickedpicker(options);
-	        </script>
-	        
 	        <span>End Time</span>
-	<!--         <input type="text" name="endTime" id="endTime" value="" class="form-control" > -->
-	        <input id="editEndTime" name="endTime" type="text" class="form-control timepicker">
+	        <br>
+	       	<select id="editEndTimeHr" name="endTimeHr" class="" style="width: 20%; margin-top: 5px; ">
+	       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       	</select>
+	       	:
+	       	<select id="editEndTimeMin" name="endTimeMin" class="" style="width: 20%">
+	       		<option th:each="i : ${#numbers.sequence(0, 55,5)}" th:value="${i}" th:text="${i}"></option>
+	       	</select>
+	       	
+	       	<select id="editEndTimeMeridian">
+	       		<option value="AM">AM</option>
+	       		<option value="PM">PM</option>
+	       	</select>
+	       	<br>
 	        
 	        <span>Notes</span>
 	        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
@@ -337,21 +356,40 @@ $("#eventId").val(eventId);
 $("#timeslotId").val(timeslotId);
 
 $("#timeslotTitle").val(title);
-$("#startTime").val(startTime);
+// $("#startTime").val(startTime);
+var startTimeSplit = startTime.split(":");
+var endTimeSplit = endTime.split(":");
+console.log($("#editStartTimeMeridian"));
+if (startTimeSplit[0] > 11) {
+	$("#editStartTimeMeridian").val("PM");
+	startTimeSplit[0]-= 12;
+}
+else {
+	$("#editStartTimeMeridian").val("AM");
+}
+if (endTimeSplit[0] > 11) {
+	$("#editEndTimeMeridian").val("PM");
+	endTimeSplit[0]-= 12;
+}
+else {
+	$("#editEndTimeMeridian").val("AM");
+}
+
+$("#editStartTimeHr").val(startTimeSplit[0]);
+$("#editStartTimeMin").val(startTimeSplit[1]);
+// $("#editStartTimeMeridian").val(startTimeSplit[2]);
+
+$("#editEndTimeHr").val(endTimeSplit[0]);
+$("#editEndTimeMin").val(endTimeSplit[1]);
+// $("#editEndTimeMeridian").val(endTimeSplit[2]);
+
 $("#endTime").val(endTime);
 $("#notes").val(notes);
 	 var x = new Date(); 
-     var myHeading = "<p>I Am Added Dynamically </p>";
 //      $("#modal-body").html(myHeading + x);   
 
 
 // update timepicker
-var myPicker = $('.timepicker').wickedpicker();
-var str = "hi";
-// console.log(myPicker);
-// console.log(myPicker.wickedpicker('time', 0));
-myPicker.wickedpicker('setTime', 0, startTime);
-myPicker.wickedpicker('setTime', 1, endTime);
 
      $('#editModal').modal('show');
     });
@@ -397,8 +435,10 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 		formData.duration = $('#editEndTime').val();
 
 		formData.id = $('#timeslotId').val();
-		formData.time.startTime = parseTime($('#editStartTime').val());
-		formData.time.endTime =  parseTime($('#editEndTime').val());
+		var startTime = [$('#editStartTimeHr').val(), $('#editStartTimeMin').val(), $('#editStartTimeMeridian').val()];
+		var endTime = [$('#editEndTimeHr').val(), $('#editEndTimeMin').val(), $('#editEndTimeMeridian').val()];
+		formData.time.startTime = parseTime(startTime);
+		formData.time.endTime =  parseTime(endTime);
 // 		formData.time.totalMinutes = getDuration($('#editStartTime').val(), $('#editEndTime').val());
 		formData.title=$('#timeslotTitle').val();
 		formData.notes=$('#notes').val();
@@ -419,7 +459,7 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 		console.log(startTime);
 		
 // 		parseData(_self);
-		var startTime = $('#editStartTime').val();
+// 		var startTime = $('#editStartTime').val();
 // 		console.log(startTime);
 		
 // 		format data
@@ -649,11 +689,15 @@ console.log("parsing start TIme")
 	
 	function parseTime(timeString) {
 		console.log(timeString);
-		var timeData = timeString.split(" ");
+// 		var timeData = timeString.split(" ");
 		
-		var hr = parseInt(timeData[0]);
-		var mn = timeData[2];
-		var merid = timeData[3];
+// 		var hr = parseInt(timeData[0]);
+// 		var mn = timeData[2];
+// 		var merid = timeData[3];
+
+		var hr = parseInt(timeString[0]);
+		var mn = parseInt(timeString[1]);
+		var merid = timeString[2];
 		
 		if (merid.toUpperCase().normalize() === "PM" && hr != 12) {
 			hr += 12;
