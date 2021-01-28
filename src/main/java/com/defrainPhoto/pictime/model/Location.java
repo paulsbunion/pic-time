@@ -39,6 +39,8 @@ public class Location {
 	@NotEmpty
 	@NotNull(message = "")
 	private String street;
+	@NotEmpty
+	@NotNull
 	private String description;
 	
 	public Location() {

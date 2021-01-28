@@ -38,6 +38,10 @@
 /* 	border-color: red; */
 }
 
+.time-selector {
+	display: flex;
+}
+
 h1 {
 	/*     color: #78ab46; */
 	color: #007bff;

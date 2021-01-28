@@ -26,7 +26,7 @@
 
 
 					<div class="form-group col-md-6">
-						<label for="description" class="col-form-label">Description (Optional)</label> 
+						<label for="description" class="col-form-label">Description</label> 
 						<input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Description"> 
 						<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
 					</div>

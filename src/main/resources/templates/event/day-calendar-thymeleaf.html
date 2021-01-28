@@ -148,41 +148,42 @@
 	      <span>timeslot id</span>
 	      <input id="timeslotId" name="timeslotId" type="text" class="form-control" disabled="true">
 	      
-	      	<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
-	<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
-	        <br>
-<!-- 	       	<input type="number" id="editStartTime" name="startTimeHr" class="" style="width: 20%; margin-top: 5px; "> -->
-	       	<select id="editStartTimeHr" name="startTimeHr" class="" style="width: 20%; margin-top: 5px; ">
-	       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
-	       	</select>
-	       	:
-<!-- 	       	<input id="editStartTime" name="startTimeMin" type="text" class="" style="width: 20%"> -->
-	       	<select id="editStartTimeMin" name="startTimeMin" class="" style="width: 20%">
-	       		<option th:each="i : ${#numbers.sequence(0, 55, 5)}" th:value="${i}" th:text="${i}"></option>
-	       	</select>
-	       	
-	       	<select id="editStartTimeMeridian">
-	       		<option value="AM">AM</option>
-	       		<option value="PM">PM</option>
-	       	</select>
-	       	<br>
-<!-- 	       	<div id="rsp_start_time"></div> -->
-	 
+			<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
+        	<div class="time-selector">
+	       		<select id="editStartTimeHr" name="startTimeHr">
+	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       		</select>
+		       	:
+		       	<select id="editStartTimeMin" name="startTimeMin" >
+			       	<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="editStartTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+	 		</div>
+	 		
 	        <span>End Time</span>
-	        <br>
-	       	<select id="editEndTimeHr" name="endTimeHr" class="" style="width: 20%; margin-top: 5px; ">
-	       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
-	       	</select>
-	       	:
-	       	<select id="editEndTimeMin" name="endTimeMin" class="" style="width: 20%">
-	       		<option th:each="i : ${#numbers.sequence(0, 55,5)}" th:value="${i}" th:text="${i}"></option>
-	       	</select>
-	       	
-	       	<select id="editEndTimeMeridian">
-	       		<option value="AM">AM</option>
-	       		<option value="PM">PM</option>
-	       	</select>
-	       	<br>
+	        <div class="time-selector">
+		       	<select id="editEndTimeHr" name="endTimeHr">
+		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	:
+		       	<select id="editEndTimeMin" name="endTimeMin" style="width: 10%">
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="editEndTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+		       	<br>
+	       	</div>
 	        
 	        <span>Notes</span>
 	        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
@@ -231,7 +232,46 @@
 	      <span>event id</span>
 	      <input id="eventIdNew" name="eventId" type="text" class="form-control" disabled="true">
 	      
-	      	<span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+	      
+	      <span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+        	<div class="time-selector">
+	       		<select id="newStartTimeHr" name="newstartTimeHr">
+	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       		</select>
+		       	:
+		       	<select id="newStartTimeMin" name="newstartTimeMin" >
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="newStartTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+	 		</div>
+	 		
+	        <span>End Time</span>
+	        <div class="time-selector">
+		       	<select id="newEndTimeHr" name="newTimeHr" >
+		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	:
+		       	<select id="newEndTimeMin" name="newendTimeMin">
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="newEndTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+		       	<br>
+	       	</div>
+	      
+	      
+	      
 	        
 	       	<input id="editStartTimeNew" name="startTime2" type="text" class="form-control timepicker2">
 <!-- 	       	<div id="rsp_start_time_new"></div> -->
@@ -322,9 +362,6 @@
 		// 	 var x = new Date(); 
 		
 		// update timepicker
-		var myPicker2 = $('.timepicker2').wickedpicker();
-		// myPicker2.wickedpicker('setTime', 2, startTime);
-		// myPicker2.wickedpicker('setTime', 1, endTime);
 	
 	     $('#newModal').modal('show');
   	}
@@ -348,6 +385,9 @@
 	var title = _self.data('timeslottitle');
 	var notes = _self.data('notes');
 
+	console.log("zero error");
+	console.log(startTime);
+	
 // 	var startTime = $(event.relatedTarget).data('val');
 // 	window.alert(st);
 // 	$(this).find(".modal-body").text(st);
@@ -359,7 +399,6 @@ $("#timeslotTitle").val(title);
 // $("#startTime").val(startTime);
 var startTimeSplit = startTime.split(":");
 var endTimeSplit = endTime.split(":");
-console.log($("#editStartTimeMeridian"));
 if (startTimeSplit[0] > 11) {
 	$("#editStartTimeMeridian").val("PM");
 	startTimeSplit[0]-= 12;
@@ -415,7 +454,6 @@ $("#notes").val(notes);
 		formData.id = 0;
 		formData.time={};
 		formData.time.startTime=0;
-		formData.time.totalMinutes=0;
 		formData.time.endTime=0;
 		formData.title="";
 		formData.notes=null;
@@ -557,9 +595,16 @@ $("#notes").val(notes);
 		var formData = {};
 		formData.id = null;
 		formData.time={};
-		formData.time.startTime=0;
-		formData.time.totalMinutes=0;
-		formData.time.endTime=0;
+		
+		var startTime = [$('#newStartTimeHr').val(), $('#newStartTimeMin').val(), $('#newStartTimeMeridian').val()];
+		var endTime = [$('#newEndTimeHr').val(), $('#newEndTimeMin').val(), $('#newEndTimeMeridian').val()];
+		console.log("here");
+		console.log(startTime);
+		console.log(endTime);
+		formData.time.startTime = parseTime(startTime);
+		formData.time.endTime =  parseTime(endTime);
+		
+		
 		formData.title="";
 		formData.notes=null;
 		formData.client=null;
@@ -570,8 +615,6 @@ $("#notes").val(notes);
 		
 // 		formData.id = $('#timeslotIdNew').val();
 console.log("parsing start TIme")
-		formData.time.startTime = parseTime($('#editStartTimeNew').val());
-		formData.time.endTime =  parseTime($('#editEndTimeNew').val());
 		formData.title=$('#timeslotTitleNew').val();
 		formData.notes=$('#notesNew').val();
 		formData.client=null;
@@ -716,6 +759,10 @@ console.log("parsing start TIme")
 		if(hr.toString().length == 1) {
 			console.log("length < 2");
 			hr = "0" + hr;
+		}
+		if(mn.toString().length == 1) {
+			console.log("length < 2");
+			mn = "0" + mn;
 		}
 		var intTime = "" + hr + ":" + mn;
 		console.log(intTime);
