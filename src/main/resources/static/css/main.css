@@ -1,3 +1,43 @@
+:root {
+	--dropdown-highlight-color: #BA55D3;
+	--menu-item-text-color: #dddddd;
+}
+
+/* dark theme dropdown */
+.dropdown-menu {
+	background-color: #111111;
+	color: #ffffff;
+/* 	border-color: maroon; */
+/* 	border: 3px solid maroon; */
+}
+
+.dropdown-menu .dropdown-item, .navbar-dark .navbar-nav .nav-link {
+	color: var(--menu-item-text-color);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+	color: var(--dropdown-highlight-color);
+}
+
+.navbar-dark .navbar-brand:hover {
+	color: var(--dropdown-highlight-color);
+}
+
+.navbar-dark .navbar-nav .show > .nav-link, .navbar-dark .navbar-nav .active > .nav-link, 
+.navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .nav-link.active {
+	color: var(--dropdown-highlight-color);
+}
+
+.dropdown-menu .dropdown-item:hover, .dropdown-item:focus {
+/* 	background-color: #555555; */
+	background-color: transparent;
+	color: var(--dropdown-highlight-color);
+}
+
+.dropdown-divider {
+/* 	border-color: red; */
+}
+
 h1 {
 	/*     color: #78ab46; */
 	color: #007bff;
@@ -67,15 +107,31 @@ table {
 	white-space: nowrap;
 }
 
+.row-email-header {
+	width: 35%;
+	overflow: hidden;
+}
+
 .row-email {
 	width: 35%;
 	overflow: scroll;
+}
+
+.row-date {
+	width: 35%;
+	overflow: hidden;
 }
 
 .row-cost {
 	width: 35%;
 	overflow: scroll;
 }
+
+.row-cost-header {
+	width: 35%;
+	overflow: hidden;
+}
+
 
 .row-button-edit {
 	width: 15%;

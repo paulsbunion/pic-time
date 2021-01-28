@@ -6,20 +6,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<link rel="stylesheet" type="text/css" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-<!-- 	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/> -->
-<!--     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/> -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/no-scroll.css}" />
 
     <title>Registration</title>
 </head>
 <body>
-<div class="container">
-    <h1>Spring Security User Registration with Hibernate and Thymeleaf</h1>
-</div>
+<th:block th:insert="fragments/nav :: nav"></th:block>
 
-<script type="text/javascript" th:src=@{https://code.jquery.com/jquery-3.2.1.min.js}></script>
-<script type="text/javascript" th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+<div class="container my-5">
+		<div class="grid-container">
+			<a href="/mvc/events/list">
+			<div class="grid-item">
+				<img alt="Events" src="/img/event-icon.png">
+				Events
+			</div>
+			</a>
+			
+			<a href="/mvc/clients/list">
+			<div class="grid-item">
+				<img alt="" src="/img/clients.jpg">
+				Clients
+			</div>
+			</a>
+			
+			<a href="/mvc/locations/list">
+			<div class="grid-item">
+			<img alt="" src="/img/locations.png">
+				Locations
+			</div>
+			</a>
+			
+			<a href="/mvc/photographers/list">
+			<div class="grid-item">
+				<img alt="" src="/img/photographer.png">
+				Photographers
+			</div>
+			</a>
+			
+			<a href="/mvc/reports/list">
+			<div class="grid-item">
+				<img alt="" src="/img/report.png">
+				Reports
+			</div>
+			</a>
+			
+		</div>
+	</div>
+
 
 </body>
 </html>

@@ -80,7 +80,7 @@ public class EventServiceMockUnitTest {
 		
 		List<Event> allEvents = Arrays.asList(eventOne, eventTwo, eventThree);
 		
-		when(eventRepository.findAll()).thenReturn(allEvents);
+		when(eventRepository.findAllByOrderByDateDesc()).thenReturn(allEvents);
 		
 		List<Event> events = eventService.findAll();
 		

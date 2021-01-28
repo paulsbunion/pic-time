@@ -25,8 +25,8 @@ public class MonthDTO {
 	private LocalDate nextMonth;
 	private LocalDate nextYear;
 	
-	private DateTimeFormatter monthformatter = DateTimeFormatter.ofPattern("YYYY/M");
-	private DateTimeFormatter dayformatter = DateTimeFormatter.ofPattern("YYYY/M/d");
+	public static final DateTimeFormatter monthformatter = DateTimeFormatter.ofPattern("YYYY/M");
+	public static final DateTimeFormatter dayformatter = DateTimeFormatter.ofPattern("YYYY/M/d");
 	
 	
 	public MonthDTO() {
@@ -55,6 +55,10 @@ public class MonthDTO {
 		this.month = date.getMonth().getValue();
 		this.day = date.getDayOfMonth();
 		this.dayName = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+	}
+
+	public MonthDTO(LocalDate now) {
+		this(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 	}
 
 	public int getDaysInMonth() {
@@ -111,6 +115,10 @@ public class MonthDTO {
 
 	public void setDayName(String dayName) {
 		this.dayName = dayName;
+	}
+	
+	public String getTodayLink() {
+		return today.format(dayformatter);
 	}
 
 	public String getPreviousDayLink() {

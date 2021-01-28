@@ -54,7 +54,7 @@
 
 .calendar-content {
 	display: grid;
-	grid-template-rows: repeat(5, 15vh);
+	grid-template-rows: repeat(5, 18vh);
 }
 
 .week-row {

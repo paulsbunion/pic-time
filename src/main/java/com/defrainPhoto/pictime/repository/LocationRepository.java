@@ -11,5 +11,5 @@ import com.defrainPhoto.pictime.model.Location;
 public interface LocationRepository extends JpaRepository<Location, Long> {
 	
 	@Query(name = "location.getLocation", nativeQuery = true)
-	List<LocationDTO> findAllBy();
+	List<LocationDTO> findAllByOrderByDescriptionAsc();
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.defrainPhoto.pictime.model.EventType;
 import com.defrainPhoto.pictime.model.Mileage;
 import com.defrainPhoto.pictime.model.Timeslot;
@@ -14,6 +16,7 @@ public class EventDTO {
 
 	private Long id;
 	private String eventName;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	private EventType eventType;
 

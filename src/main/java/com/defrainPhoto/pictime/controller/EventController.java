@@ -41,9 +41,10 @@ public class EventController {
 	EventService eventService;
 
 	@GetMapping("/{id}")
-	public EventDTO getEvent(@PathVariable("id") long id) {
+	public Event getEvent(@PathVariable("id") long id) {
 		log.info("Event REST controller getting Event with ID: " + id);
-		return modelMapper.map(eventService.findById(id), EventDTO.class);
+//		return modelMapper.map(eventService.findById(id), EventDTO.class);
+		return eventService.findById(id);
 	}
 
 	@GetMapping
@@ -141,7 +142,7 @@ public class EventController {
 	}
 
 	@DeleteMapping("/{eventId}/timeslots/{timeslotId}")
-	public void DeleteTimeslot(@PathVariable(name = "eventId") Long eventId,
+	public void deleteTimeslot(@PathVariable(name = "eventId") Long eventId,
 			@PathVariable(name = "eventId") Long timeslotId) {
 		eventService.deleteTimeslot(timeslotId);
 	}

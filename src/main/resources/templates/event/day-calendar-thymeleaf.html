@@ -7,8 +7,7 @@
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" th:src="@{/js/switchContentDisplay.js}"></script>
 <script type="text/javascript" th:src="@{/js/wickedpicker.min.js}"></script>
 
@@ -17,14 +16,29 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" />
 
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>	 -->
+
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
 <title>Insert title here</title>
+
 </head>
 <body>
-<!-- 	<script type="text/javascript" th:src="@{/js/delayLoad.js}"></script> -->
+<th:block th:insert="fragments/nav :: nav"></th:block>
 
+<!-- <img -->
+<!--     src="/img/calendar3.svg" -->
+<!--     alt="triangle with all three sides equal" -->
+<!--     height="87" -->
+<!--     width="100" /> -->
+<!--     <svg viewBox="0 0 54 54" style="color: red; height: auto; width: 15em;" ><use xlink:href="/img/calendar.svg#calendar"></use></svg> -->
+    
+    
+<!-- 	<script type="text/javascript" th:src="@{/js/delayLoad.js}"></script> -->
 	<th:block th:each="event, iter : ${events}">
 		<!-- 		<div th:if="${iter.index} != -10" th:id="'eventId' + ${event.id}"  -->
 		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div>
@@ -39,8 +53,8 @@
 		<div class="day-calendar">
 			<div class="day-header">
 				<div class="newEvent">
-				<a th:href="@{/mvc/events/{date}(date=${month.today})}"
-											class="btn btn-primary gray"> <i class="fas fa-user-edit m1-2">New Event</i></a>
+				<a th:href="@{/mvc/events/new/{date}(date=${month.todayLink})}"
+											class="btn btn-primary gray" id="newEventAnchor"> <i class="fas fa-user-edit m1-2">New Event</i></a>
 				</div>
 				
 				<div class="eventDropdown">
@@ -50,10 +64,17 @@
 					</select>
 				</div>
 				
-				<div class="addTimeslot">
-					<a th:href="@{/mvc/events/{date}(date=${month.today})}" id="newTimeslotModal"
-											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a>
-				</div>
+<!-- 				<th:block th:if="${eventExists}"> -->
+					<div class="addTimeslot">
+						<a  id="newTimeslotModal"
+												class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a>
+					</div>
+<!-- 				</th:block> -->
+<!-- 				<th:block th:unless="${eventExists}"> -->
+<!-- 					<div class="addTimeslot"> -->
+<!-- 						<a class="btn btn-primary disabled gray" role="button" aria-disabled="true"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a> -->
+<!-- 					</div> -->
+<!-- 				</th:block> -->
 			</div>
 			<div class="day-calendar-content" id="cal">
 			
@@ -149,6 +170,25 @@
       </form>
       </div>
       <div class="modal-footer">
+      
+      <button
+		class="btn btn-danger" 
+		th:data-confirm-delete="|Are you sure you want to delete the Timeslot?|"
+		onclick="if (!confirm(this.getAttribute('data-confirm-delete'))){return false}
+		else {
+			var _self = $('#myForm');
+			var eventId = $('#eventId').val();
+			var timeslotId = $('#timeslotId').val();
+			console.log(_self);
+			console.log(eventId);
+			console.log(timeslotId);
+			console.log(_self.href);
+			window.location.href='/mvc/events/' + eventId + '/timeslots/' + timeslotId + '/delete';
+		}
+			"> <i
+			class="fas fa-user-times m1-2">Delete</i>
+	  </button>
+      
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary" id="edit-modal-submit">Save changes</button>
       </div>
@@ -201,36 +241,75 @@
 
 
 <script type="text/javascript">
+// https://stackoverflow.com/questions/5997450/append-to-url-and-refresh-page
+	function URL_add_parameter(url, param, value){
+	    var hash       = {};
+	    var parser     = document.createElement('a');
+	
+	    parser.href    = url;
+	
+	    var parameters = parser.search.split(/\?|&/);
+	
+	    for(var i=0; i < parameters.length; i++) {
+	        if(!parameters[i])
+	            continue;
+	
+	        var ary      = parameters[i].split('=');
+	        hash[ary[0]] = ary[1];
+	    }
+	
+	    hash[param] = value;
+	
+	    var list = [];  
+	    Object.keys(hash).forEach(function (key) {
+	        list.push(key + '=' + hash[key]);
+	    });
+	
+	    parser.search = '?' + list.join('&');
+	    return parser.href;
+	}
+</script>
+
+<script type="text/javascript">
    $(document).on("click", "#newTimeslotModal", function (event) {
 	   event.preventDefault();
 	   
 	var _self = $(this);
 	console.log(_self);
-	var eventId = _self.data('event-id');
-// 	var timeslotId = _self.data('id');
-// 	var startTime = 0;
-// 	var endTime = 0;
-// 	var title = _self.data('timeslottitle');
-// 	var notes = _self.data('notes');
-
-$('#rsp_start_time_new').text("");
-console.log("value");
-console.log($("#sel").val());
-$("#eventIdNew").val($("#sel").val());
-
-// $("#timeslotTitle").val(title);
-// $("#startTime").val(startTime);
-// $("#endTime").val(endTime);
-// $("#notes").val(notes);
-// 	 var x = new Date(); 
-
-// update timepicker
-var myPicker2 = $('.timepicker2').wickedpicker();
-// myPicker2.wickedpicker('setTime', 2, startTime);
-// myPicker2.wickedpicker('setTime', 1, endTime);
-
-     $('#newModal').modal('show');
-    });
+// 	var eventId = _self.data('event-id');
+	
+	var eventId = $("#sel").val()
+	// if id null, call create event
+	if (eventId == '' || eventId == null) {
+		window.location.href = document.getElementById("newEventAnchor").href;
+	}
+	else {
+	
+		// 	var timeslotId = _self.data('id');
+		// 	var startTime = 0;
+		// 	var endTime = 0;
+		// 	var title = _self.data('timeslottitle');
+		// 	var notes = _self.data('notes');
+		
+		$('#rsp_start_time_new').text("");
+		console.log("value");
+		console.log($("#sel").val());
+		$("#eventIdNew").val($("#sel").val());
+		
+		// $("#timeslotTitle").val(title);
+		// $("#startTime").val(startTime);
+		// $("#endTime").val(endTime);
+		// $("#notes").val(notes);
+		// 	 var x = new Date(); 
+		
+		// update timepicker
+		var myPicker2 = $('.timepicker2').wickedpicker();
+		// myPicker2.wickedpicker('setTime', 2, startTime);
+		// myPicker2.wickedpicker('setTime', 1, endTime);
+	
+	     $('#newModal').modal('show');
+  	}
+	});
 
    
    
@@ -345,7 +424,7 @@ myPicker.wickedpicker('setTime', 1, endTime);
 		
 // 		format data
 		
-		const RELOAD_TIMER = 50000;
+		const RELOAD_TIMER = 10;
 		
 		$.ajaxSetup({
             headers: {
@@ -379,6 +458,8 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 				alert(response['response']);
 				console.log("ajax1");
 				console.log(response);
+				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+// 				alert(location.href);
 				if (response.redirect) {
 					window.location.href = response.redirect;
 				}
@@ -418,9 +499,6 @@ myPicker.wickedpicker('setTime', 1, endTime);
 // 		return false;
 // 	});
 	});
-	
-	
-	
 	
 	
    	$(document).on("click", "#new-modal-submit", function (event) {
@@ -468,6 +546,7 @@ console.log("parsing start TIme")
 		console.log(JSON.stringify(formData));
 
 		var startTime = $('#editStartTimeNew').val();
+		const RELOAD_TIMER = 10;
 		
 		$.ajaxSetup({
             headers: {
@@ -494,13 +573,18 @@ console.log("parsing start TIme")
 				$('#rsp_start_time_new').text("");
 				console.log("ajax1New");
 				console.log(response);
+				console.log(formData.eventId);
+				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+				
+				 window.setTimeout(function(){window.location.reload()}, 3000);
 				if (response.redirect) {
-					window.location.href = response.redirect;
+					//alert(location.href);
+					//window.location.href = response.redirect;
 				}
 				
-				setTimeout(function() {
-					location.reload();
-					}, RELOAD_TIMER);
+				//setTimeout(function() {
+					//location.reload();
+					//}, RELOAD_TIMER);
 			},
 			error: function (e) {
 				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);

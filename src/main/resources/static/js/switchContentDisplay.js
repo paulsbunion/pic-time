@@ -1,12 +1,45 @@
 $(document).ready(function() {
 	var sel = $("#sel");
 	sel.data("prev", sel.val());
+	
+	// if empty selector, hide dropdown
+	if ($('#sel option').length == 0) {
+		$('#sel').hide();
+	}
+	
 	var allEventDivs = document.querySelectorAll('div[id^="eventId"]');
 	
 	for (var i = 0; i < allEventDivs.length; i++) {
 		allEventDivs[i].style.display='none';
 	}
-	toggleDivDisplay(allEventDivs, 0, $("#sel").val());
+//	get URL parameter
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	
+	var eventId =urlParams.get('eventId');
+	console.log(eventId);
+	if (eventId == null ||isNaN(eventId) || eventId < 0) {
+//		if no URL parameter, set to selected event id
+		eventId = $("#sel").val();
+	}
+	else {
+		// check if exists in dropdown
+		var exists = false;
+		$('#sel option').each(function() {
+			if (this.value == eventId) {
+				exists = true;
+				return false;
+			}
+		})
+		if (!exists) {
+			eventId = $("#sel").val();
+		}
+		else {
+			// select event from dropdown
+			document.getElementById("sel").value = eventId;
+		}
+	}
+	toggleDivDisplay(allEventDivs, 0, eventId);
 	
 	sel.change(function(data){
 		var jqThis = $(this);

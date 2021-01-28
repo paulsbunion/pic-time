@@ -5,14 +5,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<link rel="stylesheet" type="text/css"
-	th:href="@{../../css/bootstrap.min.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{../../css/main.css}" />
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 
 <title>All Clients</title>
 </head>
 <body>
-
+	<th:block th:insert="fragments/nav :: nav"></th:block>
+	
 	<div class="container my-5">
 		<div class="row">
 
@@ -33,7 +35,7 @@
 									<tr>
 										<th class="row-1 row-name">Name</th>
 <!-- 										<th>Address</th> -->
-										<th class="row-2 row-email">Email</th>
+										<th class="row-2 row-email-header">Email</th>
 										<th class="row-3 row-button-edit">Edit</th>
 										<th class="row-4 row-button-delete">Delete</th>
 									</tr>

@@ -2,6 +2,7 @@ package com.defrainPhoto.pictime.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findById(Long id) {
 		return userRepository.findById(id).get();
+	}
+	
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 
 	@Override

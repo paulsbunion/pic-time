@@ -1,5 +1,7 @@
 package com.defrainPhoto.pictime.service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.defrainPhoto.pictime.model.User;
@@ -12,4 +14,6 @@ public interface UserService extends UserDetailsService {
 	User save(UserRegistrationDto registration);
 
 	User findById(Long id);
+	
+	List<User> findAll();
 }

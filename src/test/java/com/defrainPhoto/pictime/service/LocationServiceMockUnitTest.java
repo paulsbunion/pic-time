@@ -124,7 +124,7 @@ public class LocationServiceMockUnitTest {
 		LocationDTO location = new LocationDTOImpl(1l, "City", "CT", "22671", "101 Crown Gate Avenue", "The CROWN!");
 		LocationDTO locationNoDesc = new LocationDTOImpl(2l, "Orange Lake", "MN", "76533", "22 E Main St.", "");
 
-		when(locationRepository.findAllBy()).thenReturn(Arrays.asList(location, locationNoDesc));
+		when(locationRepository.findAllByOrderByDescriptionAsc()).thenReturn(Arrays.asList(location, locationNoDesc));
 
 		List<LocationDTO> results = locationService.getAllLocations();
 		assertTrue(results.size() == 2);
