@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.defrainPhoto.pictime.controller.EventController;
+import com.defrainPhoto.pictime.controller.PhotographerController;
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.dto.MonthDTO;
@@ -49,6 +50,8 @@ public class EventMVCController {
 	
 	@Autowired
 	EventController eventController;
+	@Autowired
+	PhotographerController photographerController;
 
 //	private final String MVC_CLIENT_URL_BASE = "/mvc/clients/";
 	private final String LIST_ALL_EVENTS_URL = "event/list-events";
@@ -79,6 +82,7 @@ public class EventMVCController {
 	public String showEventDetails(@PathVariable("id") long id, Model model) {
 		log.info("MVC user calling show event details for ID: " + id);
 		model.addAttribute("event", eventController.getEvent(id));
+		model.addAttribute("all_photographers", photographerController.getAllPhotographers());
 		return SHOW_EVENT_URL;
 	}
 	

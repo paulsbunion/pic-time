@@ -17,7 +17,7 @@ public class LocationServiceImpl implements LocationService {
 	
 	@Override
 	public List<LocationDTO> getAllLocations() {
-		return locationRepository.findAllBy();
+		return locationRepository.findAllByOrderByDescriptionAsc();
 	}
 
 	@Override

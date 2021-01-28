@@ -30,6 +30,12 @@
 						<form action="#" th:action="@{/mvc/locations/update/{id}(id=${location.id})}"  method="post">
 
 							<div class="form-group col-md-6">
+								<label for="description" class="col-form-label">Description (Optional)</label> 
+								<input type="text" th:field="${location.description}" class="form-control" id="description" placeholder="Description"> 
+								<span th:if="${#fields.hasErrors('location.description')}" th:errors="${location.description}" class="text-danger"></span>
+							</div>
+							
+							<div class="form-group col-md-6">
 								<label for="street" class="col-form-label">Street</label> 
 								<input type="text" th:field="${location.street}" class="form-control" id="street" placeholder="Street (EX: 123 Main St.)"> 
 								<span th:if="${#fields.hasErrors('location.street')}" th:errors="${location.street}" class="text-danger"></span>
@@ -53,12 +59,6 @@
 								<label for="zipcode" class="col-form-label">ZIP Code</label> 
 								<input type="text" th:field="${location.zipcode}" class="form-control" id="zipcode" placeholder="EX: 43068"> 
 								<span th:if="${#fields.hasErrors('location.zipcode')}" th:errors="${location.zipcode}" class="text-danger"></span>
-							</div>
-							
-							<div class="form-group col-md-6">
-								<label for="description" class="col-form-label">Description (Optional)</label> 
-								<input type="text" th:field="${location.description}" class="form-control" id="description" placeholder="Description"> 
-								<span th:if="${#fields.hasErrors('location.description')}" th:errors="${location.description}" class="text-danger"></span>
 							</div>
 							
 							<td><input type="submit" class="btn btn-primary" value="Save"></td>

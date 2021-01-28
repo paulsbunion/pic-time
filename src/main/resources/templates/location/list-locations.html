@@ -41,9 +41,14 @@
 								<tbody>
 									<tr th:each="location: ${locations}">
 											<td>
-												<a th:href="@{/mvc/locations/show/{id}(id=${location.id})}" th:text="${location.street + 
-												', ' + location.city + ', ' + location.state + ', ' + location.zipcode}"></a>
+<!-- 												<a th:href="@{/mvc/locations/show/{id}(id=${location.id})}" th:utext="'&quot;' + ${location.description} + '&quot;' +  -->
+<!-- 												'<br> ' + ${location.street +	', ' + location.city + ', ' + location.state +  -->
+<!-- 												', ' + location.zipcode}"></a> -->
+												<a th:href="@{/mvc/locations/show/{id}(id=${location.id})}" th:utext="${location.description} + 
+												'<br> ' + ${location.street +	', ' + location.city + ', ' + location.state + 
+												', ' + location.zipcode}"></a>
 											</td>
+											
 										<td class="td-btn"><a th:href="@{/mvc/locations/edit/{id}(id=${location.id})}"
 											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
 										</a></td>
