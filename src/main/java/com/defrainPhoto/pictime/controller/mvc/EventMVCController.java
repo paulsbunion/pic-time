@@ -91,6 +91,8 @@ public class EventMVCController {
 		log.info("MVC user editing existing event with ID: " + id);
 		Event event = eventController.getEvent(id);
 		model.addAttribute("event", event);
+		model.addAttribute("all_photographers", photographerController.getAllPhotographers());
+//		model.addAttribute("event_photographers", event.getPhotographers());
 		return EDIT_EVENT_URL;
 	}
 	

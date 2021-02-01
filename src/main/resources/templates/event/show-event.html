@@ -68,7 +68,7 @@
 
 							<!-- 		select photograper code -->
 							<div class="form-group col-md-6">
-								<select multiple>
+								<select multiple disabled>
 									<option th:each="photog : ${all_photographers}" th:value="${photog.id}" th:text="${photog.firstName} + ' ' + ${photog.lastName}"></option>
 								</select>
 							</div>

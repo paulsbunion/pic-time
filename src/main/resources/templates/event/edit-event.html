@@ -68,6 +68,30 @@
 							</div>
 
 							<!-- 		select photograper code -->
+							<div class="form-group col-md-6"><label>Photographers</label>
+							
+								<div class="form-group col-md-6" style="display: flex;">
+									<div style="padding-right: 10px;">
+										<label style="display: block;" for="available-photographers">Available</label>
+										<select multiple id="available-photographers">
+											<option th:each="photog : ${all_photographers}" th:value="${photog.id}" th:text="${photog.firstName} + ' ' + ${photog.lastName}"></option>
+										</select>
+									</div>
+									
+									<div style="display: flex; flex-direction: column; align-content: center; align-items: center; justify-content: center;">
+										<input id="move-right" type="button" value=">">
+										<br>
+										<input id="move-left" type="button" value="<">
+									</div>
+									
+									<div style="margin-left: 10px;">
+										<label style="display: block;" for="photographers">Assigned</label>
+										<select multiple="multiple" th:field="${event.photographers}" id="photographers" name="photographers" path="photographers">
+											<option th:each="photog : ${event.photographers}" th:value="${photog.id}" th:text="${photog.firstName} + ' ' + ${photog.lastName}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
 
 							<td><input type="submit" class="btn btn-primary" value="Save"></td>
 
@@ -83,8 +107,20 @@
 					</div>
 				</div>
 			</div>
-
-
+	<script type="text/javascript">
+		$("#move-right").click(function(e) {
+			var selectedPhotographers = $('#available-photographers option:selected');
+			if (selectedPhotographers.length == 0) {
+				e.preventDefault();
+			}
+			else {
+				console.log($(selectedPhotographers));
+				$('#photographers').append($(selectedPhotographers).clone());
+				$(selectedPhotographers).remove();
+				e.preventDefault();
+			}
+		});
+	</script>
 
 		</div>
 	</div>
