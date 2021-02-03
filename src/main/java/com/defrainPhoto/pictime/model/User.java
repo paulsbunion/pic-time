@@ -141,7 +141,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class User {
 			return false;
 
 		User user = (User) o;
-		return Objects.equals(email, user.email);
+		return Objects.equals(id, user.id);
 
 	}
 

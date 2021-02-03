@@ -5,8 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.defrainPhoto.pictime.controller.EventController;
@@ -29,17 +32,22 @@ import com.defrainPhoto.pictime.controller.PhotographerController;
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.dto.MonthDTO;
+import com.defrainPhoto.pictime.dto.UserDTO;
 import com.defrainPhoto.pictime.model.Client;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.EventTime;
 import com.defrainPhoto.pictime.model.EventType;
 import com.defrainPhoto.pictime.model.Timeslot;
+import com.defrainPhoto.pictime.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/mvc/events")
 public class EventMVCController {
+	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	private static final String NEW_EVENT_URL = "event/new-event";
 	private static final String MVC_ALL_EVENT_URL_BASE = "/mvc/events/";
@@ -91,8 +99,16 @@ public class EventMVCController {
 		log.info("MVC user editing existing event with ID: " + id);
 		Event event = eventController.getEvent(id);
 		model.addAttribute("event", event);
-		model.addAttribute("all_photographers", photographerController.getAllPhotographers());
-//		model.addAttribute("event_photographers", event.getPhotographers());
+//		model.addAttribute("all_photographers", photographerController.getAllPhotographers());
+		
+		List<UserDTO> availablePhotographers = new LinkedList<UserDTO>(photographerController.getAllPhotographers());
+		List<UserDTO> assignedPhotographers = Arrays.asList(modelMapper.map(event.getPhotographers(), UserDTO[].class));
+		if (assignedPhotographers != null && availablePhotographers != null) {
+			availablePhotographers.removeAll(assignedPhotographers);
+		}
+		
+		model.addAttribute("available_photographers", availablePhotographers);
+		
 		return EDIT_EVENT_URL;
 	}
 	
@@ -148,6 +164,32 @@ public class EventMVCController {
 		}
 		EventDTO eventDTO = eventController.addEvent(event);
 		return "redirect:" + MVC_EVENT_URL_BASE + event.getDate().format(MonthDTO.dayformatter) + "?eventId=" +eventDTO.getId();
+	}
+	
+	@PostMapping("/{event_id}/addphotographer/{photog_id}")
+	@ResponseBody
+	public String addPhotographerToEvent(@PathVariable("event_id") Long eventId, @PathVariable("photog_id") Long photogId) {
+		log.info("MVC user adding photographer with id: " + photogId + " to event " + eventId);
+		Event event = eventController.getEvent(eventId);
+		User photographer = new User();
+		photographer.setId(photogId);
+		event.addPhotographer(photographer);
+		eventController.updateEvent(event, eventId);
+//		eventController.u
+		return LIST_ALL_EVENTS_URL;
+	}
+	
+	@PostMapping("/{event_id}/removephotographer/{photog_id}")
+	@ResponseBody
+	public String removePhotographerToEvent(@PathVariable("event_id") Long eventId, @PathVariable("photog_id") Long photogId) {
+		log.info("MVC user removing photographer with id: " + photogId + " to event " + eventId);
+		Event event = eventController.getEvent(eventId);
+		User photographer = new User();
+		photographer.setId(photogId);
+		event.removePhotographer(photographer);
+		eventController.updateEvent(event, eventId);
+//		eventController.u
+		return LIST_ALL_EVENTS_URL;
 	}
 	
 	@GetMapping("/calendar/{year}/{month}")
