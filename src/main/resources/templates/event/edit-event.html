@@ -115,6 +115,31 @@
 									<br>
 								</th:block>
 							</div>
+							
+							<div style="border: 1px solid black; margin-right: 60%;" id="test">
+								<th:block th:each= "photog : ${available_photographers}">
+									<div th:id="'showPhotogId_' + photog.id">
+										<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
+										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}">
+										<td><a class="btn btn-primary">
+										<i class="fas fa-user-times m1-2">Swap</i></a> </td>
+										<td><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}">
+										<i class="fas fa-user-times m1-2">Remove</i></a> </td>
+									</div>
+								</th:block>
+								<th:block th:each= "photog : ${assigned_photographers}">
+									<div th:id="'showPhotogId_' + photog.id">
+										<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
+										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}">
+										<td><a class="btn btn-primary">
+										<i class="fas fa-user-times m1-2">Swap</i></a> </td>
+										<td><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}">
+										<i class="fas fa-user-times m1-2">Remove</i></a> </td>
+									</div>
+								</th:block>
+								
+							</div>
+							
 
 							<td><input type="submit" class="btn btn-primary" value="Save"></td>
 
@@ -130,6 +155,20 @@
 					</div>
 				</div>
 			</div>
+	<script type="text/javascript">
+	$(document).on("click", '[id^="showPhotogId_"] a', function (event) {
+		event.preventDefault();
+		console.log("clicked");
+	});
+	
+	$(document).on("click", '[id^="removeShowPhotogId_"]', function (event) {
+		event.preventDefault();
+		console.log("clicked2");
+		$('#' + this.id)[0].parentElement.style.display = "none";
+	});
+	</script>
+	
+				
 	<script type="text/javascript">
 		$("#editForm").submit(function(e) {
 // 			e.preventDefault();

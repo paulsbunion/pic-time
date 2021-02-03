@@ -108,6 +108,7 @@ public class EventMVCController {
 		}
 		
 		model.addAttribute("available_photographers", availablePhotographers);
+		model.addAttribute("assigned_photographers", assignedPhotographers);
 		
 		return EDIT_EVENT_URL;
 	}
