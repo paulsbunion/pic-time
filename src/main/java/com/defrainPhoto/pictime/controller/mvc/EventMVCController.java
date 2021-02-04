@@ -89,8 +89,12 @@ public class EventMVCController {
 	@GetMapping("show/{id}")
 	public String showEventDetails(@PathVariable("id") long id, Model model) {
 		log.info("MVC user calling show event details for ID: " + id);
-		model.addAttribute("event", eventController.getEvent(id));
-		model.addAttribute("all_photographers", photographerController.getAllPhotographers());
+		Event event = eventController.getEvent(id);
+		model.addAttribute("event", event);
+		
+		List<UserDTO> assignedPhotographers = getAssignedPhotographers(event);
+		model.addAttribute("assigned_photographers", assignedPhotographers);
+		
 		return SHOW_EVENT_URL;
 	}
 	
@@ -99,20 +103,29 @@ public class EventMVCController {
 		log.info("MVC user editing existing event with ID: " + id);
 		Event event = eventController.getEvent(id);
 		model.addAttribute("event", event);
-//		model.addAttribute("all_photographers", photographerController.getAllPhotographers());
 		
-		List<UserDTO> availablePhotographers = new LinkedList<UserDTO>(photographerController.getAllPhotographers());
-		List<UserDTO> assignedPhotographers = Arrays.asList(modelMapper.map(event.getPhotographers(), UserDTO[].class));
-		if (assignedPhotographers != null && availablePhotographers != null) {
-			availablePhotographers.removeAll(assignedPhotographers);
-		}
+		List<UserDTO> assignedPhotographers = getAssignedPhotographers(event);
+		List<UserDTO> availablePhotographers = getAvailablePhotographers(assignedPhotographers);
 		
-		model.addAttribute("available_photographers", availablePhotographers);
 		model.addAttribute("assigned_photographers", assignedPhotographers);
+		model.addAttribute("available_photographers", availablePhotographers);
 		
 		return EDIT_EVENT_URL;
 	}
 	
+	private List<UserDTO> getAssignedPhotographers(Event event) {
+		return Arrays.asList(modelMapper.map(event.getPhotographers(), UserDTO[].class));
+	}
+
+	private List<UserDTO> getAvailablePhotographers(List<UserDTO> assignedPhotographers) {
+		List<UserDTO> availablePhotographers = new LinkedList<UserDTO>(photographerController.getAllPhotographers());
+		
+		if (assignedPhotographers != null && availablePhotographers != null) {
+			availablePhotographers.removeAll(assignedPhotographers);
+		}
+		return availablePhotographers;
+	}
+
 	@PostMapping("update/{id}")
 	public String updateEditedEvent(@Valid Event event, BindingResult result, @PathVariable("id") Long id, Model model) {
 		log.info("MVC user saving edits to existing event with ID: " + id);

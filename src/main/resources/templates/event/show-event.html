@@ -65,13 +65,24 @@
 									type="text" th:field="${event.notes}" class="form-control"
 									id="notes" placeholder="Notes" disabled>
 							</div>
-
+							
+							<div class="form-group col-md-6"><label>Photographers</label></div>
+							
 							<!-- 		select photograper code -->
-							<div class="form-group col-md-6">
-								<select multiple disabled>
-									<option th:each="photog : ${all_photographers}" th:value="${photog.id}" th:text="${photog.firstName} + ' ' + ${photog.lastName}"></option>
-								</select>
+							<div style="border: 1px solid black; margin-right: 60%;" id="test">
+								<th:block th:each= "photog : ${assigned_photographers}">
+									<div th:id="'showPhotogId_' + ${photog.id}">
+										<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<td><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </td> -->
+<!-- 										<td><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </td> -->
+									</div>
+								</th:block>
+								
 							</div>
+							<br>
 
 							<td><a th:href="@{/mvc/events/edit/{id}(id=${event.id})}"
 								class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
