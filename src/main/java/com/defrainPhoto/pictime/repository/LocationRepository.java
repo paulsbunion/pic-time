@@ -12,4 +12,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 	
 	@Query(name = "location.getLocation", nativeQuery = true)
 	List<LocationDTO> findAllByOrderByDescriptionAsc();
+
+	List<LocationDTO> findByDescriptionContainingIgnoreCase(String input);
 }

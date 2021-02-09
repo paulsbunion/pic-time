@@ -16,4 +16,6 @@ public interface LocationService {
 	public Location updateLocationById(Location location);
 	
 	public void deleteLocationById(Long id);
+
+	public List<LocationDTO> doAutoComplete(String input);
 }

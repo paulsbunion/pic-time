@@ -40,4 +40,9 @@ public class LocationServiceImpl implements LocationService {
 		locationRepository.deleteById(id);
 	}
 
+	@Override
+	public List<LocationDTO> doAutoComplete(String input) {
+		return locationRepository.findByDescriptionContainingIgnoreCase(input);
+	}
+
 }
