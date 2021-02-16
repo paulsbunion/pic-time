@@ -46,6 +46,9 @@ public class LocationServiceImpl implements LocationService {
 	public List<LocationDTO> doAutoComplete(String input) {
 //		return locationRepository.findByDescriptionContainingIgnoreCase(input);
 		List<LocationDTO> result = locationRepository.findAllByInputString(input);
+		if (result != null && result.size() > 10) {
+			result.subList(10, result.size()).clear();;
+		}
 		return result;
 	}
 	

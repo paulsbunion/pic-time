@@ -132,9 +132,7 @@ public class Location {
 		return id != null && id.equals(other.getId());
 	}
 	
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
+	public String printLocationWithDescription() {
 		return description + ": " + street + ", " + city + ", " + state + ", " + zipcode;
 	}
 }

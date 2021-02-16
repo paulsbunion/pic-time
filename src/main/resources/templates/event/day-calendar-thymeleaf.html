@@ -92,7 +92,7 @@
 						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
 						data-timeslottitle=${timeslot.title}, 
 						data-notes=${timeslot.notes},
-						data-location=${timeslot.location},
+						data-location=${timeslot.location?.printLocationWithDescription()},
 						data-location-id=${timeslot.location?.id}">
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
@@ -192,7 +192,8 @@
 	       	<div>
 	       		<span>Location</span>
 	       		<input type="text" name="search" id="searchBox" class="form-control">
-	       		<input type="text" id="location" >
+	       		<input type="text" id="location" hidden>
+	       		<input type="button" value="clear" onclick="clearLocation()">
 	       		<br>
 <!-- 	       		<select id="location" class="form-control select2-single" th:field="*(location)"> -->
 <!-- 	       			<option value="">Search Location</option> -->
@@ -233,40 +234,56 @@
 <script type="text/javascript">
 	$(function() {
 		$("#searchBox").autocomplete({
-			source : function(request, response) {
-				$.ajax ({
-					url : "http://localhost:8080/locations/search",
-					dataType : "json",
-					data : {
-						q : request.term
-					},
-					success : function(data) {
-						console.log(data);
-// 						response(data);
-						var array = data.error ? [] : $.map(data, function(m){
-							console.log("M");
-							console.log(m.description);
-							return {
-								label: m.description + ': ' + m.street + ', ' + m.city + ', ' + m.state + ', ' + m.zipcode ,
-								value: m.id
-							};
-						});
-						
-						response(array);
-					}
-				});
-			},
+			source : searchLocations,
 			minLength : 2,
-			focus: function(event, ui) {
+			focus: function(event, ui) { // focus for items in search results
 				event.preventDefault();
+				
 			},
 			 select: function (event, ui) {
 		            event.preventDefault();
 		            $("#searchBox").val(ui.item.label); // replace string with selected value
 		            $("#location").val(ui.item.value); // set id for saving
 			 }
-		});
+		}).bind('focus', function() {
+			$(this).select();
+			$(this).autocomplete("search"); } );
+// 		focus(function() { // focus for text input box
+// 			$(this).select();
+			
+// 			searchLocations($(this).request, $(this).response);
+// 		});
+		
 	});
+	
+	function clearLocation() {
+		$("#searchBox").val("");
+		$("#location").val("");
+	}
+	
+	function searchLocations(request, response) {
+		$.ajax ({
+			url : "/locations/search",
+			dataType : "json",
+			data : {
+				q : request.term
+			},
+			success : function(data) {
+				console.log(data);
+//					response(data);
+				var array = data.error ? [] : $.map(data, function(m){
+					console.log("M");
+					console.log(m.description);
+					return {
+						label: m.description + ': ' + m.street + ', ' + m.city + ', ' + m.state + ', ' + m.zipcode ,
+						value: m.id
+					};
+				});
+				
+				response(array);
+			}
+		});
+	}
 </script>
 
 <!-- New Modal -->
@@ -518,6 +535,11 @@ else {
 // 		formData.start_time = parseTime($('#editStartTime').val());
 // 		formData.end_time =  parseTime($('#editEndTime').val());
 // 		formData.duration = $('#editEndTime').val();
+
+		// check if need to clear location id
+		if ($("#searchBox").val() == "") {
+			$("#location").val("");
+		}
 
 		formData.id = $('#timeslotId').val();
 		var startTime = [$('#editStartTimeHr').val(), $('#editStartTimeMin').val(), $('#editStartTimeMeridian').val()];
