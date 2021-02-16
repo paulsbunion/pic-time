@@ -131,4 +131,10 @@ public class Location {
 		Location other = (Location) obj;
 		return id != null && id.equals(other.getId());
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return description + ": " + street + ", " + city + ", " + state + ", " + zipcode;
+	}
 }

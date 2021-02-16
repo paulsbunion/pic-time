@@ -92,7 +92,8 @@
 						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
 						data-timeslottitle=${timeslot.title}, 
 						data-notes=${timeslot.notes},
-						data-location=${timeslot.location}">
+						data-location=${timeslot.location},
+						data-location-id=${timeslot.location?.id}">
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
 						
@@ -420,6 +421,8 @@
 	var endTime = _self.data('endtime');
 	var title = _self.data('timeslottitle');
 	var notes = _self.data('notes');
+	var location = _self.data('location');
+	var locationId = _self.data('location-id');
 
 	console.log("zero error");
 	console.log(startTime);
@@ -463,6 +466,14 @@ $("#notes").val(notes);
 	 var x = new Date(); 
 //      $("#modal-body").html(myHeading + x);   
 
+if (location != null) {
+	$("#searchBox").val(location);
+	$("#location").val(locationId);
+}
+else {
+	$("#searchBox").val("");
+	$("#location").val("");
+}
 
 // update timepicker
 

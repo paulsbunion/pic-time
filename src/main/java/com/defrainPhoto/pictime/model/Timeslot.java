@@ -116,6 +116,9 @@ public class Timeslot {
 	public void setLocationById(Long locationId) {
 		this.location = new Location();
 		this.location.setId(locationId);
+		if (locationId == null) {
+			this.location = null;
+		}
 	}
 	
 	public void setEvent(Event event) {
