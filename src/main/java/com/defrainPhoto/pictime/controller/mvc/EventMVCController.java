@@ -48,6 +48,8 @@ public class EventMVCController {
 	
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	LocationMVCController locationMvcController;
 	
 	private static final String NEW_EVENT_URL = "event/new-event";
 	private static final String MVC_ALL_EVENT_URL_BASE = "/mvc/events/";
@@ -281,6 +283,7 @@ public class EventMVCController {
 		params.put("events", eventDTOs);
 		params.put("eventTimeslots", eventTimeslots);
 		params.put("timeslotGridSpans", timeslotGridSpans);
+		params.put("states", locationMvcController.getStatesList());
 		
 		return new ModelAndView(LIST_EVENTS_FOR_DAY_URL, params) ;
 	}

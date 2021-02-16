@@ -16,6 +16,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/assets/jquery-ui-1.12.1/jquery-ui.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/timeslot-edit-modal.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" />
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
@@ -191,9 +192,87 @@
 	       	
 	       	<div>
 	       		<span>Location</span>
-	       		<input type="text" name="search" id="searchBox" class="form-control">
-	       		<input type="text" id="location" hidden>
-	       		<input type="button" value="clear" onclick="clearLocation()">
+	       		<div class="location-searchbar">
+		       		<input type="text" name="search" id="searchBox" class="form-control location-searchbar-item ">
+		       		<input type="button" value="X" onclick="clearLocation()" class="form-control location-searchbar-item btn-danger">
+		       		<input type="text" id="location" hidden>
+	       		</div>
+	       		
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleCreateLocation()">Create New Location</button></div>
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+<!-- 	       		<div id="addNewLocation" style="display: none"> -->
+				<div id="addNewLocation" style="display: none;">
+	       			<div class="">
+
+						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
+			
+						<div class="">
+			
+							<form action="#" id="timeslot-new-location-form" th:action="@{/mvc/locations/save}" method="post">
+			
+			
+								<div class="form-group">
+									<label for="description" class="col-form-label">Description</label> 
+									<input type="text"  class="form-control" id="description" placeholder="Description"> 
+									<span id="description-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="street" class="col-form-label">Street</label> 
+									<input type="text" class="form-control" id="street" placeholder="Street (EX: 123 Main St.)"> 
+									<span id="street-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="city" class="col-form-label">City</label> 
+									<input type="text"  class="form-control" id="city" placeholder="City"> 
+									<span id="city-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="state" class="col-form-label">State</label> 
+									<select class="form-control" id="state">
+										<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+									</select>
+									<span id="state-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="zipcode" class="col-form-label">ZIP Code</label> 
+									<input type="text"  class="form-control" id="zipcode" placeholder="EX: 43068"> 
+									<span id="zipcode-error" class="text-danger"></span>
+								</div>
+								
+								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td>
+								
+								<td><a id="cancel-add-location"
+									class="btn btn-primary delete"> <i
+										class="fas fa-user-times m1-2">Cancel</i>
+								</a></td>
+							</form>
+						</div>
+					</div>
+	       		</div>
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
+	       		
 	       		<br>
 <!-- 	       		<select id="location" class="form-control select2-single" th:field="*(location)"> -->
 <!-- 	       			<option value="">Search Location</option> -->
@@ -284,6 +363,147 @@
 			}
 		});
 	}
+	
+	function toggleCreateLocation() {
+		var addLocationDiv = $("#addNewLocation")[0];
+		console.log(addLocationDiv);
+		console.log(addLocationDiv.style.display);
+		if (addLocationDiv.style.display === "none") {
+			addLocationDiv.style.display = "block";
+		}
+		else {
+			addLocationDiv.style.display = "none";
+		}
+	}
+</script>
+
+
+<!-- New Location -->
+<script type="text/javascript">
+
+$(document).on("click", "#cancel-add-location", function (event) {
+	event.preventDefault();
+	clearErrors();
+	toggleCreateLocation();
+	
+});
+
+$(document).on("click", "#timeslot-new-location-form-submit", function (event) {
+	event.preventDefault();
+	
+//		validateForm(this);
+	
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	var _self = $('#timeslot-new-location-form');
+	
+	var locationData = {};
+	locationData.id = null;
+	locationData.description="";
+	locationData.street="";
+	locationData.city="";
+	locationData.state ="";
+	locationData.zipcode=0;
+	
+	locationData.description=$('#description').val();
+	locationData.street=$('#street').val();
+	locationData.city=$('#city').val();
+	locationData.state =$('#state').val();
+	locationData.zipcode=$('#zipcode').val();
+	
+	console.log("data here");
+	console.log(locationData);
+	console.log(JSON.stringify(locationData));
+
+	clearErrors();
+	
+	const RELOAD_TIMER = 10;
+	
+	$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+        }
+    });
+	console.log("before ajaxNew");
+	$.ajax({
+		type: "POST",
+		contentType: "application/json",
+		url: "/locations/",
+		data: JSON.stringify(locationData),
+
+		dataTpye: 'JSON',
+		
+		beforeSend: function(xhr) {
+			console.log("before req: " + token);
+			xhr.setRequestHeader(header, token);
+			console.log("token set");
+		},
+		
+		success: function(response) {
+			if (response !== true) {
+				console.log("ERROR");
+			}
+// 			$('#rsp_start_time_new').text("");
+			console.log("ajax1New");
+			console.log(response);
+			console.log(response.id);
+			
+			// set the hidden location id
+            $("#location").val(response.id); // set id for saving
+			// set the location name string
+			$("#searchBox").val(response.description + ": " + response.street + ", " + response.city + ", " + response.state + ", " + response.zipcode); // replace string with selected value
+			// hide new location
+			toggleCreateLocation();
+			
+// 			console.log(locationData.eventId);
+// 			location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+			
+// 			 window.setTimeout(function(){window.location.reload()}, 3000);
+			if (response.redirect) {
+				//alert(location.href);
+				//window.location.href = response.redirect;
+			}
+			
+			//setTimeout(function() {
+				//location.reload();
+				//}, RELOAD_TIMER);
+		},
+		error: function (e) {
+// 			$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
+			console.log("error from ajax request");
+			console.log(e.responseJSON);
+			var errorData = e.responseJSON;
+			for (var i = 0; i < errorData.length; i++) {
+				var err =  errorData[i].split(":");
+				var target = $("[id^=" + err[0] + "-error]");
+				console.log($("[id^=" + err[0] + "-error]"));
+				if(target.length > 0) {
+					if (target.text().length > 0) {
+						target.text(target.text() +", " + err[1]);
+					}
+					else {
+						target.text(err[1]);
+					}
+					
+				}
+// 				description-error
+				console.log(errorData[i]);
+			}
+		}
+	});
+
+});
+
+function clearErrors() {
+	var errors = $("[id$='-error']");
+	for (i = 0; i < errors.length; i++) {
+		console.log(errors[i]);
+		$("#" + errors[i].id).empty();
+// 		errors[i].text = '';
+	}
+}
+
 </script>
 
 <!-- New Modal -->

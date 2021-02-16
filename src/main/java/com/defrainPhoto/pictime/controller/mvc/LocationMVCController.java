@@ -130,6 +130,10 @@ public class LocationMVCController {
 		locationController.addLocation(loc2);
 	}
 	
+	
+	public static List<String> getStatesList() {
+		return states;
+	}
 	private void populateStateMap() {
 		states.add("OH");
 		states.add("AL");
