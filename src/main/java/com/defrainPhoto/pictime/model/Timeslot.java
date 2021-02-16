@@ -59,6 +59,8 @@ public class Timeslot {
 	@JoinTable(name = "timeslot_user", joinColumns = @JoinColumn(name = "timeslot_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> photographers = new HashSet<User>();
 
+	@JsonProperty("locationId")
+//	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Location location;
 	private boolean trackMileage;
@@ -103,11 +105,17 @@ public class Timeslot {
 		return event;
 	}
 
-	// testing Jackson backrefernce error, refactor to static factory method: https://keepgrowing.in/java/springboot/how-to-get-json-response-only-with-an-id-of-the-related-entity/
+//	 testing Jackson backrefernce error, refactor to static factory method: https://keepgrowing.in/java/springboot/how-to-get-json-response-only-with-an-id-of-the-related-entity/
 	@JsonProperty("eventId")
 	public void setEventById(Long eventId) {
 		this.event = new Event();
 		this.event.setId(eventId);
+	}
+	
+	@JsonProperty("locationId")
+	public void setLocationById(Long locationId) {
+		this.location = new Location();
+		this.location.setId(locationId);
 	}
 	
 	public void setEvent(Event event) {

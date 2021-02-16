@@ -91,7 +91,8 @@
 						data-starttime=${timeslot.time.printStartTimeMilitary()}, 
 						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
 						data-timeslottitle=${timeslot.title}, 
-						data-notes=${timeslot.notes}">
+						data-notes=${timeslot.notes},
+						data-location=${timeslot.location}">
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
 						
@@ -189,11 +190,12 @@
 	       	
 	       	<div>
 	       		<span>Location</span>
-	       		<input type="text" name="search" id="searchBox">
+	       		<input type="text" name="search" id="searchBox" class="form-control">
+	       		<input type="text" id="location" >
 	       		<br>
-	       		<select id="location">
-	       			<option value="">Search Location</option>
-	       		</select>
+<!-- 	       		<select id="location" class="form-control select2-single" th:field="*(location)"> -->
+<!-- 	       			<option value="">Search Location</option> -->
+<!-- 	       		</select> -->
 	       	</div>
 	        
 	        <span>Notes</span>
@@ -239,11 +241,29 @@
 					},
 					success : function(data) {
 						console.log(data);
-						response(data);
+// 						response(data);
+						var array = data.error ? [] : $.map(data, function(m){
+							console.log("M");
+							console.log(m.description);
+							return {
+								label: m.description + ': ' + m.street + ', ' + m.city + ', ' + m.state + ', ' + m.zipcode ,
+								value: m.id
+							};
+						});
+						
+						response(array);
 					}
 				});
 			},
-			minLength : 2
+			minLength : 2,
+			focus: function(event, ui) {
+				event.preventDefault();
+			},
+			 select: function (event, ui) {
+		            event.preventDefault();
+		            $("#searchBox").val(ui.item.label); // replace string with selected value
+		            $("#location").val(ui.item.value); // set id for saving
+			 }
 		});
 	});
 </script>
@@ -475,7 +495,7 @@ $("#notes").val(notes);
 		formData.notes=null;
 		formData.client=null;
 		formData.photographers=[];
-		formData.location=null;
+		formData.locationId=null;
 		formData.trackMileage=false;
 		formData.eventId=0;
 		
@@ -498,7 +518,7 @@ $("#notes").val(notes);
 		formData.notes=$('#notes').val();
 		formData.client=null;
 		formData.photographers=[];
-		formData.location=null;
+		formData.locationId=$('#location').val();
 		formData.trackMileage=false;
 		formData.eventId=$('#eventId').val();
 

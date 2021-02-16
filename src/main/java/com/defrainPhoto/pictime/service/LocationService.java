@@ -2,6 +2,9 @@ package com.defrainPhoto.pictime.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
 
@@ -18,4 +21,6 @@ public interface LocationService {
 	public void deleteLocationById(Long id);
 
 	public List<LocationDTO> doAutoComplete(String input);
+	
+//	public Page<LocationDTO> doAutoComplete(String input, Pageable pageable);
 }

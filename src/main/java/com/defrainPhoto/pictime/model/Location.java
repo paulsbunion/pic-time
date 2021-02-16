@@ -15,7 +15,10 @@ import com.defrainPhoto.pictime.constraint.City;
 import com.defrainPhoto.pictime.constraint.State;
 import com.defrainPhoto.pictime.constraint.Street;
 import com.defrainPhoto.pictime.constraint.Zipcode;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Location.class)
 @Entity
 public class Location {
 

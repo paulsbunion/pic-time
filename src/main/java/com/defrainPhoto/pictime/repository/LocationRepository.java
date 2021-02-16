@@ -2,6 +2,8 @@ package com.defrainPhoto.pictime.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,4 +16,14 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 	List<LocationDTO> findAllByOrderByDescriptionAsc();
 
 	List<LocationDTO> findByDescriptionContainingIgnoreCase(String input);
+	
+	@Query(value = "SELECT loc FROM Location as loc WHERE (:inputString is null or loc.description like %:inputString%) OR " +
+			"(loc.city like %:inputString%) OR " + 
+			"(loc.state like %:inputString%) OR " +
+			"(loc.zipcode like %:inputString%) OR " +
+			"(loc.street like %:inputString%)")
+	List<LocationDTO> findAllByInputString(String inputString);
+//	Page<LocationDTO> findAllByInputString(String inputString, Pageable pageable);
 }
+
+
