@@ -1,11 +1,13 @@
 package com.defrainPhoto.pictime.exception;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.boot.context.properties.bind.validation.ValidationErrors;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +48,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 //			errors.add(er.getObjectName() + ": " + er.getDefaultMessage());
 //		}
 		return handleExceptionInternal(ex, errors, headers, status, request);
+	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Object> dataIntegrityViolationExceptionHandler(Exception ex) {
+		Set<String> body = new HashSet<String>();
+		Throwable throwable = ex.getCause();
+		while (throwable != null) {
+			if (throwable instanceof SQLIntegrityConstraintViolationException) {
+				String errorMessage = throwable.getMessage();
+				if (errorMessage.toLowerCase().contains("duplicate")) {
+					String[] data = errorMessage.split("for");
+					if (data.length > 0) {
+						body.add("already-exists:" +  data[0].replace("-", ", "));
+					}
+				}
+			}
+			throwable = throwable.getCause();
+		}
+		return new ResponseEntity<Object>(body, HttpStatus.CONFLICT);
 	}
 }

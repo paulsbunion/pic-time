@@ -46,11 +46,11 @@ public class LocationMVCController {
 	public String listAllLocations(Model model) {
 		log.info("MVC user calling get all locations");
 		List<LocationDTO> allLocations = locationController.getAllLocations();
-		while (allLocations == null || allLocations.isEmpty()) {
-			log.info("Addind Dummy Location Data for testing");
-			addLocations();
-			allLocations = locationController.getAllLocations();
-		}
+//		while (allLocations == null || allLocations.isEmpty()) {
+//			log.info("Addind Dummy Location Data for testing");
+//			addLocations();
+//			allLocations = locationController.getAllLocations();
+//		}
 		model.addAttribute("locations", allLocations);
 		return LIST_LOCATIONS_URL;
 	}

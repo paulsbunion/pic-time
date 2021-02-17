@@ -212,6 +212,7 @@
 	       			<div class="">
 
 						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
+						<span class="text-danger" id="already-exists-error"></span>
 			
 						<div class="">
 			
@@ -249,6 +250,8 @@
 									<input type="text"  class="form-control" id="zipcode" placeholder="EX: 43068"> 
 									<span id="zipcode-error" class="text-danger"></span>
 								</div>
+								
+<!-- 								<span class="text-danger" id="already-exists2-error"></span> -->
 								
 								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td>
 								
@@ -474,8 +477,10 @@ $(document).on("click", "#timeslot-new-location-form-submit", function (event) {
 			console.log("error from ajax request");
 			console.log(e.responseJSON);
 			var errorData = e.responseJSON;
+// 			if (errorData.lenght = un)
 			for (var i = 0; i < errorData.length; i++) {
 				var err =  errorData[i].split(":");
+				console.log(errorData[i]);
 				var target = $("[id^=" + err[0] + "-error]");
 				console.log($("[id^=" + err[0] + "-error]"));
 				if(target.length > 0) {
