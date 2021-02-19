@@ -110,6 +110,14 @@ public class LocationMVCController {
 			return EDIT_LOCATION_URL;
 		}
 		else {
+			// validate unique
+			if (!locationController.isUnique(location)) {
+				log.error("Error(s) Updating Location:  updated Location already exists");
+				result.addError(new FieldError("location", "location", "Location already exists: " + location.printLocationWithDescription()));
+				model.addAttribute("states", states);
+				return EDIT_LOCATION_URL;
+			}
+			
 			locationController.updateLocation(id, location);
 			return "redirect:" + MVC_LOCATION_URL_BASE + "list";
 		}
