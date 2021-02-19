@@ -24,6 +24,9 @@
 
 				<form action="#" th:action="@{/mvc/locations/save}" th:object="${location}" method="post">
 
+				<th:block th:each="detailedError : ${#fields.detailedErrors()}">
+				    <span th:if="${detailedError.getFieldName() == 'location'}" class="text-danger" th:text="${detailedError.getMessage()}"></span>
+				</th:block>
 
 					<div class="form-group col-md-6">
 						<label for="description" class="col-form-label">Description</label> 

@@ -81,6 +81,9 @@ public class TimeslotServiceMockUnitTest {
 		User photographerOne = new User("Sally", "Butters", "sb@b.com", "pwd");
 		User photographerTwo = new User("Tom", "Caldwell", "tc@b.com", "pwd");
 		User photographerThree = new User("Ursela", "Davis", "ud@b.com", "pwd");
+		photographerOne.setId(1l);
+		photographerTwo.setId(2l);
+		photographerThree.setId(3l);
 		event.addPhotographer(photographerOne);
 		event.addPhotographer(photographerTwo);
 		event.addPhotographer(photographerThree);

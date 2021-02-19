@@ -1,5 +1,6 @@
 package com.defrainPhoto.pictime.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -85,5 +86,9 @@ public class LocationController {
 		catch (EmptyResultDataAccessException e) {
 			log.error("Error occured in calling delete Location by ID, Empty Result for ID: " + id, e);
 		}
+	}
+
+	public boolean isUnique(@Valid Location location) {
+		return locationService.existsByLocation(location);
 	}
 }

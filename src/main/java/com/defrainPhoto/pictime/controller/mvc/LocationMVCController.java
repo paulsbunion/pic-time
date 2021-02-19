@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +69,13 @@ public class LocationMVCController {
 		log.info("MVC user saving new Location");
 		if (result.hasErrors()) {
 			log.error("Error(s) saving new Location: " + result.getAllErrors());
+			model.addAttribute("states", states);
+			return NEW_LOCATION_URL;
+		}
+		// validate unique
+		if (!locationController.isUnique(location)) {
+			log.error("Error(s) saving new Location: Location already exists");
+			result.addError(new FieldError("location", "location", "Location already exists: " + location.printLocationWithDescription()));
 			model.addAttribute("states", states);
 			return NEW_LOCATION_URL;
 		}

@@ -1,6 +1,9 @@
 package com.defrainPhoto.pictime.service;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,6 +53,15 @@ public class LocationServiceImpl implements LocationService {
 			result.subList(10, result.size()).clear();;
 		}
 		return result;
+	}
+
+	@Override
+	public boolean existsByLocation(@Valid Location location) {
+		List<Location> result = locationRepository.existsByLocation(location);
+		if (result == null) {
+			result = new LinkedList<Location>();
+		}
+		return result.size() == 0 ? true : false;
 	}
 	
 //	@Override

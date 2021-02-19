@@ -20,6 +20,7 @@ import com.defrainPhoto.pictime.constraint.Zipcode;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+//@UniqueLocation
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Location.class)
 @Entity
 @Table(

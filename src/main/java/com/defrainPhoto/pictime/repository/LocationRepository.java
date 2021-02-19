@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
@@ -24,6 +25,9 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 			"(loc.street like %:inputString%)")
 	List<LocationDTO> findAllByInputString(String inputString);
 //	Page<LocationDTO> findAllByInputString(String inputString, Pageable pageable);
+
+	@Query("SELECT loc from Location loc where loc.street = :#{#test_loc.street}")
+	List<Location> existsByLocation(@Param("test_loc") Location location);
 }
 
 
