@@ -56,12 +56,13 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public boolean existsByLocation(@Valid Location location) {
+	public Location existsByLocation(@Valid Location location) {
 		List<Location> result = locationRepository.existsByLocation(location);
 		if (result == null) {
 			result = new LinkedList<Location>();
 		}
-		return result.size() == 0 ? true : false;
+//		return result.size() == 0 ? true : false;
+		return result.size() > 0? result.get(0) : null;
 	}
 	
 //	@Override

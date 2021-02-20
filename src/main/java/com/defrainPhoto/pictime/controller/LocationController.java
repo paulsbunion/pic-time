@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.UniqueLocation;
 import com.defrainPhoto.pictime.service.LocationService;
 
 @RestController()
@@ -88,7 +89,12 @@ public class LocationController {
 		}
 	}
 
-	public boolean isUnique(@Valid Location location) {
-		return locationService.existsByLocation(location);
+	public UniqueLocation isUniqueWithExistingLocation(@Valid Location location) {
+		boolean unique = true;
+		Location result = locationService.existsByLocation(location);
+		if (result != null && location.getId() != result.getId()) {
+			unique = false;
+		}
+		return new UniqueLocation(result, unique);
 	}
 }

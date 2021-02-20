@@ -26,7 +26,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 	List<LocationDTO> findAllByInputString(String inputString);
 //	Page<LocationDTO> findAllByInputString(String inputString, Pageable pageable);
 
-	@Query("SELECT loc from Location loc where loc.street = :#{#test_loc.street}")
+	@Query("SELECT loc from Location loc where loc.street = :#{#test_loc.street} AND loc.city = :#{#test_loc.city} AND loc.state = :#{#test_loc.state}")
 	List<Location> existsByLocation(@Param("test_loc") Location location);
 }
 

@@ -24,7 +24,7 @@ public interface LocationService {
 
 	public List<LocationDTO> doAutoComplete(String input);
 
-	public boolean existsByLocation(@Valid Location location);
+	public Location existsByLocation(@Valid Location location);
 	
 //	public Page<LocationDTO> doAutoComplete(String input, Pageable pageable);
 }

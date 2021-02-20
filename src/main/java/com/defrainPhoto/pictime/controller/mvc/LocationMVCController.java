@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.defrainPhoto.pictime.controller.LocationController;
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.UniqueLocation;
 
 @Controller
 @RequestMapping("/mvc/locations/")
@@ -73,9 +74,8 @@ public class LocationMVCController {
 			return NEW_LOCATION_URL;
 		}
 		// validate unique
-		if (!locationController.isUnique(location)) {
+		if (!checkUnique(location, result, model)) {
 			log.error("Error(s) saving new Location: Location already exists");
-			result.addError(new FieldError("location", "location", "Location already exists: " + location.printLocationWithDescription()));
 			model.addAttribute("states", states);
 			return NEW_LOCATION_URL;
 		}
@@ -109,18 +109,15 @@ public class LocationMVCController {
 			model.addAttribute("states", states);
 			return EDIT_LOCATION_URL;
 		}
-		else {
-			// validate unique
-			if (!locationController.isUnique(location)) {
-				log.error("Error(s) Updating Location:  updated Location already exists");
-				result.addError(new FieldError("location", "location", "Location already exists: " + location.printLocationWithDescription()));
-				model.addAttribute("states", states);
-				return EDIT_LOCATION_URL;
-			}
-			
-			locationController.updateLocation(id, location);
-			return "redirect:" + MVC_LOCATION_URL_BASE + "list";
+		// validate unique
+		if (!checkUnique(location, result, model)) {
+			log.error("Error(s) Updating Location:  updated Location already exists");
+			model.addAttribute("states", states);
+			return EDIT_LOCATION_URL;
 		}
+		
+		locationController.updateLocation(id, location);
+		return "redirect:" + MVC_LOCATION_URL_BASE + "list";
 	}
 	
 	@GetMapping("delete/{id}")
@@ -133,6 +130,14 @@ public class LocationMVCController {
 			log.error("Error occured in calling delete Location by ID, Empty Result for ID: " + id, e);
 		}
 		return "redirect:" + MVC_LOCATION_URL_BASE + "list";
+	}
+	
+	private boolean checkUnique(Location location, BindingResult result, Model model) {
+		UniqueLocation uniqueLocation = locationController.isUniqueWithExistingLocation(location);
+		if (!uniqueLocation.isUnique()) {
+			result.addError(new FieldError("location", "location", "Location already exists: " + uniqueLocation.getLocation().printLocationWithDescription()));
+		}
+		return uniqueLocation.isUnique();
 	}
 	
 	/**
