@@ -92,6 +92,7 @@ public class LocationController {
 	public UniqueLocation isUniqueWithExistingLocation(@Valid Location location) {
 		boolean unique = true;
 		Location result = locationService.existsByLocation(location);
+		// if same location being updated, allow desc / zip changes
 		if (result != null && location.getId() != result.getId()) {
 			unique = false;
 		}

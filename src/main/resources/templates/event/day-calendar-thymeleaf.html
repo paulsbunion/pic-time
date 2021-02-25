@@ -11,6 +11,10 @@
 <script type="text/javascript" th:src="@{/assets/jquery-ui-1.12.1/jquery-ui.js}"></script>
 <script type="text/javascript" th:src="@{/js/switchContentDisplay.js}"></script>
 <script type="text/javascript" th:src="@{/js/wickedpicker.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/location.js}"></script>
+<script type="text/javascript" th:src="@{/js/addParameterToURL.js}"></script>
+<script type="text/javascript" th:src="@{/js/timeslotModal.js}"></script>
+<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/assets/jquery-ui-1.12.1/jquery-ui.css}" />
@@ -81,8 +85,6 @@
 			</div>
 			<div class="day-calendar-content" id="cal">
 			
-<!-- 				<div class="testEntry"><span>Howdy</span></div> -->
-				
 				<th:block th:each="eventTimeslotEntry : ${eventTimeslots}">
 					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
@@ -102,28 +104,6 @@
 							
 							<span th:text="${timeslot.notes}"></span>
 							
-<!-- 							Modal -->
-<!-- 							<div class="modal fade" th:id="${'editModal_' + timeslot.id}" role="dialog" style="color: black;"> -->
-<!-- 							  <div class="modal-dialog" > -->
-<!-- 							    <div class="modal-content"> -->
-<!-- 							      <div class="modal-header"> -->
-							        
-<!-- 							        <button type="button" class="close" data-dismiss="modal"> -->
-<!-- 							          &times;</button> -->
-<!-- 							      </div> -->
-<!-- 							      <div class="modal-body"> -->
-<!-- 							        ... -->
-<!-- 							        <input type="text" name="value" id="id" th:value="${timeslot.time.printStartEnd()}" class="form-control" > -->
-<!-- 							        <input type="text" name="value" id="id" th:value="${timeslot.id}" class="form-control" > -->
-<!-- 							      </div> -->
-<!-- 							      <div class="modal-footer"> -->
-<!-- 							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-<!-- 							        <button type="button" class="btn btn-primary">Save changes</button> -->
-<!-- 							      </div> -->
-<!-- 							    </div> -->
-<!-- 							  </div> -->
-<!-- 							</div> -->
-							
 						</div>
 					</th:block>
 					
@@ -140,7 +120,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-      	<input type="text" name="timeslotTitle" id="timeslotTitle" value="Title" class="form-control" >
+      	<input type="text" name="timeslotTitle" id="editTimeslotTitle" placeholder="Title" class="form-control" >
 <!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -149,9 +129,9 @@
       <div class="modal-body" id="modal-body">
       <form id="myForm" method="post">
 	      <span>event id</span>
-	      <input id="eventId" name="eventId" type="text" class="form-control" disabled="true">
+	      <input id="editEventId" name="eventId" type="text" class="form-control" disabled="true">
 	      <span>timeslot id</span>
-	      <input id="timeslotId" name="timeslotId" type="text" class="form-control" disabled="true">
+	      <input id="editTimeslotId" name="timeslotId" type="text" class="form-control" disabled="true">
 	      
 			<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
         	<div class="time-selector">
@@ -195,10 +175,10 @@
 	       		<div class="location-searchbar">
 		       		<input type="text" name="search" id="searchBox" class="form-control location-searchbar-item ">
 		       		<input type="button" value="X" onclick="clearLocation()" class="form-control location-searchbar-item btn-danger">
-		       		<input type="text" id="location" hidden>
+		       		<input type="text" id="editLocation" hidden>
 	       		</div>
 	       		
-	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleCreateLocation()">Create New Location</button></div>
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleCreateLocationDisplay()">Create New Location</button></div>
 	       		
 	       		
 	       		
@@ -212,7 +192,7 @@
 	       			<div class="">
 
 						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
-						<span class="text-danger" id="already-exists-error"></span>
+						<span class="" id="already-exists-error"></span>
 			
 						<div class="">
 			
@@ -269,13 +249,6 @@
 	       		
 	       		
 	       		
-	       		
-	       		
-	       		
-	       		
-	       		
-	       		
-	       		
 	       		<br>
 <!-- 	       		<select id="location" class="form-control select2-single" th:field="*(location)"> -->
 <!-- 	       			<option value="">Search Location</option> -->
@@ -283,7 +256,7 @@
 	       	</div>
 	        
 	        <span>Notes</span>
-	        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
+	        <textarea rows="5" cols="33" name="notes" id="editNotes" class="form-control"></textarea>
       </form>
       </div>
       <div class="modal-footer">
@@ -294,8 +267,8 @@
 		onclick="if (!confirm(this.getAttribute('data-confirm-delete'))){return false}
 		else {
 			var _self = $('#myForm');
-			var eventId = $('#eventId').val();
-			var timeslotId = $('#timeslotId').val();
+			var eventId = $('#editEventId').val();
+			var timeslotId = $('#editTimeslotId').val();
 			console.log(_self);
 			console.log(eventId);
 			console.log(timeslotId);
@@ -313,210 +286,13 @@
   </div>
 </div>
 
-<script type="text/javascript">
-	$(function() {
-		$("#searchBox").autocomplete({
-			source : searchLocations,
-			minLength : 2,
-			focus: function(event, ui) { // focus for items in search results
-				event.preventDefault();
-				
-			},
-			 select: function (event, ui) {
-		            event.preventDefault();
-		            $("#searchBox").val(ui.item.label); // replace string with selected value
-		            $("#location").val(ui.item.value); // set id for saving
-			 }
-		}).bind('focus', function() {
-			$(this).select();
-			$(this).autocomplete("search"); } );
-// 		focus(function() { // focus for text input box
-// 			$(this).select();
-			
-// 			searchLocations($(this).request, $(this).response);
-// 		});
-		
-	});
-	
-	function clearLocation() {
-		$("#searchBox").val("");
-		$("#location").val("");
-	}
-	
-	function searchLocations(request, response) {
-		$.ajax ({
-			url : "/locations/search",
-			dataType : "json",
-			data : {
-				q : request.term
-			},
-			success : function(data) {
-				console.log(data);
-//					response(data);
-				var array = data.error ? [] : $.map(data, function(m){
-					console.log("M");
-					console.log(m.description);
-					return {
-						label: m.description + ': ' + m.street + ', ' + m.city + ', ' + m.state + ', ' + m.zipcode ,
-						value: m.id
-					};
-				});
-				
-				response(array);
-			}
-		});
-	}
-	
-	function toggleCreateLocation() {
-		var addLocationDiv = $("#addNewLocation")[0];
-		console.log(addLocationDiv);
-		console.log(addLocationDiv.style.display);
-		if (addLocationDiv.style.display === "none") {
-			addLocationDiv.style.display = "block";
-		}
-		else {
-			addLocationDiv.style.display = "none";
-		}
-	}
-</script>
-
-
-<!-- New Location -->
-<script type="text/javascript">
-
-$(document).on("click", "#cancel-add-location", function (event) {
-	event.preventDefault();
-	clearErrors();
-	toggleCreateLocation();
-	
-});
-
-$(document).on("click", "#timeslot-new-location-form-submit", function (event) {
-	event.preventDefault();
-	
-//		validateForm(this);
-	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-	var _self = $('#timeslot-new-location-form');
-	
-	var locationData = {};
-	locationData.id = null;
-	locationData.description="";
-	locationData.street="";
-	locationData.city="";
-	locationData.state ="";
-	locationData.zipcode=0;
-	
-	locationData.description=$('#description').val();
-	locationData.street=$('#street').val();
-	locationData.city=$('#city').val();
-	locationData.state =$('#state').val();
-	locationData.zipcode=$('#zipcode').val();
-	
-	console.log("data here");
-	console.log(locationData);
-	console.log(JSON.stringify(locationData));
-
-	clearErrors();
-	
-	const RELOAD_TIMER = 10;
-	
-	$.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-        }
-    });
-	console.log("before ajaxNew");
-	$.ajax({
-		type: "POST",
-		contentType: "application/json",
-		url: "/locations/",
-		data: JSON.stringify(locationData),
-
-		dataTpye: 'JSON',
-		
-		beforeSend: function(xhr) {
-			console.log("before req: " + token);
-			xhr.setRequestHeader(header, token);
-			console.log("token set");
-		},
-		
-		success: function(response) {
-			if (response !== true) {
-				console.log("ERROR");
-			}
-// 			$('#rsp_start_time_new').text("");
-			console.log("ajax1New");
-			console.log(response);
-			console.log(response.id);
-			
-			// set the hidden location id
-            $("#location").val(response.id); // set id for saving
-			// set the location name string
-			$("#searchBox").val(response.description + ": " + response.street + ", " + response.city + ", " + response.state + ", " + response.zipcode); // replace string with selected value
-			// hide new location
-			toggleCreateLocation();
-			
-// 			console.log(locationData.eventId);
-// 			location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-			
-// 			 window.setTimeout(function(){window.location.reload()}, 3000);
-			if (response.redirect) {
-				//alert(location.href);
-				//window.location.href = response.redirect;
-			}
-			
-			//setTimeout(function() {
-				//location.reload();
-				//}, RELOAD_TIMER);
-		},
-		error: function (e) {
-// 			$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
-			console.log("error from ajax request");
-			console.log(e.responseJSON);
-			var errorData = e.responseJSON;
-// 			if (errorData.lenght = un)
-			for (var i = 0; i < errorData.length; i++) {
-				var err =  errorData[i].split(":");
-				console.log(errorData[i]);
-				var target = $("[id^=" + err[0] + "-error]");
-				console.log($("[id^=" + err[0] + "-error]"));
-				if(target.length > 0) {
-					if (target.text().length > 0) {
-						target.text(target.text() +", " + err[1]);
-					}
-					else {
-						target.text(err[1]);
-					}
-					
-				}
-// 				description-error
-				console.log(errorData[i]);
-			}
-		}
-	});
-
-});
-
-function clearErrors() {
-	var errors = $("[id$='-error']");
-	for (i = 0; i < errors.length; i++) {
-		console.log(errors[i]);
-		$("#" + errors[i].id).empty();
-// 		errors[i].text = '';
-	}
-}
-
-</script>
 
 <!-- New Modal -->
 <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-      	<input type="text" name="timeslotTitle" id="timeslotTitleNew" value="Title" class="form-control" >
+      	<input type="text" name="timeslotTitle" id="timeslotTitleNew" placeholder="Title" class="form-control" >
 <!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -525,7 +301,7 @@ function clearErrors() {
       <div class="modal-body" id="modal-body">
       <form id="myFormNew" method="post">
 	      <span>event id</span>
-	      <input id="eventIdNew" name="eventId" type="text" class="form-control" disabled="true">
+	      <input id="newEventId" name="eventId" type="text" class="form-control" disabled="true">
 	      
 	      
 	      <span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
@@ -576,544 +352,5 @@ function clearErrors() {
     </div>
   </div>
 </div>
-
-
-<script type="text/javascript">
-// https://stackoverflow.com/questions/5997450/append-to-url-and-refresh-page
-	function URL_add_parameter(url, param, value){
-	    var hash       = {};
-	    var parser     = document.createElement('a');
-	
-	    parser.href    = url;
-	
-	    var parameters = parser.search.split(/\?|&/);
-	
-	    for(var i=0; i < parameters.length; i++) {
-	        if(!parameters[i])
-	            continue;
-	
-	        var ary      = parameters[i].split('=');
-	        hash[ary[0]] = ary[1];
-	    }
-	
-	    hash[param] = value;
-	
-	    var list = [];  
-	    Object.keys(hash).forEach(function (key) {
-	        list.push(key + '=' + hash[key]);
-	    });
-	
-	    parser.search = '?' + list.join('&');
-	    return parser.href;
-	}
-</script>
-
-<script type="text/javascript">
-   $(document).on("click", "#newTimeslotModal", function (event) {
-	   event.preventDefault();
-	   
-	var _self = $(this);
-	console.log(_self);
-// 	var eventId = _self.data('event-id');
-	
-	var eventId = $("#sel").val()
-	// if id null, call create event
-	if (eventId == '' || eventId == null) {
-		window.location.href = document.getElementById("newEventAnchor").href;
-	}
-	else {
-	
-		// 	var timeslotId = _self.data('id');
-		// 	var startTime = 0;
-		// 	var endTime = 0;
-		// 	var title = _self.data('timeslottitle');
-		// 	var notes = _self.data('notes');
-		
-		$('#rsp_start_time_new').text("");
-		console.log("value");
-		console.log($("#sel").val());
-		$("#eventIdNew").val($("#sel").val());
-		
-		// $("#timeslotTitle").val(title);
-		// $("#startTime").val(startTime);
-		// $("#endTime").val(endTime);
-		// $("#notes").val(notes);
-		// 	 var x = new Date(); 
-		
-		// update timepicker
-	
-	     $('#newModal').modal('show');
-  	}
-	});
-
-   
-   
-   
-   
-   
-   
-   
-   
-   $(document).on("click", ".open-EditModal", function (event) {
-// 	   window.alert();
-	var _self = $(this);
-	var eventId = _self.data('event-id');
-	var timeslotId = _self.data('id');
-	var startTime = _self.data('starttime');
-	var endTime = _self.data('endtime');
-	var title = _self.data('timeslottitle');
-	var notes = _self.data('notes');
-	var location = _self.data('location');
-	var locationId = _self.data('location-id');
-
-	console.log("zero error");
-	console.log(startTime);
-	
-// 	var startTime = $(event.relatedTarget).data('val');
-// 	window.alert(st);
-// 	$(this).find(".modal-body").text(st);
-$('#rsp_start_time').text("");
-$("#eventId").val(eventId);
-$("#timeslotId").val(timeslotId);
-
-$("#timeslotTitle").val(title);
-// $("#startTime").val(startTime);
-var startTimeSplit = startTime.split(":");
-var endTimeSplit = endTime.split(":");
-if (startTimeSplit[0] > 11) {
-	$("#editStartTimeMeridian").val("PM");
-	startTimeSplit[0]-= 12;
-}
-else {
-	$("#editStartTimeMeridian").val("AM");
-}
-if (endTimeSplit[0] > 11) {
-	$("#editEndTimeMeridian").val("PM");
-	endTimeSplit[0]-= 12;
-}
-else {
-	$("#editEndTimeMeridian").val("AM");
-}
-
-$("#editStartTimeHr").val(startTimeSplit[0]);
-$("#editStartTimeMin").val(startTimeSplit[1]);
-// $("#editStartTimeMeridian").val(startTimeSplit[2]);
-
-$("#editEndTimeHr").val(endTimeSplit[0]);
-$("#editEndTimeMin").val(endTimeSplit[1]);
-// $("#editEndTimeMeridian").val(endTimeSplit[2]);
-
-$("#endTime").val(endTime);
-$("#notes").val(notes);
-	 var x = new Date(); 
-//      $("#modal-body").html(myHeading + x);   
-
-if (location != null) {
-	$("#searchBox").val(location);
-	$("#location").val(locationId);
-}
-else {
-	$("#searchBox").val("");
-	$("#location").val("");
-}
-
-// update timepicker
-
-     $('#editModal').modal('show');
-    });
-   
-   
-// 	$(function() {
-   	$(document).on("click", "#edit-modal-submit", function (event) {
-		event.preventDefault();
-// 		console.log(event.target.parentNode.parentNode.childNodes[3]);
-		
-// 		validateForm(this);
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		console.log("ajax");
-		console.log($('#editStartTime'));
-		
-// 		var _self = $('.open-EditModal');
-		var _self = $('#myForm');
-		
-		var formData = {};
-		formData.id = 0;
-		formData.time={};
-		formData.time.startTime=0;
-		formData.time.endTime=0;
-		formData.title="";
-		formData.notes=null;
-		formData.client=null;
-		formData.photographers=[];
-		formData.locationId=null;
-		formData.trackMileage=false;
-		formData.eventId=0;
-		
-// 		formData.timeslot = {};
-// 		formData.timeslot.start_time = parseTime($('#editStartTime').val());
-// 		formData.timeslot.end_time =  parseTime($('#editEndTime').val());
-// 		formData.timeslot.duration = $('#editEndTime').val();
-
-// 		formData.start_time = parseTime($('#editStartTime').val());
-// 		formData.end_time =  parseTime($('#editEndTime').val());
-// 		formData.duration = $('#editEndTime').val();
-
-		// check if need to clear location id
-		if ($("#searchBox").val() == "") {
-			$("#location").val("");
-		}
-
-		formData.id = $('#timeslotId').val();
-		var startTime = [$('#editStartTimeHr').val(), $('#editStartTimeMin').val(), $('#editStartTimeMeridian').val()];
-		var endTime = [$('#editEndTimeHr').val(), $('#editEndTimeMin').val(), $('#editEndTimeMeridian').val()];
-		formData.time.startTime = parseTime(startTime);
-		formData.time.endTime =  parseTime(endTime);
-// 		formData.time.totalMinutes = getDuration($('#editStartTime').val(), $('#editEndTime').val());
-		formData.title=$('#timeslotTitle').val();
-		formData.notes=$('#notes').val();
-		formData.client=null;
-		formData.photographers=[];
-		formData.locationId=$('#location').val();
-		formData.trackMileage=false;
-		formData.eventId=$('#eventId').val();
-
-// 		console.log(_self);
-		console.log("data here");
-		console.log(formData);
-		console.log(JSON.stringify(formData));
-// 		var startTime = _self.data('endtime');
-		
-		
-// 		console.log($('.open-EditModal').data('endtime'));
-// 		console.log(startTime);
-		
-// 		parseData(_self);
-// 		var startTime = $('#editStartTime').val();
-// 		console.log(startTime);
-		
-// 		format data
-		
-		const RELOAD_TIMER = 10;
-		
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-            }
-        });
-		console.log("before ajax");
-		console.log("before ajax" + $('#timeslotId').val());
-		$.ajax({
-			type: "PUT",
-			contentType: "application/json",
-// 			url: "{{ path('addTag') }}",
-			url: "/events/" + $('#eventId').val() + "/timeslots/"+ $('#timeslotId').val(),
-// 			data: $('form.tagForm').serialize(),
-// 			data: JSON.stringify(startTime),
-			data: JSON.stringify(formData),
-
-// 			data:"{\"id\":55,\"time\":{\"startTime\":600,\"totalMinutes\":240,\"endTime\":1000},\"title\":\"" + $('#timeslotTitle').val() + "\",\"notes\":null,\"client\":null,\"photographers\":[],\"location\":null,\"trackMileage\":false,\"eventId\":11}",
-
-// 			data: formData,
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				console.log("before req: " + token);
-				xhr.setRequestHeader(header, token);
-				console.log("token set");
-			},
-			
-			success: function(response) {
-				$('#rsp_start_time').text("");
-// 				alert(response['response']);
-				console.log("ajax1");
-				console.log(response);
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-// 				alert(location.href);
-				if (response.redirect) {
-					window.location.href = response.redirect;
-				}
-				
-				setTimeout(function() {
-					location.reload();
-					}, RELOAD_TIMER);
-			},
-			error: function (e) {
-// 				alert('Error');
-				$('#rsp_start_time').text(e.responseJSON.rsp_start_time);
-// 				alert(e.status);
-// 				console.log(e.responseJSON.rsp_start_time);
-				console.log("ajax2");
-			}
-		});
-
-// $.ajax({
-// 			type: "GET",
-// 			contentType: "application/json",
-// // 			url: "{{ path('addTag') }}",
-// 			url: "/events",
-// // 			data: $('form.tagForm').serialize(),
-// // 			data: JSON.stringify(startTime),
-// // 			dataTpye: 'json',
-// 			success: function(response) {
-// 				alert(response['response']);
-// 				console.log("ajax1");
-// 			},
-// 			error: function () {
-// 				alert('Error');
-// 				console.log("ajax2");
-// 			}
-// 		});
-		
-// 		console.log("ajax3");
-// 		return false;
-// 	});
-	});
-	
-	
-   	$(document).on("click", "#new-modal-submit", function (event) {
-		event.preventDefault();
-		
-// 		validateForm(this);
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		console.log("ajaxNew");
-		console.log($('#editStartTimeNew'));
-		
-		var _self = $('#myFormNew');
-		
-		var formData = {};
-		formData.id = null;
-		formData.time={};
-		
-		var startTime = [$('#newStartTimeHr').val(), $('#newStartTimeMin').val(), $('#newStartTimeMeridian').val()];
-		var endTime = [$('#newEndTimeHr').val(), $('#newEndTimeMin').val(), $('#newEndTimeMeridian').val()];
-		console.log("here");
-		console.log(startTime);
-		console.log(endTime);
-		formData.time.startTime = parseTime(startTime);
-		formData.time.endTime =  parseTime(endTime);
-		
-		
-		formData.title="";
-		formData.notes=null;
-		formData.client=null;
-		formData.photographers=[];
-		formData.location=null;
-		formData.trackMileage=false;
-		formData.eventId=0;
-		
-// 		formData.id = $('#timeslotIdNew').val();
-console.log("parsing start TIme")
-		formData.title=$('#timeslotTitleNew').val();
-		formData.notes=$('#notesNew').val();
-		formData.client=null;
-		formData.photographers=[];
-		formData.location=null;
-		formData.trackMileage=false;
-		formData.eventId=$('#eventIdNew').val();
-
-// 		console.log(_self);
-		console.log("data here");
-		console.log(formData);
-		console.log(JSON.stringify(formData));
-
-		var startTime = $('#editStartTimeNew').val();
-		const RELOAD_TIMER = 10;
-		
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-            }
-        });
-		console.log("before ajaxNew");
-		console.log("before ajaxNew" + $('#timeslotIdNew').val());
-		$.ajax({
-			type: "POST",
-			contentType: "application/json",
-			url: "/events/" + $('#eventIdNew').val() + "/timeslots/",
-			data: JSON.stringify(formData),
-
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				console.log("before req: " + token);
-				xhr.setRequestHeader(header, token);
-				console.log("token set");
-			},
-			
-			success: function(response) {
-				$('#rsp_start_time_new').text("");
-				console.log("ajax1New");
-				console.log(response);
-				console.log(formData.eventId);
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-				
-				 window.setTimeout(function(){window.location.reload()}, 3000);
-				if (response.redirect) {
-					//alert(location.href);
-					//window.location.href = response.redirect;
-				}
-				
-				//setTimeout(function() {
-					//location.reload();
-					//}, RELOAD_TIMER);
-			},
-			error: function (e) {
-				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
-				console.log("ajax2New");
-			}
-		});
-
-// $.ajax({
-// 			type: "GET",
-// 			contentType: "application/json",
-// // 			url: "{{ path('addTag') }}",
-// 			url: "/events",
-// // 			data: $('form.tagForm').serialize(),
-// // 			data: JSON.stringify(startTime),
-// // 			dataTpye: 'json',
-// 			success: function(response) {
-// 				alert(response['response']);
-// 				console.log("ajax1");
-// 			},
-// 			error: function () {
-// 				alert('Error');
-// 				console.log("ajax2");
-// 			}
-// 		});
-		
-// 		console.log("ajax3");
-// 		return false;
-// 	});
-	});
-	
-	
-	
-	
-	
-	
-</script>
-
-<script type="text/javascript">
-// $(document).ajaxStop(function() {
-//     setInterval(function() {
-//         location.reload();
-//     }, 300);
-// });
-
-</script>
-
-<script type="text/javascript">
-	function parseData(self) {
-// 		console.log(self);
-		this.startTime = $('#editStartTime');
-		startTime.val("700");
-// 		this.startTime = 1200;
-
-// 		$('#editStartTime').val() = 700;
-		
-// 		$("#startTime").val(1200);
-// 		self.data('starttime').value = "1200";
-// 		self.attr("starttime", "1200");
-		console.log("in edit " + self.data('starttime'));
-		console.log($('#editStartTime').val());
-	}
-	
-	function parseTime(timeString) {
-		console.log(timeString);
-// 		var timeData = timeString.split(" ");
-		
-// 		var hr = parseInt(timeData[0]);
-// 		var mn = timeData[2];
-// 		var merid = timeData[3];
-
-		var hr = parseInt(timeString[0]);
-		var mn = parseInt(timeString[1]);
-		var merid = timeString[2];
-		
-		if (merid.toUpperCase().normalize() === "PM" && hr != 12) {
-			hr += 12;
-		}
-		if (merid.toUpperCase().normalize() === "AM" && hr == 12) {
-			hr = "00";
-		}
-		else {
-		}
-		
-// 		console.log(hr);
-// 		console.log(mn);
-// 		console.log(merid);
-
-		console.log("checking hour length: " + hr.toString().length);
-		if(hr.toString().length == 1) {
-			console.log("length < 2");
-			hr = "0" + hr;
-		}
-		if(mn.toString().length == 1) {
-			console.log("length < 2");
-			mn = "0" + mn;
-		}
-		var intTime = "" + hr + ":" + mn;
-		console.log(intTime);
-		return intTime;
-		
-	}
-	
-// 	function validateForm(obj) {
-// 		if (timeToMinutes($('#editStartTime').val()) > timeToMinutes($('#editEndTime').val())) {
-// 			console.log("error, start time cannot be after end time");
-// 		}
-// 	}
-	
-	function timeToMinutes(time) {
-		var result = 0;
-		
-		var tempTime = parseTime(time);
-		var data = tempTime.split(":");
-		
-		result = parseInt(data[0]) * 60;
-		result += parseInt(data[1]);
-		console.log("parsed time: " + result);
-		return result;
-	}
-	
-	function getDuration(timeStart, timeEnd) {
-		var startTimeData = timeStart.split(" ");
-		var endTimeData = timeEnd.split(" ");
-		
-		var startHr = parseInt(startTimeData[0]);
-		var startMin = startTimeData[2];
-		var startMerid = startTimeData[3];
-		
-		var endHr = parseInt(endTimeData[0]);
-		var endMin = endTimeData[2];
-		var endMerid = endTimeData[3];
-		
-		if(startMerid.toUpperCase().normalize() === "PM") {
-			startHr += 12;
-		}
-		if(endMerid.toUpperCase().normalize() === "PM") {
-			endHr += 12;
-		}
-		
-		var totHrs = endHr - startHr;
-		var totMins = endMin - startMin;
-		if (endMin < startMin) {
-			totMins = endMin + (60 - startMin);
-		}
-		
-		var duration = totHrs * 100 + totMins;
-		console.log(duration);
-		return duration;
-		
-	}
-</script>
-	<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>
-	
 </body>
 </html>

@@ -1,4 +1,4 @@
-for (var i = 0; i < 24; i++) {
+$(function() {for (var i = 0; i < 24; i++) {
 	var hourDiv = document.createElement("div");
 	hourDiv.className = "hour";
 	hourDiv.style.gridArea = i + 1 + (i * 3) + " / 1 / span 4 / span 1";
@@ -65,3 +65,4 @@ function getMinute(quarter) {
 }
 
 //load timeslots
+});

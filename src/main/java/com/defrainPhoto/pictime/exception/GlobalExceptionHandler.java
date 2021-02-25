@@ -60,6 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				if (errorMessage.toLowerCase().contains("duplicate")) {
 					String[] data = errorMessage.split("for");
 					if (data.length > 0) {
+						data[0] = data[0].replace("Duplicate entry", "Already exists");
 						body.add("already-exists:" +  data[0].replace("-", ", "));
 					}
 				}
