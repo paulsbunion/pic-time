@@ -86,7 +86,7 @@
 							</div>
 							
 							<div class="photographer-container" >
-								<th:block th:each= "photog : ${available_photographers}">
+								<th:block th:each= "photog : ${available_event_photographers}">
 									<div class="photographer-row" style="display: none" th:id="'showPhotogId_' + ${photog.id}">
 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div>
 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}">
@@ -96,7 +96,7 @@
 										<i class="fas fa-user-times m1-2">Remove</i></a> </div>
 									</div>
 								</th:block>
-								<th:block th:each= "photog : ${assigned_photographers}">
+								<th:block th:each= "photog : ${assigned_event_photographers}">
 									<div class="photographer-row" th:id="'showPhotogId_' + ${photog.id}">
 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div>
 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}">
@@ -178,7 +178,7 @@
 					</button>
 				</div>
 				<div class="modal-body" id="availablePhotographers">
-					<th:block th:each= "photog : ${available_photographers}">
+					<th:block th:each= "photog : ${available_event_photographers}">
 						<div th:id="'addPhotogId_' + ${photog.id}">
 <!-- 							<td><a th:id="'addPhotogId_' + ${photog.id}" class="btn btn-primary"> -->
 							<td><a class="btn btn-primary">
@@ -186,7 +186,7 @@
 							<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
 						</div>
 					</th:block>
-					<th:block th:each= "photog : ${assigned_photographers}">
+					<th:block th:each= "photog : ${assigned_event_photographers}">
 						<div style="display: none" th:id="'addPhotogId_' + ${photog.id}">
 <!-- 							<td><a th:id="'addPhotogId_' + ${photog.id}" class="btn btn-primary"> -->
 							<td><a class="btn btn-primary">

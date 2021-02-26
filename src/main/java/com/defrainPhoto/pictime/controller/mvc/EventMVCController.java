@@ -94,8 +94,8 @@ public class EventMVCController {
 		Event event = eventController.getEvent(id);
 		model.addAttribute("event", event);
 		
-		List<UserDTO> assignedPhotographers = getAssignedPhotographers(event);
-		model.addAttribute("assigned_photographers", assignedPhotographers);
+		List<UserDTO> assignedEventPhotographers = getAssignedEventPhotographers(event);
+		model.addAttribute("assigned_event_photographers", assignedEventPhotographers);
 		
 		return SHOW_EVENT_URL;
 	}
@@ -104,28 +104,42 @@ public class EventMVCController {
 	public String showEditEventForm(@PathVariable("id") long id, Model model) {
 		log.info("MVC user editing existing event with ID: " + id);
 		Event event = eventController.getEvent(id);
+		
 		model.addAttribute("event", event);
 		
-		List<UserDTO> assignedPhotographers = getAssignedPhotographers(event);
-		List<UserDTO> availablePhotographers = getAvailablePhotographers(assignedPhotographers);
+		List<UserDTO> assignedEventPhotographers = getAssignedEventPhotographers(event);
+		List<UserDTO> availableEventPhotographers = getAvailableEventPhotographers(assignedEventPhotographers);
 		
-		model.addAttribute("assigned_photographers", assignedPhotographers);
-		model.addAttribute("available_photographers", availablePhotographers);
+		model.addAttribute("assigned_event_photographers", assignedEventPhotographers);
+		model.addAttribute("available_event_photographers", availableEventPhotographers);
 		
 		return EDIT_EVENT_URL;
 	}
 	
-	private List<UserDTO> getAssignedPhotographers(Event event) {
+	private List<UserDTO> getAssignedEventPhotographers(Event event) {
 		return Arrays.asList(modelMapper.map(event.getPhotographers(), UserDTO[].class));
 	}
 
-	private List<UserDTO> getAvailablePhotographers(List<UserDTO> assignedPhotographers) {
+	private List<UserDTO> getAvailableEventPhotographers(List<UserDTO> assignedEventPhotographers) {
 		List<UserDTO> availablePhotographers = new LinkedList<UserDTO>(photographerController.getAllPhotographers());
 		
-		if (assignedPhotographers != null && availablePhotographers != null) {
-			availablePhotographers.removeAll(assignedPhotographers);
+		if (assignedEventPhotographers != null && availablePhotographers != null) {
+			availablePhotographers.removeAll(assignedEventPhotographers);
 		}
 		return availablePhotographers;
+	}
+	
+	private List<UserDTO> getAssignedTimeslotPhotographers(Timeslot timeslot) {
+		return Arrays.asList(modelMapper.map(timeslot.getPhotographers(), UserDTO[].class));
+	}
+
+	private List<UserDTO> getAvailableTimeslotPhotographers(List<UserDTO> assignedTimeslotPhotographers, List<UserDTO> availableEventPhotographers) {
+//		List<UserDTO> availablePhotographers = getAssignedEventPhotographers(event);
+		
+		if (assignedTimeslotPhotographers != null && availableEventPhotographers != null) {
+			availableEventPhotographers.removeAll(assignedTimeslotPhotographers);
+		}
+		return availableEventPhotographers;
 	}
 
 	@PostMapping("update/{id}")
@@ -284,6 +298,34 @@ public class EventMVCController {
 		params.put("eventTimeslots", eventTimeslots);
 		params.put("timeslotGridSpans", timeslotGridSpans);
 		params.put("states", locationMvcController.getStatesList());
+		
+		// add photographers to timeslots
+		HashMap<Long, List<UserDTO>> assignedTimeslotPhotographers = new HashMap<Long, List<UserDTO>>();
+		HashMap<Long, List<UserDTO>> availableTimeslotPhotographers = new HashMap<Long, List<UserDTO>>();
+		
+		if (!eventDTOs.isEmpty()) {
+			eventDTOs.forEach(e -> {
+				Long eventId = e.getId();
+				Event event = eventController.getEvent(eventId);
+//				event.setId(eventId);
+				List<UserDTO> eventPhotographers = getAssignedEventPhotographers(event);
+
+				List<Timeslot> timeslots = eventController.getAllTimeslots(e.getId());
+				timeslots.forEach(t -> {
+					List<UserDTO> assignedList = getAssignedTimeslotPhotographers(t);
+					List<UserDTO> availableList = getAvailableTimeslotPhotographers(assignedList, eventPhotographers);
+
+					assignedTimeslotPhotographers.put(t.getId(), assignedList);
+					availableTimeslotPhotographers.put(t.getId(), availableList);
+				});
+
+				eventTimeslots.put(e.getId(), eventController.getAllTimeslots(e.getId()));
+			});
+		}
+		// add available and assigned photographers to timeslot map
+		params.put("assigned_timeslot_photographers", assignedTimeslotPhotographers);
+		params.put("available_timeslot_photographers", availableTimeslotPhotographers);
+		
 		
 		return new ModelAndView(LIST_EVENTS_FOR_DAY_URL, params) ;
 	}

@@ -70,7 +70,7 @@
 							
 							<!-- 		select photograper code -->
 							<div style="border: 1px solid black; margin-right: 60%;" id="test">
-								<th:block th:each= "photog : ${assigned_photographers}">
+								<th:block th:each= "photog : ${assigned_event_photographers}">
 									<div th:id="'showPhotogId_' + ${photog.id}">
 										<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
 <!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->

@@ -178,16 +178,8 @@
 		       		<input type="text" id="editLocation" hidden>
 	       		</div>
 	       		
-	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleCreateLocationDisplay()">Create New Location</button></div>
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleModalDivDisplay('addNewLocation')">Create New Location</button></div>
 	       		
-	       		
-	       		
-	       		
-	       		
-	       		
-	       		
-	       		
-<!-- 	       		<div id="addNewLocation" style="display: none"> -->
 				<div id="addNewLocation" style="display: none;">
 	       			<div class="">
 
@@ -243,17 +235,149 @@
 						</div>
 					</div>
 	       		</div>
-	       		
-	       		
-	       		
-	       		
-	       		
-	       		
-	       		<br>
-<!-- 	       		<select id="location" class="form-control select2-single" th:field="*(location)"> -->
-<!-- 	       			<option value="">Search Location</option> -->
-<!-- 	       		</select> -->
 	       	</div>
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        <div>
+		        <span>Photographers</span>
+		        	<th:block th:each= "availPhotogs : ${available_timeslot_photographers}">
+									<div class="photographer-row"  th:id="'timeslot' + ${availPhotogs.value.size()}">
+									<div th:if="${availPhotogs.value!=null and !availPhotogs.value.isEmpty()}">
+									<span>Available</span>
+										<div th:each="p : ${availPhotogs.value}">
+											<span th:text="'timeslot id: ' + ${availPhotogs.key} + ' name: ' + ${p.lastName}"></span>
+										</div>
+									</div>
+<!-- 									<span th:text="'showPhotogId_' + ${photog.value.size()}"></span> -->
+<!-- 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div> -->
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </div> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </div> -->
+									</div>
+					</th:block>
+					
+					<th:block th:each= "availPhotogs : ${assigned_timeslot_photographers}">
+									<div class="photographer-row"  th:id="'timeslot' + ${availPhotogs.value.size()}">
+									<div th:if="${availPhotogs.value!=null and !availPhotogs.value.isEmpty()}">
+									<span>Assigned</span>
+										<span th:each="p : ${availPhotogs.value}" th:text="'timeslot id: ' + ${availPhotogs.key} + ' size: ' + ${p.firstName}"></span>
+									</div>
+<!-- 									<span th:text="'showPhotogId_' + ${photog.value.size()}"></span> -->
+<!-- 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div> -->
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </div> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </div> -->
+									</div>
+					</th:block>
+		        <script type="text/javascript">
+		        	$(window).on('load', function () {     
+// 			        	var x = JSON.parse('${assigned_timeslot_photographers}');
+// 			        	console.log(x);
+		        	});
+			        	
+		        </script>
+		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleModalDivDisplay('showPhotographers')">Assign(ed) Photographers</button></div>
+	       		
+				<div id="showPhotographers" style="display: none;">
+	       			<div class="">
+
+						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
+						<span class="" id="already-exists-error"></span>
+			
+						<div class="">
+			
+							<form action="#" id="timeslot-new-location-form" th:action="@{/mvc/locations/save}" method="post">
+			
+			
+								<div class="form-group">
+									<label for="description" class="col-form-label">Description</label> 
+									<input type="text"  class="form-control" id="description" placeholder="Description"> 
+									<span id="description-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="street" class="col-form-label">Street</label> 
+									<input type="text" class="form-control" id="street" placeholder="Street (EX: 123 Main St.)"> 
+									<span id="street-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="city" class="col-form-label">City</label> 
+									<input type="text"  class="form-control" id="city" placeholder="City"> 
+									<span id="city-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="state" class="col-form-label">State</label> 
+									<select class="form-control" id="state">
+										<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+									</select>
+									<span id="state-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="zipcode" class="col-form-label">ZIP Code</label> 
+									<input type="text"  class="form-control" id="zipcode" placeholder="EX: 43068"> 
+									<span id="zipcode-error" class="text-danger"></span>
+								</div>
+								
+<!-- 								<span class="text-danger" id="already-exists2-error"></span> -->
+								
+								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td>
+								
+								<td><a id="cancel-add-location"
+									class="btn btn-primary delete"> <i
+										class="fas fa-user-times m1-2">Cancel</i>
+								</a></td>
+							</form>
+						</div>
+					</div>
+	       		</div>
+	        </div>
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
 	        
 	        <span>Notes</span>
 	        <textarea rows="5" cols="33" name="notes" id="editNotes" class="form-control"></textarea>

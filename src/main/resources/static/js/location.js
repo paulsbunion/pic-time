@@ -52,15 +52,28 @@ $(function locationSearchFocusAndChoose() {
 		});
 	}
 	
-	function toggleCreateLocationDisplay() {
-		var addLocationDiv = $("#addNewLocation")[0];
-		console.log(addLocationDiv);
-		console.log(addLocationDiv.style.display);
-		if (addLocationDiv.style.display === "none") {
-			addLocationDiv.style.display = "block";
+//	function toggleCreateLocationDisplay() {
+//		var addLocationDiv = $("#addNewLocation")[0];
+//		console.log(addLocationDiv);
+//		console.log(addLocationDiv.style.display);
+//		if (addLocationDiv.style.display === "none") {
+//			addLocationDiv.style.display = "block";
+//		}
+//		else {
+//			addLocationDiv.style.display = "none";
+//		}
+//	}
+	
+	function toggleModalDivDisplay(idName) {
+		console.log(idName);
+		var addDiv = $("#" + idName)[0];
+		console.log(addDiv);
+		console.log(addDiv.style.display);
+		if (addDiv.style.display === "none") {
+			addDiv.style.display = "block";
 		}
 		else {
-			addLocationDiv.style.display = "none";
+			addDiv.style.display = "none";
 		}
 	}
 	
