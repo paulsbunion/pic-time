@@ -97,6 +97,42 @@
 						data-notes=${timeslot.notes},
 						data-location=${timeslot.location?.printLocationWithDescription()},
 						data-location-id=${timeslot.location?.id}">
+						
+						
+						<th:block th:each= "availPhotogs : ${available_timeslot_photographers}" th:if="${availPhotogs.value!=null and !availPhotogs.value.isEmpty() and availPhotogs.key == timeslot.id}">
+<!-- 									<div class="photographer-row"  th:id="'timeslot' + ${availPhotogs.value.size()}"> -->
+									<div >
+									<span>Available</span>
+										<div th:each="p : ${availPhotogs.value}">
+											<span th:text="'timeslot id: ' + ${availPhotogs.key} + ' name: ' + ${p.lastName}"></span>
+										</div>
+									</div>
+<!-- 									<span th:text="'showPhotogId_' + ${photog.value.size()}"></span> -->
+<!-- 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div> -->
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </div> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </div> -->
+<!-- 									</div> -->
+					</th:block>
+					
+					<th:block th:each= "availPhotogs : ${assigned_timeslot_photographers}" th:if="${availPhotogs.value!=null and !availPhotogs.value.isEmpty() and availPhotogs.key == timeslot.id}">
+<!-- 									<div class="photographer-row"  th:id="'timeslot' + ${availPhotogs.value.size()}"> -->
+									<div >
+									<span>Assigned</span>
+										<span th:each="p : ${availPhotogs.value}" th:text="'timeslot id: ' + ${availPhotogs.key} + ' size: ' + ${p.firstName}"></span>
+									</div>
+<!-- 									<span th:text="'showPhotogId_' + ${photog.value.size()}"></span> -->
+<!-- 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div> -->
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </div> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </div> -->
+<!-- 									</div> -->
+					</th:block>
+						
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
 						
@@ -236,12 +272,6 @@
 					</div>
 	       		</div>
 	       	</div>
-	        
-	        
-	        
-	        
-	        
-	        
 	        
 	        
 	        

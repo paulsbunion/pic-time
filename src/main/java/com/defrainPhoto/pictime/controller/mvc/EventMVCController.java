@@ -117,7 +117,7 @@ public class EventMVCController {
 	}
 	
 	private List<UserDTO> getAssignedEventPhotographers(Event event) {
-		return Arrays.asList(modelMapper.map(event.getPhotographers(), UserDTO[].class));
+		return new LinkedList<UserDTO>(Arrays.asList(modelMapper.map(event.getPhotographers(), UserDTO[].class)));
 	}
 
 	private List<UserDTO> getAvailableEventPhotographers(List<UserDTO> assignedEventPhotographers) {
@@ -134,12 +134,12 @@ public class EventMVCController {
 	}
 
 	private List<UserDTO> getAvailableTimeslotPhotographers(List<UserDTO> assignedTimeslotPhotographers, List<UserDTO> availableEventPhotographers) {
-//		List<UserDTO> availablePhotographers = getAssignedEventPhotographers(event);
+		List<UserDTO> availablePhotographers = new LinkedList<UserDTO>(availableEventPhotographers);
 		
-		if (assignedTimeslotPhotographers != null && availableEventPhotographers != null) {
-			availableEventPhotographers.removeAll(assignedTimeslotPhotographers);
+		if (assignedTimeslotPhotographers != null && availablePhotographers != null && assignedTimeslotPhotographers.size() > 0) {
+			availablePhotographers.removeAll(assignedTimeslotPhotographers);
 		}
-		return availableEventPhotographers;
+		return availablePhotographers;
 	}
 
 	@PostMapping("update/{id}")
@@ -312,6 +312,9 @@ public class EventMVCController {
 
 				List<Timeslot> timeslots = eventController.getAllTimeslots(e.getId());
 				timeslots.forEach(t -> {
+					if (t.getId() == 23) {
+						System.out.println("test");
+					}
 					List<UserDTO> assignedList = getAssignedTimeslotPhotographers(t);
 					List<UserDTO> availableList = getAvailableTimeslotPhotographers(assignedList, eventPhotographers);
 
