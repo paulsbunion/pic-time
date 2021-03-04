@@ -68,6 +68,11 @@ public class UserDTO {
 		return Objects.equals(id, other.getId());
 	}
 
+	@Override
+	public String toString() {
+		return "{\"id\":" + id + ", \"firstName\":\"" + firstName + "\", \"lastName\":\"" + lastName + "\"}";
+	}
+
 //	public Set<Event> getEvents() {
 //		return events;
 //	}
@@ -85,7 +90,4 @@ public class UserDTO {
 //	}
 //	
 	
-	
-	
-
 }

@@ -326,8 +326,18 @@ public class EventMVCController {
 			});
 		}
 		// add available and assigned photographers to timeslot map
-		params.put("assigned_timeslot_photographers", assignedTimeslotPhotographers);
-		params.put("available_timeslot_photographers", availableTimeslotPhotographers);
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			objectMapper.writeValueAsString(assignedTimeslotPhotographers);
+			params.put("assigned_timeslot_photographers", assignedTimeslotPhotographers);
+			objectMapper.writeValueAsString(availableTimeslotPhotographers);
+			params.put("available_timeslot_photographers", availableTimeslotPhotographers);
+		} catch (JsonProcessingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//		params.put("assigned_timeslot_photographers", assignedTimeslotPhotographers);
+//		params.put("available_timeslot_photographers", availableTimeslotPhotographers);
 		
 		
 		return new ModelAndView(LIST_EVENTS_FOR_DAY_URL, params) ;

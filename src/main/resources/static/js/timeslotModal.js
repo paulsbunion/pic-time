@@ -55,6 +55,40 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	var notes = _self.data('notes');
 	var location = _self.data('location');
 	var locationId = _self.data('location-id');
+	
+	console.log(_self[0].children);
+//	console.log(_self[0].children[0].data('avail_photogs'));
+
+	var availablePhotographers = $("#avail_photogs_timeslot_" + timeslotId).data('avail_photogs');
+	var assignedPhotographers = $("#assigned_photogs_timeslot_" + timeslotId).data('assigned_photogs');
+	
+	// clear
+	$("#edit_avail_photogs").html('');
+	if (typeof availablePhotographers !== "undefined" && availablePhotographers != null && availablePhotographers.length > 0) {
+		// populate modal data
+		console.log($("#avail_photogs_timeslot_" + timeslotId));
+		console.log(availablePhotographers);
+		
+		for (i = 0; i < availablePhotographers.length; i++) {
+			p = availablePhotographers[i];
+			console.log(availablePhotographers[i]);
+			$("#edit_avail_photogs").append("<div class='form-control'>" + p.firstName + ' ' + p.lastName + "<button id='assign_photog_" + p.id + "'>Assign</button></div>");
+		}
+	}  
+	
+	// clear
+	$("#edit_assigned_photogs").html('');
+	if (typeof assignedPhotographers !== "undefined" && assignedPhotographers != null && assignedPhotographers.length > 0) {
+		// populate modal data
+		console.log($("#assigned_photogs_timeslot_" + timeslotId));
+		console.log(assignedPhotographers);
+		
+		for (i = 0; i < assignedPhotographers.length; i++) {
+			p = assignedPhotographers[i];
+			console.log(assignedPhotographers[i]);
+			$("#edit_assigned_photogs").append("<div class='form-control'>" + p.firstName + ' ' + p.lastName + "<button id='remove_photog_" + p.id + "'>Remove</button></div>");
+		}
+	}
 
 	console.log("zero error");
 	console.log(startTime);
