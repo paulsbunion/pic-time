@@ -59,11 +59,20 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	console.log(_self[0].children);
 //	console.log(_self[0].children[0].data('avail_photogs'));
 
+
+
+
+
+
+
 	var availablePhotographers = $("#avail_photogs_timeslot_" + timeslotId).data('avail_photogs');
 	var assignedPhotographers = $("#assigned_photogs_timeslot_" + timeslotId).data('assigned_photogs');
 	
 	// clear
 	$("#edit_avail_photogs").html('');
+	// clear
+	$("#edit_assigned_photogs").html('');
+	
 	if (typeof availablePhotographers !== "undefined" && availablePhotographers != null && availablePhotographers.length > 0) {
 		// populate modal data
 		console.log($("#avail_photogs_timeslot_" + timeslotId));
@@ -71,13 +80,12 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		
 		for (i = 0; i < availablePhotographers.length; i++) {
 			p = availablePhotographers[i];
-			console.log(availablePhotographers[i]);
-			$("#edit_avail_photogs").append("<div class='form-control'>" + p.firstName + ' ' + p.lastName + "<button id='assign_photog_" + p.id + "'>Assign</button></div>");
+			$("#edit_avail_photogs").append("<div class='form-control' id='assign_photog_div_" + p.id + "'><span>" + p.firstName + ' ' + p.lastName + "<button id='assign_photog_button_" + p.id + "'>Assign</button></span></div>");
+			$("#edit_assigned_photogs").append("<div class='form-control' style='display:none;' id='remove_photog_div_" + p.id + "'>" + p.firstName + ' ' + p.lastName + "<button id='remove_photog_button_" + p.id + "'>Remove</button></div>");
 		}
 	}  
 	
-	// clear
-	$("#edit_assigned_photogs").html('');
+	
 	if (typeof assignedPhotographers !== "undefined" && assignedPhotographers != null && assignedPhotographers.length > 0) {
 		// populate modal data
 		console.log($("#assigned_photogs_timeslot_" + timeslotId));
@@ -86,7 +94,8 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		for (i = 0; i < assignedPhotographers.length; i++) {
 			p = assignedPhotographers[i];
 			console.log(assignedPhotographers[i]);
-			$("#edit_assigned_photogs").append("<div class='form-control'>" + p.firstName + ' ' + p.lastName + "<button id='remove_photog_" + p.id + "'>Remove</button></div>");
+			$("#edit_assigned_photogs").append("<div class='form-control assigned_photographer' id='remove_photog_div_" + p.id + "'>" + p.firstName + ' ' + p.lastName + "<button id='remove_photog_button_" + p.id + "'>Remove</button></div>");
+			$("#edit_avail_photogs").append("<div class='form-control' style='display:none;' id='assign_photog_div_" + p.id + "'><span>" + p.firstName + ' ' + p.lastName + "<button id='assign_photog_button_" + p.id + "'>Assign</button></span></div>");
 		}
 	}
 
@@ -146,7 +155,47 @@ else {
      $('#editModal').modal('show');
     });
    
-   
+$(document).on("click", '[id^="remove_photog_button_"]', function (event) {
+	event.preventDefault();
+	var photogId = this.id.split("remove_photog_button_")[1];
+	var removePhotog = $("#remove_photog_div_" + photogId)[0];
+	var assignPhotog = $("#assign_photog_div_" + photogId)[0];
+	
+	removePhotog.classList.remove("assigned_photographer");
+	removePhotog.style.display="none";
+	assignPhotog.style.display="block";
+//	divData.style.display="none";
+//	divData.remove();
+	// add to available
+//	$("#edit_avail_photogs").append(divData);
+//	console.log("remove");
+//	console.log("remove photographer with id=" + photogId);
+//	console.log(this.id.split("remove_photog_button_")[1]);
+});  
+
+$(document).on("click", '[id^="assign_photog_button_"]', function (event) {
+	event.preventDefault();
+	var photogId = this.id.split("assign_photog_button_")[1];
+	var removePhotog = $("#remove_photog_div_" + photogId)[0];
+	var assignPhotog = $("#assign_photog_div_" + photogId)[0];
+	
+	removePhotog.classList.add("assigned_photographer");
+	removePhotog.style.display="block";
+	assignPhotog.style.display="none";
+});  
+
+
+
+//$(document).on("click", '[id^="removeShowPhotogId_"]', function (event) {
+//		event.preventDefault();
+//		console.log("clicked2");
+//		$('#' + this.id)[0].parentElement.parentElement.style.display = "none";
+//		let photogId = this.id.split("_")[1];
+//		console.log($('#addPhotogId_' + photogId));
+//		$('#addPhotogId_' + photogId)[0].style.display = "block";
+//	});
+
+
 // 	$(function() {
    	$(document).on("click", "#edit-modal-submit", function (event) {
 		event.preventDefault();
@@ -155,9 +204,42 @@ else {
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
 //		var _self = $('#myForm');
+
+
+//		var selectedPhotographers = $('[id^="remove_photog_div_"]:visible');
+		
+//		var selectedPhotographers = $('[id^="remove_photog_div_"]').filter(function() {
+//			$(this).css("display") === "block";
+//		});
+
+		var selectedPhotographers = $('[id^="remove_photog_div_"].assigned_photographer');
+			
+		if (selectedPhotographers.length == 0) {
+			// clear old photographers
+			$("#photographers option").remove();
+		}
+		else {
+			console.log("adding Photographers");
+ 			console.log($(selectedPhotographers));
+// 			console.log(selectedPhotographers.length);
+			var photogs = $("#photographers");
+			// clear old data
+			$("#photographers option").remove();
+			// add new data
+			for (i = 0; i < selectedPhotographers.length; i++) {
+				var id = $(selectedPhotographers[i]).attr('id').split('remove_photog_div_')[1];
+				console.log("id for added photog is: " + id);
+				photogs[0].options.add(new Option(id, id));
+			}
+			$("#photographers option").prop('selected', true);
+		}
+
 		
 		var formData = {};
 		formData = getFormData("edit");
+		
+		console.log("FORMDATA");
+		console.log(formData);
 		
 		const RELOAD_TIMER = 10;
 		
@@ -280,6 +362,15 @@ else {
 		
 		formData.client=null;
 		formData.photographers=[];
+		var photogs = $("#photographers :selected");
+		if (typeof photogs !== undefined && photogs != null) {
+			photogs.each(function() {
+//				formData.photographers.push("{\"photographerId\"=" + parseInt(this.value) + "}");
+//				formData.photographers.push("{\"id\"=" + parseInt(this.value) + "}");
+				formData.photographers.push(parseInt(this.value));
+			});
+			
+		}
 		
 		formData.locationId=$('#' + prefix + 'Location').val();
 		

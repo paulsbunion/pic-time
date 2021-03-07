@@ -1,6 +1,7 @@
 package com.defrainPhoto.pictime.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -55,11 +57,15 @@ public class Timeslot {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
 
+	@JsonProperty("photographers")
+	@JsonIdentityReference(alwaysAsId = true)
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToMany
 	@JoinTable(name = "timeslot_user", joinColumns = @JoinColumn(name = "timeslot_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> photographers = new HashSet<User>();
 
 	@JsonProperty("locationId")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Location location;
@@ -114,10 +120,27 @@ public class Timeslot {
 	
 	@JsonProperty("locationId")
 	public void setLocationById(Long locationId) {
-		this.location = new Location();
-		this.location.setId(locationId);
-		if (locationId == null) {
+		if (locationId != null) {
+			this.location = new Location();
+			this.location.setId(locationId);
+		}
+		else {
 			this.location = null;
+		}
+		
+	}
+	
+	@JsonProperty("photographers")
+	public void setPhotographersByIds(List<Long> photographerIds) {
+		if (photographerIds != null) {
+			if (this.photographers == null) {
+				this.photographers = new HashSet<User>();
+			}
+			for (Long pId : photographerIds) {
+				User user = new User();
+				user.setId(pId);
+				photographers.add(user);
+			}
 		}
 	}
 	

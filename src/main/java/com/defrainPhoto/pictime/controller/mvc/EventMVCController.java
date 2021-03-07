@@ -196,31 +196,31 @@ public class EventMVCController {
 		return "redirect:" + MVC_EVENT_URL_BASE + event.getDate().format(MonthDTO.dayformatter) + "?eventId=" +eventDTO.getId();
 	}
 	
-	@PostMapping("/{event_id}/addphotographer/{photog_id}")
-	@ResponseBody
-	public String addPhotographerToEvent(@PathVariable("event_id") Long eventId, @PathVariable("photog_id") Long photogId) {
-		log.info("MVC user adding photographer with id: " + photogId + " to event " + eventId);
-		Event event = eventController.getEvent(eventId);
-		User photographer = new User();
-		photographer.setId(photogId);
-		event.addPhotographer(photographer);
-		eventController.updateEvent(event, eventId);
-//		eventController.u
-		return LIST_ALL_EVENTS_URL;
-	}
-	
-	@PostMapping("/{event_id}/removephotographer/{photog_id}")
-	@ResponseBody
-	public String removePhotographerToEvent(@PathVariable("event_id") Long eventId, @PathVariable("photog_id") Long photogId) {
-		log.info("MVC user removing photographer with id: " + photogId + " to event " + eventId);
-		Event event = eventController.getEvent(eventId);
-		User photographer = new User();
-		photographer.setId(photogId);
-		event.removePhotographer(photographer);
-		eventController.updateEvent(event, eventId);
-//		eventController.u
-		return LIST_ALL_EVENTS_URL;
-	}
+//	@PostMapping("/{event_id}/addphotographer/{photog_id}")
+//	@ResponseBody
+//	public String addPhotographerToEvent(@PathVariable("event_id") Long eventId, @PathVariable("photog_id") Long photogId) {
+//		log.info("MVC user adding photographer with id: " + photogId + " to event " + eventId);
+//		Event event = eventController.getEvent(eventId);
+//		User photographer = new User();
+//		photographer.setId(photogId);
+//		event.addPhotographer(photographer);
+//		eventController.updateEvent(event, eventId);
+////		eventController.u
+//		return LIST_ALL_EVENTS_URL;
+//	}
+//	
+//	@PostMapping("/{event_id}/removephotographer/{photog_id}")
+//	@ResponseBody
+//	public String removePhotographerToEvent(@PathVariable("event_id") Long eventId, @PathVariable("photog_id") Long photogId) {
+//		log.info("MVC user removing photographer with id: " + photogId + " to event " + eventId);
+//		Event event = eventController.getEvent(eventId);
+//		User photographer = new User();
+//		photographer.setId(photogId);
+//		event.removePhotographer(photographer);
+//		eventController.updateEvent(event, eventId);
+////		eventController.u
+//		return LIST_ALL_EVENTS_URL;
+//	}
 	
 	@GetMapping("/calendar/{year}/{month}")
 	public ModelAndView showMonthCalendar(@PathVariable("year") Integer year, @PathVariable("month") Integer month) {
