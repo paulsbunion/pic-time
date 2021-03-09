@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<title>Event Details</title>
+</head>
+<body>
+
+	<th:block th:insert="fragments/nav :: nav"></th:block>
+
+	<div class="container my-5">
+		<div class="row">
+
+			<h1>Event Details</h1>
+
+			<div class="col-md-10">
+
+				<div th:switch="${event}" class="container">
+					<div class="col-md-10">
+						<h2 th:case="null">No Event Record Found!</h2>
+						<h2 th:case="NoData">No Event Record Found!</h2>
+
+						<div th:case="*">
+
+							<div class="form-group col-md-6">
+								<label for="eventName" class="col-form-label">Event Name</label>
+								<input type="text" th:field="${event.eventName}"
+									class="form-control" id="eventName" placeholder="Event Name"
+									disabled>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="date" class="col-form-label">Date</label> <input
+									type="date" th:field="${event.date}" id="date"
+									placeholder="mm/dd/yyyy" disabled>
+							</div>
+
+
+							<!-- 					<div class="form-group col-md-6"> -->
+							<!-- 						<label for="address" class="col-form-label">Type of Event</label>  -->
+							<!-- 						<select th:field="*{eventType}"> -->
+							<!-- 							<option th:each="et : ${eventType}" -->
+							<!-- 									th:value="${et.id}" -->
+							<!-- 									th:text="#{${selected.label.' + et.name}}"/> -->
+							<!-- 						</select> -->
+							<!-- 						<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></span> -->
+							<!-- 					</div> -->
+
+							<div class="form-group col-md-6">
+								<label for="extraCost" class="col-form-label">Extra Cost</label>
+								<input type="text" th:field="${event.extraCost}"
+									class="form-control" id="extraCost" placeholder="0" disabled>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="notes" class="col-form-label">Notes</label> <input
+									type="text" th:field="${event.notes}" class="form-control"
+									id="notes" placeholder="Notes" disabled>
+							</div>
+
+							<!-- 		select photograper code -->
+							<div class="form-group col-md-6">
+								<select multiple>
+									<option th:each="photog : ${all_photographers}" th:value="${photog.id}" th:text="${photog.firstName} + ' ' + ${photog.lastName}"></option>
+								</select>
+							</div>
+
+							<td><a th:href="@{/mvc/events/edit/{id}(id=${event.id})}"
+								class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
+							</a></td>
+
+							<td><a th:href="@{/mvc/events/list}"
+								class="btn btn-primary delete"> <i
+									class="fas fa-user-times m1-2">Back</i>
+							</a></td>
+							
+							<td><a th:href="@{/mvc/events/calendar/{date}?eventId={eventId}(date=${#temporals.format(event.date, 'yyyy/MM/dd')}, eventId= ${event.id})}"
+								class="btn btn-primary" style="background-color: green"> <i class="fas fa-user-edit m1-2">Timeline</i>
+							</a></td>
+
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

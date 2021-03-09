@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<title>All Clients</title>
+</head>
+<body>
+	<th:block th:insert="fragments/nav :: nav"></th:block>
+	
+	<div class="container my-5">
+		<div class="row">
+
+			<h1>All Clients</h1>
+			<div th:switch="${clients}" class="container">
+				<p class="my-5">
+					<a th:href="@{/mvc/clients/new}" class="btn btn-primary"> <i
+						class="fas fa-user-plus m1-2">Add Client</i></a>
+				</p>
+				<div class="col-md-10">
+					<div th:if="${clients != ''}">
+						<h2 th:case="null">No Client Records Found!</h2>
+						<h2 th:case="NoData">No Client Records Found!</h2>
+
+						<div th:case="*" class="client-table">
+							<table class="table-striped">
+								<thead>
+									<tr>
+										<th class="row-1 row-name">Name</th>
+<!-- 										<th>Address</th> -->
+										<th class="row-2 row-email-header">Email</th>
+										<th class="row-3 row-button-edit">Edit</th>
+										<th class="row-4 row-button-delete">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="client: ${clients}">
+											<td>
+												<a th:href="@{/mvc/clients/show/{id}(id=${client.id})}" th:text="${client.firstName + ' ' + client.lastName}"></a>
+											</td>
+										<td th:text="${client.email}"></td>
+										<td class="td-btn"><a th:href="@{/mvc/clients/edit/{id}(id=${client.id})}"
+											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
+										</a></td>
+										<td class="td-btn"><a th:href="@{/mvc/clients/delete/{id}(id=${client.id})}"
+											class="btn btn-primary delete" 
+											th:data-confirm-delete="|Are you sure you want to delete client ${client.firstName} ${client.lastName}?|"
+											onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"> <i
+												class="fas fa-user-times m1-2">Delete</i>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
