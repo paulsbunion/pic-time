@@ -31,6 +31,16 @@
 	padding: 5px;
 }
 
+
+.show-photographers {
+	display: grid;
+	grid-template-columns: 1fr 80fr;
+	column-gap: 2rem;
+}
+.show-photographers-item {
+	align-self: center;
+}
+
 /* .photographer-row { */
 /* 	display: grid; */
 /* 	grid-template-columns: 60fr 10fr 20fr; */

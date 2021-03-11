@@ -62,12 +62,20 @@ input[type="checkbox"]:checked ~ .slider:before {
 } 
 
 
+.slider.text:after {
+	content:'OFF';
+}
 
+input[type="checkbox"]:checked ~ .slider.text:after
+{  
+  content:'ON';
+  left: 27%;
+}
 
 
 .slider:after
 {
- content:'OFF';
+/*  content:'OFF'; */
  color: white;
  display: block;
  position: absolute;
@@ -81,7 +89,7 @@ input[type="checkbox"]:checked ~ .slider:before {
 /*  label input[type="checkbox"]:checked ~ span::before */
 input[type="checkbox"]:checked ~ .slider:after
 {  
-  content:'ON';
+/*   content:'ON'; */
   left: 27%;
 }
 

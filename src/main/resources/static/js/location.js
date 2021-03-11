@@ -25,7 +25,7 @@ $(function locationSearchFocusAndChoose() {
 	
 	function clearLocation() {
 		$("#searchBox").val("");
-		$("#EditLocation").val("");
+		$("#editLocation").val("");
 	}
 	
 	function searchLocations(request, response) {
@@ -63,6 +63,22 @@ $(function locationSearchFocusAndChoose() {
 //			addLocationDiv.style.display = "none";
 //		}
 //	}
+	
+	function toggleShowPhotographers() {
+		toggleModalDivDisplay('showPhotographers');
+		
+		var div = $("#" + 'showPhotographers')[0];
+		var displayStyle = div.style.display.toLowerCase();
+		var button = $("#show-photographers-button")[0];
+		console.log("button");
+		console.log(button.value);
+		if (displayStyle == "none") {
+			button.innerHTML = "Show Photographers";
+		}
+		else {
+			button.innerHTML = "Hide Photographers";
+		}
+	}
 	
 	function toggleModalDivDisplay(idName) {
 		console.log(idName);
@@ -147,7 +163,7 @@ $(document).on("click", "#timeslot-new-location-form-submit", function ajaxCreat
 			console.log(response.id);
 			
 			// set the hidden location id
-            $("#location").val(response.id); // set id for saving
+            $("#editLocation").val(response.id); // set id for saving
 			// set the location name string
 			$("#searchBox").val(response.description + ": " + response.street + ", " + response.city + ", " + response.state + ", " + response.zipcode); // replace string with selected value
 			// hide new location

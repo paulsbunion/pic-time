@@ -58,7 +58,7 @@
 							Auto Remind
 							<label class="switch"> 
 								<input type="checkbox" th:field="${client.autoRemind}" th:checked ="${client.autoRemind}" id="disabled" name="Auto Remind" disabled="disabled"> 
-								<span class="slider round"></span>
+								<span class="slider round text"></span>
 							</label>
 						</div>
                          <td><a th:href="@{/mvc/clients/edit/{id}(id=${client.id})}"

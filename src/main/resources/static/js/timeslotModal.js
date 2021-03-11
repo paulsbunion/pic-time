@@ -100,15 +100,15 @@ function appendPhotographer(p, assigned) {
 	if (assigned == true) {
 		var checked = "checked";
 	}
-	var divStart = "<div class=\"form-group col-md-6\">";
-	var content = "<span>" + p.firstName + " " + p.lastName + "</span>";
+	var divStart = "<div class=\"form-group show-photographers\">";
+	var content = "<span class=\"show-photographers-item\">" + p.firstName + " " + p.lastName + "</span>";
 	var switchContent = "<label class=\"switch\">" +  
 		"<input type=\"checkbox\" name=\"Auto Remind\" id=\"timeslot_photog_" + p.id + "\" " + checked + ">" +  
 		"<span class=\"slider round\"></span>" + 
 	"</label>";
 	var divEnd ="</div>";
 	
-	$(divTargetId).append(divStart + content + switchContent + divEnd);
+	$(divTargetId).append(divStart + switchContent + content + divEnd);
 }
    
 
