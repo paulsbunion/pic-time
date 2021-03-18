@@ -2,6 +2,7 @@ package com.defrainPhoto.pictime.controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.exception.UpdateEventException;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
+import com.defrainPhoto.pictime.model.User;
 import com.defrainPhoto.pictime.service.EventService;
 
 @RestController
@@ -84,8 +86,22 @@ public class EventController {
 	public EventDTO updateEvent(@Valid @RequestBody Event updateEvent, @PathVariable(name = "id") Long id) {
 		log.info("Event REST controller updating Event with ID: " + updateEvent.getId());
 		updateEvent.setId(id);
+		// check if photographer removed
+		Event oldEvent = eventService.findById(id);
+		Set<User> oldPhotographers = oldEvent.getPhotographers();
+		Set<User> newPhotographers = updateEvent.getPhotographers();
+		if (!oldPhotographers.equals(newPhotographers)) {
+			updatePhotographers(oldPhotographers, newPhotographers, updateEvent);
+		}
 		return modelMapper.map(eventService.updateEvent(updateEvent), EventDTO.class);
 
+	}
+
+	private void updatePhotographers(Set<User> oldPhotographers, Set<User> newPhotographers, Event updateEvent) {
+		oldPhotographers.removeAll(newPhotographers);
+		for (User p : oldPhotographers) {
+			eventService.removePhotographerFromTimeslots(p, updateEvent.getTimeslots());
+		}
 	}
 
 	@PutMapping("/{eventId}/switchPhotographer/oldPhotographerId/{oldId}/newPhotographerId/{newId}")

@@ -38,6 +38,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.model.Event;
@@ -211,9 +213,14 @@ public class EventControllerIntegrationTest {
 	@WithMockUser
 	@Test
 	public void testAddTimeslot() throws Exception {
-		
+		String data = asJsonString(ts1);
+		System.out.println("Here data");
+		System.out.println(data);
 		when(eventService.addTimeslot(1l, ts1)).thenReturn(ts1);
-		mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+		ResultActions result = mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+//		data = result.toString();
+//		System.out.println(data);
+//		.andExpect(content().json());
 		.andExpect(jsonPath("$.id", is(1)));
 	}
 	

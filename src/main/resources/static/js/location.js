@@ -70,8 +70,8 @@ $(function locationSearchFocusAndChoose() {
 		var div = $("#" + 'showPhotographers')[0];
 		var displayStyle = div.style.display.toLowerCase();
 		var button = $("#show-photographers-button")[0];
-		console.log("button");
-		console.log(button.value);
+//		console.log("button");
+//		console.log(button.value);
 		if (displayStyle == "none") {
 			button.innerHTML = "Show Photographers";
 		}
@@ -81,10 +81,10 @@ $(function locationSearchFocusAndChoose() {
 	}
 	
 	function toggleModalDivDisplay(idName) {
-		console.log(idName);
+//		console.log(idName);
 		var addDiv = $("#" + idName)[0];
-		console.log(addDiv);
-		console.log(addDiv.style.display);
+//		console.log(addDiv);
+//		console.log(addDiv.style.display);
 		if (addDiv.style.display === "none") {
 			addDiv.style.display = "block";
 		}
@@ -97,9 +97,32 @@ $(function locationSearchFocusAndChoose() {
 	$(document).on("click", "#cancel-add-location", function (event) {
 	event.preventDefault();
 	clearErrors();
-	toggleCreateLocationDisplay();
+//	toggleCreateLocationDisplay();
+	toggleModalDivDisplay("addNewLocation");
 	
 });
+	
+	$(document).ready(function() {
+		var editModal_initial_state;
+		
+		// grab modal state before client can change it
+		$('#editModal').on(' shown.bs.modal', function (e) {
+//			editModal_initial_state = $('#editModal :selected').serialize();
+			editModal_initial_state =  $('#editModal :input').serialize();
+			
+		})
+			
+		// on modal hide, check if anything has changed
+		$('#editModal').on('hide.bs.modal', function (event) {
+			var editModal_current_state = $('#editModal :input').serialize();
+			if (editModal_current_state != editModal_initial_state) {
+//				$('#id01')[0].style.display='block';
+				if (!confirm("Changes have been made. Are you sure you want to close?")) {
+					event.preventDefault();
+				}
+			}
+		});
+	});
 
 $(document).on("click", "#timeslot-new-location-form-submit", function ajaxCreateNewLocation(event) {
 	event.preventDefault();
@@ -167,7 +190,8 @@ $(document).on("click", "#timeslot-new-location-form-submit", function ajaxCreat
 			// set the location name string
 			$("#searchBox").val(response.description + ": " + response.street + ", " + response.city + ", " + response.state + ", " + response.zipcode); // replace string with selected value
 			// hide new location
-			toggleCreateLocationDisplay();
+//			toggleCreateLocationDisplay();
+			toggleModalDivDisplay("addNewLocation");
 			
 // 			console.log(locationData.eventId);
 // 			location.href = URL_add_parameter(location.href, "eventId", formData.eventId);

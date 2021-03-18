@@ -204,4 +204,9 @@ public class EventServiceImpl implements EventService {
 		return eventRepository.findAllByDate(date);
 	}
 
+	@Override
+	public void removePhotographerFromTimeslots(User p, List<Timeslot> t) {
+		timeslotService.removePhotographerFromTimeslots(p, t);
+	}
+
 }
