@@ -88,9 +88,10 @@ public class TimeslotServiceImpl implements TimeslotService {
 
 	@Override
 	public void removePhotographerFromTimeslots(User p, List<Timeslot> t) {
-		for (Timeslot timeslot : t) {
-			timeslotRepository.RemovePhotographerFromTimeslotsForEvent(p.getId(), timeslot.getId());
-		}
+		timeslotRepository.RemovePhotographerFromTimeslotsForEvent(p.getId(), Timeslot.getTimeslotListAsIds(t));
+//		for (Timeslot timeslot : t) {
+//			timeslotRepository.RemovePhotographerFromTimeslotsForEvent(p.getId(), timeslot.getId());
+//		}
 	}
 
 }

@@ -32,6 +32,7 @@ public interface TimeslotRepository extends JpaRepository<Timeslot, Long>{
 
 	@Transactional
 	@Modifying
-	@Query(value = "DELETE FROM timeslot_user WHERE timeslot_user.timeslot_id = :timeslot_id AND timeslot_user.user_id = :user_id", nativeQuery = true)
-	public void RemovePhotographerFromTimeslotsForEvent(@Param("user_id") Long photographerId, @Param("timeslot_id") Long timeslotId);
+//	@Query(value = "DELETE FROM timeslot_user WHERE timeslot_user.timeslot_id = :timeslot_id AND timeslot_user.user_id = :user_id", nativeQuery = true)
+	@Query(value = "DELETE FROM timeslot_user WHERE timeslot_user.user_id = :user_id AND timeslot_user.timeslot_id IN :timeslot_ids ", nativeQuery = true)
+	public void RemovePhotographerFromTimeslotsForEvent(@Param("user_id") Long photographerId, @Param("timeslot_ids") List<Long> timeslotIds);
 }

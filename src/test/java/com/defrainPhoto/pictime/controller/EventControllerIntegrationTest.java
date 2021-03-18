@@ -147,8 +147,8 @@ public class EventControllerIntegrationTest {
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
 				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
 				.andExpect(jsonPath("$.photographers.[*]", hasSize(2)))
-				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)))
-				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("bw@email.com")));
+				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)));
+//				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("bw@email.com"))); // removed because sent as id only now
 		
 		
 		ts1.addPhotographer(p2);
@@ -163,14 +163,14 @@ public class EventControllerIntegrationTest {
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
 				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
 				.andExpect(jsonPath("$.photographers.[*]", hasSize(1)))
-				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)))
-				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("ss@email.com")));
+				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)));
+//				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("ss@email.com"))); // removed because sent as id only now
 	}
 
 	private EventDTO test() {
 		EventDTO result = realMapper.map(e1,EventDTO.class);
-		System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		System.out.println(asJsonString(result));
+//		System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//		System.out.println(asJsonString(result));
 		return result;
 	}
 

@@ -1,6 +1,7 @@
 package com.defrainPhoto.pictime.model;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -222,5 +223,10 @@ public class Timeslot {
 		return id != null && id.equals(((Timeslot) obj).getId());
 	}
 	
+	public static List<Long> getTimeslotListAsIds(List<Timeslot> timeslots) {		
+		List<Long> result = new LinkedList<Long>();
+		timeslots.stream().forEach(t -> result.add(t.getId()));
+		return result;
+	}
 	
 }
