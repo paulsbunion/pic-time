@@ -8,12 +8,20 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/assets/jquery-ui-1.12.1/jquery-ui.js}"></script>
 <script type="text/javascript" th:src="@{/js/switchContentDisplay.js}"></script>
 <script type="text/javascript" th:src="@{/js/wickedpicker.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/location.js}"></script>
+<script type="text/javascript" th:src="@{/js/addParameterToURL.js}"></script>
+<script type="text/javascript" th:src="@{/js/timeslotModal.js}"></script>
+<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/jquery-ui-1.12.1/jquery-ui.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/slider.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/timeslot-edit-modal.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" />
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
@@ -78,8 +86,6 @@
 			</div>
 			<div class="day-calendar-content" id="cal">
 			
-<!-- 				<div class="testEntry"><span>Howdy</span></div> -->
-				
 				<th:block th:each="eventTimeslotEntry : ${eventTimeslots}">
 					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
@@ -89,35 +95,55 @@
 						data-starttime=${timeslot.time.printStartTimeMilitary()}, 
 						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
 						data-timeslottitle=${timeslot.title}, 
-						data-notes=${timeslot.notes}">
+						data-notes=${timeslot.notes},
+						data-location=${timeslot.location?.printLocationWithDescription()},
+						data-location-id=${timeslot.location?.id}">
+						
+						
+						<th:block th:each= "availPhotogs : ${available_timeslot_photographers}" th:if="${availPhotogs.value!=null and !availPhotogs.value.isEmpty() and availPhotogs.key == timeslot.id}">
+<!-- 									<div class="photographer-row"  th:id="'timeslot' + ${availPhotogs.value.size()}"> -->
+									<div th:id="'avail_photogs_timeslot_' + ${timeslot.id}" th:attr="data-avail_photogs=${availPhotogs.value}"></div>
+							
+									<div >
+									<span>Available</span>
+										<div th:each="p : ${availPhotogs.value}">
+											<span th:text="'timeslot id: ' + ${availPhotogs.key} + ' name: ' + ${p.lastName}"></span>
+										</div>
+									</div>
+<!-- 									<span th:text="'showPhotogId_' + ${photog.value.size()}"></span> -->
+<!-- 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div> -->
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </div> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </div> -->
+<!-- 									</div> -->
+					</th:block>
+					
+					<th:block th:each= "assignedPhotogs : ${assigned_timeslot_photographers}" th:if="${assignedPhotogs.value!=null and !assignedPhotogs.value.isEmpty() and assignedPhotogs.key == timeslot.id}">
+<!-- 									<div class="photographer-row"  th:id="'timeslot' + ${availPhotogs.value.size()}"> -->
+									<div th:id="'assigned_photogs_timeslot_' + ${timeslot.id}" th:attr="data-assigned_photogs=${assignedPhotogs.value}"></div>
+									
+									<div >
+									<span>Assigned</span>
+										<span th:each="p : ${assignedPhotogs.value}" th:text="'timeslot id: ' + ${assignedPhotogs.key} + ' size: ' + ${p.firstName}"></span>
+									</div>
+<!-- 									<span th:text="'showPhotogId_' + ${photog.value.size()}"></span> -->
+<!-- 										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div> -->
+<!-- 										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}"> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Swap</i></a> </div> -->
+<!-- 										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}"> -->
+<!-- 										<i class="fas fa-user-times m1-2">Remove</i></a> </div> -->
+<!-- 									</div> -->
+					</th:block>
+						
 <!-- 						data-toggle="modal" th:data-target="${'#editModal_' + timeslot.id}" > -->
 <!-- 						th:onclick="location.href='/mvc/event/${eventId}/timeslot/${timeslotId}';"> -->
 						
 							<div class = "timeslotTime" th:text="${timeslot.time.printStartEnd()} + ' -- ' + ${timeslot.title}"></div>
 							
 							<span th:text="${timeslot.notes}"></span>
-							
-<!-- 							Modal -->
-<!-- 							<div class="modal fade" th:id="${'editModal_' + timeslot.id}" role="dialog" style="color: black;"> -->
-<!-- 							  <div class="modal-dialog" > -->
-<!-- 							    <div class="modal-content"> -->
-<!-- 							      <div class="modal-header"> -->
-							        
-<!-- 							        <button type="button" class="close" data-dismiss="modal"> -->
-<!-- 							          &times;</button> -->
-<!-- 							      </div> -->
-<!-- 							      <div class="modal-body"> -->
-<!-- 							        ... -->
-<!-- 							        <input type="text" name="value" id="id" th:value="${timeslot.time.printStartEnd()}" class="form-control" > -->
-<!-- 							        <input type="text" name="value" id="id" th:value="${timeslot.id}" class="form-control" > -->
-<!-- 							      </div> -->
-<!-- 							      <div class="modal-footer"> -->
-<!-- 							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-<!-- 							        <button type="button" class="btn btn-primary">Save changes</button> -->
-<!-- 							      </div> -->
-<!-- 							    </div> -->
-<!-- 							  </div> -->
-<!-- 							</div> -->
 							
 						</div>
 					</th:block>
@@ -129,44 +155,217 @@
 		</div>
 	</div>
 	<div>Footer</div>
-
+	
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-      	<input type="text" name="timeslotTitle" id="timeslotTitle" value="Title" class="form-control" >
+      	<input type="text" name="timeslotTitle" id="editTimeslotTitle" placeholder="Title" class="form-control" >
 <!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<!-- 		<input type="button" value="X" data-dismiss="modal" class="location-searchbar-item btn-danger"> -->
+<!--         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+<!--           <span aria-hidden="true">&times;</span> -->
+<!--         </button> -->
       </div>
       <div class="modal-body" id="modal-body">
       <form id="myForm" method="post">
-	      <span>event id</span>
-	      <input id="eventId" name="eventId" type="text" class="form-control" disabled="true">
-	      <span>timeslot id</span>
-	      <input id="timeslotId" name="timeslotId" type="text" class="form-control" disabled="true">
+	      <input id="editEventId" name="eventId" type="text" class="form-control" disabled="true" hidden>
+	      <input id="editTimeslotId" name="timeslotId" type="text" class="form-control" disabled="true" hidden>
 	      
-	      	<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
-	<!--         <input type="text" name="startTime" id="startTime" value="" class="form-control" > -->
+			<span>Start Time</span> <span id="rsp_start_time_edit", class="text-danger"></span>
+        	<div class="time-selector">
+	       		<select class="form-control w-auto" id="editStartTimeHr" name="startTimeHr">
+	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       		</select>
+		       	:
+		       	<select id="editStartTimeMin" class="form-control w-auto" name="startTimeMin" >
+			       	<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="editStartTimeMeridian" class="form-control w-auto" name="startAmPm">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+	 		</div>
+	 		
+	        <span>End Time</span> <span id="rsp_end_time_edit", class="text-danger"></span>
+	        <div class="time-selector">
+		       	<select id="editEndTimeHr" class="form-control w-auto" name="endTimeHr">
+<!-- 		       		<option value=""></option> -->
+		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	:
+		       	<select id="editEndTimeMin" class="form-control w-auto" name="endTimeMin" style="width: 10%">
+<!-- 		       		<option value=""></option> -->
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="editEndTimeMeridian" class="form-control w-auto" name="endAmPm">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+<!-- 		       	<button type="button" class="btn btn-secondary" id="clear_endtime_edit">Clear</button> -->
+		       	<input type="button" value="X" id = "clear_endtime_edit" class="form-control location-searchbar-item btn-danger">
+		       	<br>
+	       	</div>
+	       	
+	       	<div>
+	       		<span>Location</span>
+	       		<div class="location-searchbar">
+		       		<input type="text" name="search" id="searchBox" class="form-control location-searchbar-item ">
+		       		<input type="button" value="X" onclick="clearLocation()" class="form-control location-searchbar-item btn-danger">
+		       		<input type="text" id="editLocation" hidden>
+	       		</div>
+	       		
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleModalDivDisplay('addNewLocation')">Create New Location</button></div>
+	       		
+				<div id="addNewLocation" style="display: none;">
+	       			<div class="">
+
+						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
+						<span class="" id="already-exists-error"></span>
+			
+						<div class="">
+			
+							<form action="#" id="timeslot-new-location-form" th:action="@{/mvc/locations/save}" method="post">
+			
+			
+								<div class="form-group">
+									<label for="description" class="col-form-label">Description</label> 
+									<input type="text"  class="form-control" id="description" placeholder="Description"> 
+									<span id="description-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="street" class="col-form-label">Street</label> 
+									<input type="text" class="form-control" id="street" placeholder="Street (EX: 123 Main St.)"> 
+									<span id="street-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="city" class="col-form-label">City</label> 
+									<input type="text"  class="form-control" id="city" placeholder="City"> 
+									<span id="city-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="state" class="col-form-label">State</label> 
+									<select class="form-control" id="state">
+										<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+									</select>
+									<span id="state-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="zipcode" class="col-form-label">ZIP Code</label> 
+									<input type="text"  class="form-control" id="zipcode" placeholder="EX: 43068"> 
+									<span id="zipcode-error" class="text-danger"></span>
+								</div>
+								
+<!-- 								<span class="text-danger" id="already-exists2-error"></span> -->
+								
+								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td>
+								
+								<td><a id="cancel-add-location"
+									class="btn btn-primary delete"> <i
+										class="fas fa-user-times m1-2">Cancel</i>
+								</a></td>
+							</form>
+						</div>
+					</div>
+	       		</div>
+	       	</div>
 	        
-	       	<input id="editStartTime" name="startTime" type="text" class="form-control timepicker">
-<!-- 	       	<div id="rsp_start_time"></div> -->
-	 
-	        <script type="text/javascript">
-	        var options = {
-	        		now: "12:35"
-	        };
-	            $('.timepicker').wickedpicker(options);
-	        </script>
 	        
-	        <span>End Time</span>
-	<!--         <input type="text" name="endTime" id="endTime" value="" class="form-control" > -->
-	        <input id="editEndTime" name="endTime" type="text" class="form-control timepicker">
+	        
+	        
+	        
+	        
+	        
+	        
+<!-- 	display confirm / cancel modal         -->
+<!-- 	        <div id="id01" class="modal2"> -->
+<!--   <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span> -->
+<!--   <form class="modal-content" action=""> -->
+<!--     <div class="container"> -->
+<!--       <h1>Delete Account</h1> -->
+<!--       <p>Are you sure you want to delete your account?</p> -->
+
+<!--       <div class="clearfix"> -->
+<!--         <button type="button" class="cancelbtn">Cancel</button> -->
+<!--         <button type="button" class="deletebtn">Delete</button> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </form> -->
+<!-- </div> -->
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        <div>
+<!-- 		        <span>Photographers</span> -->
+		        
+<!-- 		        <select hidden="true" multiple="multiple" th:field="${timeslot.photographers}" id="edit_photographers" name="photographers" path="photographers"> -->
+<!-- 				</select> -->
+				<select hidden multiple = "multiple" id="photographers" name="photographers"></select>
+		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowPhotographers()" id="show-photographers-button">Show Photographers</button></div>
+	       		
+				<div id="showPhotographers" style="display: none;">
+	       			<div class="">
+
+						<div class="add-location-header"><span class="col-form-label item">Assign Photographers</span></div>
+			
+<!-- 						<div class=""> -->
+			
+<!-- 							<form action="#" id="timeslot-new-location-form" th:action="@{/mvc/locations/save}" method="post"> -->
+			
+			
+								<div class="form-group" id="edit_avail_photogs"></div>
+								
+<!-- 								<div class="add-location-header"><span class="col-form-label item">Assigned Photographers</span></div> -->
+<!-- 								<div class="form-group" id="edit_assigned_photogs"></div> -->
+								
+<!-- 								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td> -->
+								
+<!-- 								<td><a id="cancel-add-location" -->
+<!-- 									class="btn btn-primary delete"> <i -->
+<!-- 										class="fas fa-user-times m1-2">Cancel</i> -->
+<!-- 								</a></td> -->
+							</form>
+<!-- 						</div> -->
+					</div>
+	       		</div>
+	        </div>
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
 	        
 	        <span>Notes</span>
-	        <textarea rows="5" cols="33" name="notes" id="notes" class="form-control"></textarea>
+	        <textarea rows="5" cols="33" name="notes" id="editNotes" class="form-control"></textarea>
       </form>
       </div>
       <div class="modal-footer">
@@ -177,8 +376,8 @@
 		onclick="if (!confirm(this.getAttribute('data-confirm-delete'))){return false}
 		else {
 			var _self = $('#myForm');
-			var eventId = $('#eventId').val();
-			var timeslotId = $('#timeslotId').val();
+			var eventId = $('#editEventId').val();
+			var timeslotId = $('#editTimeslotId').val();
 			console.log(_self);
 			console.log(eventId);
 			console.log(timeslotId);
@@ -189,19 +388,20 @@
 			class="fas fa-user-times m1-2">Delete</i>
 	  </button>
       
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary" id="edit-modal-submit">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
+
 <!-- New Modal -->
 <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-      	<input type="text" name="timeslotTitle" id="timeslotTitleNew" value="Title" class="form-control" >
+      	<input type="text" name="timeslotTitle" id="newTimeslotTitle" placeholder="Title" class="form-control" >
 <!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -210,23 +410,46 @@
       <div class="modal-body" id="modal-body">
       <form id="myFormNew" method="post">
 	      <span>event id</span>
-	      <input id="eventIdNew" name="eventId" type="text" class="form-control" disabled="true">
+	      <input id="newEventId" name="eventId" type="text" class="form-control" disabled="true" hidden>
 	      
-	      	<span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
-	        
-	       	<input id="editStartTimeNew" name="startTime2" type="text" class="form-control timepicker2">
-<!-- 	       	<div id="rsp_start_time_new"></div> -->
+	      
+	      <span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+        	<div class="time-selector">
+	       		<select id="newStartTimeHr" name="newstartTimeHr">
+	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       		</select>
+		       	:
+		       	<select id="newStartTimeMin" name="newstartTimeMin" >
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="newStartTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+	 		</div>
+	 		
+	        <span>End Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+	        <div class="time-selector">
+		       	<select id="newEndTimeHr" name="newTimeHr" >
+		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	:
+		       	<select id="newEndTimeMin" name="newendTimeMin">
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="newEndTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+		       	<br>
+	       	</div>
 	 
-	        <script type="text/javascript">
-	        var options = {
-	        		now: "12:35"
-	        };
-// 				$('.timepicker2').wickedpicker();
-	        </script>
-	        
-	        <span>End Time</span>
-	        <input id="editEndTimeNew" name="endTime2" type="text" class="form-control timepicker2">
-	        
 	        <span>Notes</span>
 	        <textarea rows="5" cols="33" name="notes" id="notesNew" class="form-control"></textarea>
       </form>
@@ -238,497 +461,5 @@
     </div>
   </div>
 </div>
-
-
-<script type="text/javascript">
-// https://stackoverflow.com/questions/5997450/append-to-url-and-refresh-page
-	function URL_add_parameter(url, param, value){
-	    var hash       = {};
-	    var parser     = document.createElement('a');
-	
-	    parser.href    = url;
-	
-	    var parameters = parser.search.split(/\?|&/);
-	
-	    for(var i=0; i < parameters.length; i++) {
-	        if(!parameters[i])
-	            continue;
-	
-	        var ary      = parameters[i].split('=');
-	        hash[ary[0]] = ary[1];
-	    }
-	
-	    hash[param] = value;
-	
-	    var list = [];  
-	    Object.keys(hash).forEach(function (key) {
-	        list.push(key + '=' + hash[key]);
-	    });
-	
-	    parser.search = '?' + list.join('&');
-	    return parser.href;
-	}
-</script>
-
-<script type="text/javascript">
-   $(document).on("click", "#newTimeslotModal", function (event) {
-	   event.preventDefault();
-	   
-	var _self = $(this);
-	console.log(_self);
-// 	var eventId = _self.data('event-id');
-	
-	var eventId = $("#sel").val()
-	// if id null, call create event
-	if (eventId == '' || eventId == null) {
-		window.location.href = document.getElementById("newEventAnchor").href;
-	}
-	else {
-	
-		// 	var timeslotId = _self.data('id');
-		// 	var startTime = 0;
-		// 	var endTime = 0;
-		// 	var title = _self.data('timeslottitle');
-		// 	var notes = _self.data('notes');
-		
-		$('#rsp_start_time_new').text("");
-		console.log("value");
-		console.log($("#sel").val());
-		$("#eventIdNew").val($("#sel").val());
-		
-		// $("#timeslotTitle").val(title);
-		// $("#startTime").val(startTime);
-		// $("#endTime").val(endTime);
-		// $("#notes").val(notes);
-		// 	 var x = new Date(); 
-		
-		// update timepicker
-		var myPicker2 = $('.timepicker2').wickedpicker();
-		// myPicker2.wickedpicker('setTime', 2, startTime);
-		// myPicker2.wickedpicker('setTime', 1, endTime);
-	
-	     $('#newModal').modal('show');
-  	}
-	});
-
-   
-   
-   
-   
-   
-   
-   
-   
-   $(document).on("click", ".open-EditModal", function (event) {
-// 	   window.alert();
-	var _self = $(this);
-	var eventId = _self.data('event-id');
-	var timeslotId = _self.data('id');
-	var startTime = _self.data('starttime');
-	var endTime = _self.data('endtime');
-	var title = _self.data('timeslottitle');
-	var notes = _self.data('notes');
-
-// 	var startTime = $(event.relatedTarget).data('val');
-// 	window.alert(st);
-// 	$(this).find(".modal-body").text(st);
-$('#rsp_start_time').text("");
-$("#eventId").val(eventId);
-$("#timeslotId").val(timeslotId);
-
-$("#timeslotTitle").val(title);
-$("#startTime").val(startTime);
-$("#endTime").val(endTime);
-$("#notes").val(notes);
-	 var x = new Date(); 
-     var myHeading = "<p>I Am Added Dynamically </p>";
-//      $("#modal-body").html(myHeading + x);   
-
-
-// update timepicker
-var myPicker = $('.timepicker').wickedpicker();
-var str = "hi";
-// console.log(myPicker);
-// console.log(myPicker.wickedpicker('time', 0));
-myPicker.wickedpicker('setTime', 0, startTime);
-myPicker.wickedpicker('setTime', 1, endTime);
-
-     $('#editModal').modal('show');
-    });
-   
-   
-// 	$(function() {
-   	$(document).on("click", "#edit-modal-submit", function (event) {
-		event.preventDefault();
-// 		console.log(event.target.parentNode.parentNode.childNodes[3]);
-		
-// 		validateForm(this);
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		console.log("ajax");
-		console.log($('#editStartTime'));
-		
-// 		var _self = $('.open-EditModal');
-		var _self = $('#myForm');
-		
-		var formData = {};
-		formData.id = 0;
-		formData.time={};
-		formData.time.startTime=0;
-		formData.time.totalMinutes=0;
-		formData.time.endTime=0;
-		formData.title="";
-		formData.notes=null;
-		formData.client=null;
-		formData.photographers=[];
-		formData.location=null;
-		formData.trackMileage=false;
-		formData.eventId=0;
-		
-// 		formData.timeslot = {};
-// 		formData.timeslot.start_time = parseTime($('#editStartTime').val());
-// 		formData.timeslot.end_time =  parseTime($('#editEndTime').val());
-// 		formData.timeslot.duration = $('#editEndTime').val();
-
-// 		formData.start_time = parseTime($('#editStartTime').val());
-// 		formData.end_time =  parseTime($('#editEndTime').val());
-// 		formData.duration = $('#editEndTime').val();
-
-		formData.id = $('#timeslotId').val();
-		formData.time.startTime = parseTime($('#editStartTime').val());
-		formData.time.endTime =  parseTime($('#editEndTime').val());
-// 		formData.time.totalMinutes = getDuration($('#editStartTime').val(), $('#editEndTime').val());
-		formData.title=$('#timeslotTitle').val();
-		formData.notes=$('#notes').val();
-		formData.client=null;
-		formData.photographers=[];
-		formData.location=null;
-		formData.trackMileage=false;
-		formData.eventId=$('#eventId').val();
-
-// 		console.log(_self);
-		console.log("data here");
-		console.log(formData);
-		console.log(JSON.stringify(formData));
-// 		var startTime = _self.data('endtime');
-		
-		
-// 		console.log($('.open-EditModal').data('endtime'));
-// 		console.log(startTime);
-		
-// 		parseData(_self);
-		var startTime = $('#editStartTime').val();
-// 		console.log(startTime);
-		
-// 		format data
-		
-		const RELOAD_TIMER = 10;
-		
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-            }
-        });
-		console.log("before ajax");
-		console.log("before ajax" + $('#timeslotId').val());
-		$.ajax({
-			type: "PUT",
-			contentType: "application/json",
-// 			url: "{{ path('addTag') }}",
-			url: "/events/" + $('#eventId').val() + "/timeslots/"+ $('#timeslotId').val(),
-// 			data: $('form.tagForm').serialize(),
-// 			data: JSON.stringify(startTime),
-			data: JSON.stringify(formData),
-
-// 			data:"{\"id\":55,\"time\":{\"startTime\":600,\"totalMinutes\":240,\"endTime\":1000},\"title\":\"" + $('#timeslotTitle').val() + "\",\"notes\":null,\"client\":null,\"photographers\":[],\"location\":null,\"trackMileage\":false,\"eventId\":11}",
-
-// 			data: formData,
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				console.log("before req: " + token);
-				xhr.setRequestHeader(header, token);
-				console.log("token set");
-			},
-			
-			success: function(response) {
-				$('#rsp_start_time').text("");
-// 				alert(response['response']);
-				console.log("ajax1");
-				console.log(response);
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-// 				alert(location.href);
-				if (response.redirect) {
-					window.location.href = response.redirect;
-				}
-				
-				setTimeout(function() {
-					location.reload();
-					}, RELOAD_TIMER);
-			},
-			error: function (e) {
-// 				alert('Error');
-				$('#rsp_start_time').text(e.responseJSON.rsp_start_time);
-// 				alert(e.status);
-// 				console.log(e.responseJSON.rsp_start_time);
-				console.log("ajax2");
-			}
-		});
-
-// $.ajax({
-// 			type: "GET",
-// 			contentType: "application/json",
-// // 			url: "{{ path('addTag') }}",
-// 			url: "/events",
-// // 			data: $('form.tagForm').serialize(),
-// // 			data: JSON.stringify(startTime),
-// // 			dataTpye: 'json',
-// 			success: function(response) {
-// 				alert(response['response']);
-// 				console.log("ajax1");
-// 			},
-// 			error: function () {
-// 				alert('Error');
-// 				console.log("ajax2");
-// 			}
-// 		});
-		
-// 		console.log("ajax3");
-// 		return false;
-// 	});
-	});
-	
-	
-   	$(document).on("click", "#new-modal-submit", function (event) {
-		event.preventDefault();
-		
-// 		validateForm(this);
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		console.log("ajaxNew");
-		console.log($('#editStartTimeNew'));
-		
-		var _self = $('#myFormNew');
-		
-		var formData = {};
-		formData.id = null;
-		formData.time={};
-		formData.time.startTime=0;
-		formData.time.totalMinutes=0;
-		formData.time.endTime=0;
-		formData.title="";
-		formData.notes=null;
-		formData.client=null;
-		formData.photographers=[];
-		formData.location=null;
-		formData.trackMileage=false;
-		formData.eventId=0;
-		
-// 		formData.id = $('#timeslotIdNew').val();
-console.log("parsing start TIme")
-		formData.time.startTime = parseTime($('#editStartTimeNew').val());
-		formData.time.endTime =  parseTime($('#editEndTimeNew').val());
-		formData.title=$('#timeslotTitleNew').val();
-		formData.notes=$('#notesNew').val();
-		formData.client=null;
-		formData.photographers=[];
-		formData.location=null;
-		formData.trackMileage=false;
-		formData.eventId=$('#eventIdNew').val();
-
-// 		console.log(_self);
-		console.log("data here");
-		console.log(formData);
-		console.log(JSON.stringify(formData));
-
-		var startTime = $('#editStartTimeNew').val();
-		const RELOAD_TIMER = 10;
-		
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-            }
-        });
-		console.log("before ajaxNew");
-		console.log("before ajaxNew" + $('#timeslotIdNew').val());
-		$.ajax({
-			type: "POST",
-			contentType: "application/json",
-			url: "/events/" + $('#eventIdNew').val() + "/timeslots/",
-			data: JSON.stringify(formData),
-
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				console.log("before req: " + token);
-				xhr.setRequestHeader(header, token);
-				console.log("token set");
-			},
-			
-			success: function(response) {
-				$('#rsp_start_time_new').text("");
-				console.log("ajax1New");
-				console.log(response);
-				console.log(formData.eventId);
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-				
-				 window.setTimeout(function(){window.location.reload()}, 3000);
-				if (response.redirect) {
-					//alert(location.href);
-					//window.location.href = response.redirect;
-				}
-				
-				//setTimeout(function() {
-					//location.reload();
-					//}, RELOAD_TIMER);
-			},
-			error: function (e) {
-				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
-				console.log("ajax2New");
-			}
-		});
-
-// $.ajax({
-// 			type: "GET",
-// 			contentType: "application/json",
-// // 			url: "{{ path('addTag') }}",
-// 			url: "/events",
-// // 			data: $('form.tagForm').serialize(),
-// // 			data: JSON.stringify(startTime),
-// // 			dataTpye: 'json',
-// 			success: function(response) {
-// 				alert(response['response']);
-// 				console.log("ajax1");
-// 			},
-// 			error: function () {
-// 				alert('Error');
-// 				console.log("ajax2");
-// 			}
-// 		});
-		
-// 		console.log("ajax3");
-// 		return false;
-// 	});
-	});
-	
-	
-	
-	
-	
-	
-</script>
-
-<script type="text/javascript">
-// $(document).ajaxStop(function() {
-//     setInterval(function() {
-//         location.reload();
-//     }, 300);
-// });
-
-</script>
-
-<script type="text/javascript">
-	function parseData(self) {
-// 		console.log(self);
-		this.startTime = $('#editStartTime');
-		startTime.val("700");
-// 		this.startTime = 1200;
-
-// 		$('#editStartTime').val() = 700;
-		
-// 		$("#startTime").val(1200);
-// 		self.data('starttime').value = "1200";
-// 		self.attr("starttime", "1200");
-		console.log("in edit " + self.data('starttime'));
-		console.log($('#editStartTime').val());
-	}
-	
-	function parseTime(timeString) {
-		console.log(timeString);
-		var timeData = timeString.split(" ");
-		
-		var hr = parseInt(timeData[0]);
-		var mn = timeData[2];
-		var merid = timeData[3];
-		
-		if (merid.toUpperCase().normalize() === "PM" && hr != 12) {
-			hr += 12;
-		}
-		if (merid.toUpperCase().normalize() === "AM" && hr == 12) {
-			hr = "00";
-		}
-		else {
-		}
-		
-// 		console.log(hr);
-// 		console.log(mn);
-// 		console.log(merid);
-
-		console.log("checking hour length: " + hr.toString().length);
-		if(hr.toString().length == 1) {
-			console.log("length < 2");
-			hr = "0" + hr;
-		}
-		var intTime = "" + hr + ":" + mn;
-		console.log(intTime);
-		return intTime;
-		
-	}
-	
-// 	function validateForm(obj) {
-// 		if (timeToMinutes($('#editStartTime').val()) > timeToMinutes($('#editEndTime').val())) {
-// 			console.log("error, start time cannot be after end time");
-// 		}
-// 	}
-	
-	function timeToMinutes(time) {
-		var result = 0;
-		
-		var tempTime = parseTime(time);
-		var data = tempTime.split(":");
-		
-		result = parseInt(data[0]) * 60;
-		result += parseInt(data[1]);
-		console.log("parsed time: " + result);
-		return result;
-	}
-	
-	function getDuration(timeStart, timeEnd) {
-		var startTimeData = timeStart.split(" ");
-		var endTimeData = timeEnd.split(" ");
-		
-		var startHr = parseInt(startTimeData[0]);
-		var startMin = startTimeData[2];
-		var startMerid = startTimeData[3];
-		
-		var endHr = parseInt(endTimeData[0]);
-		var endMin = endTimeData[2];
-		var endMerid = endTimeData[3];
-		
-		if(startMerid.toUpperCase().normalize() === "PM") {
-			startHr += 12;
-		}
-		if(endMerid.toUpperCase().normalize() === "PM") {
-			endHr += 12;
-		}
-		
-		var totHrs = endHr - startHr;
-		var totMins = endMin - startMin;
-		if (endMin < startMin) {
-			totMins = endMin + (60 - startMin);
-		}
-		
-		var duration = totHrs * 100 + totMins;
-		console.log(duration);
-		return duration;
-		
-	}
-</script>
-	<script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script>
-	
 </body>
 </html>

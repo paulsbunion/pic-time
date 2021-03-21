@@ -38,6 +38,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import com.defrainPhoto.pictime.dto.EventDTO;
 import com.defrainPhoto.pictime.model.Event;
@@ -145,8 +147,8 @@ public class EventControllerIntegrationTest {
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
 				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
 				.andExpect(jsonPath("$.photographers.[*]", hasSize(2)))
-				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)))
-				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("bw@email.com")));
+				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)));
+//				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("bw@email.com"))); // removed because sent as id only now
 		
 		
 		ts1.addPhotographer(p2);
@@ -161,14 +163,14 @@ public class EventControllerIntegrationTest {
 				.andExpect(jsonPath("$.eventName", is(e1.getEventName())))
 				.andExpect(jsonPath("$.eventType.id", is(e1.getEventType().getId().intValue())))
 				.andExpect(jsonPath("$.photographers.[*]", hasSize(1)))
-				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)))
-				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("ss@email.com")));
+				.andExpect(jsonPath("$.timeslots.[0].photographers.[*]", hasSize(1)));
+//				.andExpect(jsonPath("$.timeslots[0].photographers.[0].email", is("ss@email.com"))); // removed because sent as id only now
 	}
 
 	private EventDTO test() {
 		EventDTO result = realMapper.map(e1,EventDTO.class);
-		System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		System.out.println(asJsonString(result));
+//		System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//		System.out.println(asJsonString(result));
 		return result;
 	}
 
@@ -211,9 +213,14 @@ public class EventControllerIntegrationTest {
 	@WithMockUser
 	@Test
 	public void testAddTimeslot() throws Exception {
-		
+		String data = asJsonString(ts1);
+		System.out.println("Here data");
+		System.out.println(data);
 		when(eventService.addTimeslot(1l, ts1)).thenReturn(ts1);
-		mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+		ResultActions result = mvc.perform(post("/events/1/timeslots/").with(csrf()).content(asJsonString(ts1)).contentType(MediaType.APPLICATION_JSON))
+//		data = result.toString();
+//		System.out.println(data);
+//		.andExpect(content().json());
 		.andExpect(jsonPath("$.id", is(1)));
 	}
 	

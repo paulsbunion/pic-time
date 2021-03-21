@@ -147,7 +147,7 @@ public class LocationControllerIntegrationTest {
 	@WithMockUser
 	@Test
 	public void testUpdateLocation() throws Exception {
-		Location location = new Location(1l, "DownTown", "ND", "33254", "11 Main St.", "");
+		Location location = new Location(1l, "DownTown", "ND", "33254", "11 Main St.", "home");
 		
 		when(locationService.addLocation(location)).thenReturn(location);
 		when(locationService.updateLocationById(location)).thenReturn(location);
@@ -160,7 +160,7 @@ public class LocationControllerIntegrationTest {
 		.andExpect(jsonPath("$.state", is("ND")))
 		.andExpect(jsonPath("$.zipcode", is("33254")))
 		.andExpect(jsonPath("$.street", is("11 Main St.")))
-		.andExpect(jsonPath("$.description", is("")));
+		.andExpect(jsonPath("$.description", is("home")));
 		
 		location.setDescription("DownTown ND!");
 		

@@ -24,7 +24,7 @@ public class LocationServiceSpringIntegrationTest {
 
 	@Test
 	public void testAddLocation() {
-		Location location = new Location(1l, "AppleTown", "SD", "76428", "10 Elm St.", "");
+		Location location = new Location(1l, "AppleTown", "SD", "76428", "10 Elm St.", "home");
 
 		Location savedLocation = locationService.addLocation(location);
 		assertEquals(location, savedLocation);
@@ -32,7 +32,7 @@ public class LocationServiceSpringIntegrationTest {
 
 	@Test(expected = TransactionSystemException.class)
 	public void testAddLocationInvalidStreet() {
-		Location location = new Location(1l, "AppleTown", "SD", "76428", "Elm St.", "");
+		Location location = new Location(1l, "AppleTown", "SD", "76428", "Elm St.", "home");
 
 		Location savedLocation = locationService.addLocation(location);
 	}

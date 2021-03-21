@@ -1,0 +1,55 @@
+
+.location-searchbar {
+/* 	max-width: 50%; */
+	display: grid;
+	grid-template-columns: 80fr 1fr;
+/* 	grid-template-rows: auto; */
+/* 	border: 1px solid black; */
+	row-gap: 5px;
+/* 	padding-left: 15px; */
+/* 	padding-right: 15px; */
+	margin-bottom: 1rem;
+	
+}
+
+.location-searchbar-item {
+	align-self: center;
+	width: auto;
+}
+
+
+.add-location-header {
+	display: grid;
+}
+
+.add-location-header .item {
+	color: blue;
+	text-align: center;
+}
+
+#addNewLocation {
+	border: 1px solid;
+	padding: 5px;
+}
+
+
+.show-photographers {
+	display: grid;
+	grid-template-columns: 1fr 80fr;
+	column-gap: 2rem;
+}
+.show-photographers-item {
+	align-self: center;
+}
+
+/* .photographer-row { */
+/* 	display: grid; */
+/* 	grid-template-columns: 60fr 10fr 20fr; */
+/* 	column-gap: 2px; */
+	
+/* } */
+
+/* .photographer-item { */
+/* 	align-self: center; */
+/* 	max-width: 100%; */
+/* } */

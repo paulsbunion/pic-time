@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.defrainPhoto.pictime.dto.TimeslotDTO;
 import com.defrainPhoto.pictime.exception.ResourceNotFoundException;
+import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
 import com.defrainPhoto.pictime.repository.TimeslotRepository;
@@ -83,6 +84,14 @@ public class TimeslotServiceImpl implements TimeslotService {
 		catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	@Override
+	public void removePhotographerFromTimeslots(User p, List<Timeslot> t) {
+		timeslotRepository.RemovePhotographerFromTimeslotsForEvent(p.getId(), Timeslot.getTimeslotListAsIds(t));
+//		for (Timeslot timeslot : t) {
+//			timeslotRepository.RemovePhotographerFromTimeslotsForEvent(p.getId(), timeslot.getId());
+//		}
 	}
 
 }

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -15,8 +17,15 @@ import com.defrainPhoto.pictime.constraint.City;
 import com.defrainPhoto.pictime.constraint.State;
 import com.defrainPhoto.pictime.constraint.Street;
 import com.defrainPhoto.pictime.constraint.Zipcode;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+//@UniqueLocation
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Location.class)
 @Entity
+@Table(
+		uniqueConstraints = @UniqueConstraint(columnNames = {"street", "city", "state", "zipcode"})
+		)
 public class Location {
 
 	@Id
@@ -39,6 +48,8 @@ public class Location {
 	@NotEmpty
 	@NotNull(message = "")
 	private String street;
+	@NotEmpty
+	@NotNull
 	private String description;
 	
 	public Location() {
@@ -125,5 +136,9 @@ public class Location {
 			return false;
 		Location other = (Location) obj;
 		return id != null && id.equals(other.getId());
+	}
+	
+	public String printLocationWithDescription() {
+		return description + ": " + street + ", " + city + ", " + state + ", " + zipcode;
 	}
 }

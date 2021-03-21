@@ -40,4 +40,6 @@ public interface EventService {
 
 	public List<Event> findAllByYearAndMonthAndDay(Integer year, Integer month, Integer day);
 
+	void removePhotographerFromTimeslots(User p, List<Timeslot> list);
+
 }

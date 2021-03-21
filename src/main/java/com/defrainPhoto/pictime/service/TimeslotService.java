@@ -3,6 +3,7 @@ package com.defrainPhoto.pictime.service;
 import java.util.List;
 
 import com.defrainPhoto.pictime.dto.TimeslotDTO;
+import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
 
@@ -22,4 +23,6 @@ public interface TimeslotService {
 	public Timeslot updateTimeslot(Timeslot updatedTimeslot);
 
 	public void deleteTimeslot(long timeslotId);
+
+	public void removePhotographerFromTimeslots(User p, List<Timeslot> t);
 }

@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.defrainPhoto.pictime.controller.LocationController;
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.UniqueLocation;
 
 @Controller
 @RequestMapping("/mvc/locations/")
@@ -46,11 +48,11 @@ public class LocationMVCController {
 	public String listAllLocations(Model model) {
 		log.info("MVC user calling get all locations");
 		List<LocationDTO> allLocations = locationController.getAllLocations();
-		while (allLocations == null || allLocations.isEmpty()) {
-			log.info("Addind Dummy Location Data for testing");
-			addLocations();
-			allLocations = locationController.getAllLocations();
-		}
+//		while (allLocations == null || allLocations.isEmpty()) {
+//			log.info("Addind Dummy Location Data for testing");
+//			addLocations();
+//			allLocations = locationController.getAllLocations();
+//		}
 		model.addAttribute("locations", allLocations);
 		return LIST_LOCATIONS_URL;
 	}
@@ -68,6 +70,12 @@ public class LocationMVCController {
 		log.info("MVC user saving new Location");
 		if (result.hasErrors()) {
 			log.error("Error(s) saving new Location: " + result.getAllErrors());
+			model.addAttribute("states", states);
+			return NEW_LOCATION_URL;
+		}
+		// validate unique
+		if (!checkUnique(location, result, model)) {
+			log.error("Error(s) saving new Location: Location already exists");
 			model.addAttribute("states", states);
 			return NEW_LOCATION_URL;
 		}
@@ -101,10 +109,15 @@ public class LocationMVCController {
 			model.addAttribute("states", states);
 			return EDIT_LOCATION_URL;
 		}
-		else {
-			locationController.updateLocation(id, location);
-			return "redirect:" + MVC_LOCATION_URL_BASE + "list";
+		// validate unique
+		if (!checkUnique(location, result, model)) {
+			log.error("Error(s) Updating Location:  updated Location already exists");
+			model.addAttribute("states", states);
+			return EDIT_LOCATION_URL;
 		}
+		
+		locationController.updateLocation(id, location);
+		return "redirect:" + MVC_LOCATION_URL_BASE + "list";
 	}
 	
 	@GetMapping("delete/{id}")
@@ -119,6 +132,14 @@ public class LocationMVCController {
 		return "redirect:" + MVC_LOCATION_URL_BASE + "list";
 	}
 	
+	private boolean checkUnique(Location location, BindingResult result, Model model) {
+		UniqueLocation uniqueLocation = locationController.isUniqueWithExistingLocation(location);
+		if (!uniqueLocation.isUnique()) {
+			result.addError(new FieldError("location", "location", "Location already exists: " + uniqueLocation.getLocation().printLocationWithDescription()));
+		}
+		return uniqueLocation.isUnique();
+	}
+	
 	/**
 	 * Helper method to add dummy data for testing
 	 */
@@ -130,6 +151,10 @@ public class LocationMVCController {
 		locationController.addLocation(loc2);
 	}
 	
+	
+	public static List<String> getStatesList() {
+		return states;
+	}
 	private void populateStateMap() {
 		states.add("OH");
 		states.add("AL");

@@ -215,6 +215,11 @@ cursor: pointer;
 	float: right;
 }
 
+/* --------------------css for location auto complete search ----------------------*/
+.ui-front {
+	z-index: 2000;
+}
+
 .gray{
 	background-color: gray;
 }

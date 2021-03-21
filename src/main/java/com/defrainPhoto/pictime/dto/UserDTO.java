@@ -1,10 +1,6 @@
 package com.defrainPhoto.pictime.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import com.defrainPhoto.pictime.model.Event;
-import com.defrainPhoto.pictime.model.Timeslot;
+import java.util.Objects;
 
 public class UserDTO {
 
@@ -54,6 +50,29 @@ public class UserDTO {
 		this.email = email;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserDTO other = (UserDTO) obj;
+		boolean test = Objects.equals(id, other.getId());
+		return Objects.equals(id, other.getId());
+	}
+
+	@Override
+	public String toString() {
+		return "{\"id\":" + id + ", \"firstName\":\"" + firstName + "\", \"lastName\":\"" + lastName + "\"}";
+	}
+
 //	public Set<Event> getEvents() {
 //		return events;
 //	}
@@ -71,5 +90,4 @@ public class UserDTO {
 //	}
 //	
 	
-
 }

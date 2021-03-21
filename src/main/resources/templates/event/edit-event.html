@@ -5,6 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
@@ -28,10 +32,10 @@
 
 					<div th:case="*">
 
-						<form action="#"
+						<form action="#" id="editForm"
 							th:action="@{/mvc/events/update/{id}(id=${event.id})}"
 							method="post">
-
+							<input id="eventId" type="hidden" th:value="${event.id}">
 							<div class="form-group col-md-6">
 								<label for="eventName" class="col-form-label">Event Name</label> 
 								<input type="text" th:field="${event.eventName}" class="form-control" id="eventName" placeholder="Event Name">
@@ -68,25 +72,154 @@
 							</div>
 
 							<!-- 		select photograper code -->
+							<div class="form-group col-md-6"><label>Photographers</label>
+							
+<!-- 										<label style="display: block;" for="photographers">Assigned</label> -->
+										<select hidden="true" multiple="multiple" th:field="${event.photographers}" id="photographers" name="photographers" path="photographers">
+										</select>
+<!-- 									</div> -->
+<!-- 								</div> -->
+							</div>
+							
+							<div class="form-group col-md-6">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-photographer-modal">Add Photographer</button>
+							</div>
+							
+							<div class="photographer-container" >
+								<th:block th:each= "photog : ${available_event_photographers}">
+									<div class="photographer-row" style="display: none" th:id="'showPhotogId_' + ${photog.id}">
+										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div>
+										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}">
+										<div class="photographer-item"><a class="btn btn-primary">
+										<i class="fas fa-user-times m1-2">Swap</i></a> </div>
+										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}">
+										<i class="fas fa-user-times m1-2">Remove</i></a> </div>
+									</div>
+								</th:block>
+								<th:block th:each= "photog : ${assigned_event_photographers}">
+									<div class="photographer-row" th:id="'showPhotogId_' + ${photog.id}">
+										<div class="photographer-item" th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</div>
+										<input hidden="true" th:id = "${'savePhotogId_' + photog.id}">
+										<div class="photographer-item"><a class="btn btn-primary">
+										<i class="fas fa-user-times m1-2">Swap</i></a> </div>
+										<div class="photographer-item"><a class="btn btn-primary delete" th:id="'removeShowPhotogId_' + ${photog.id}">
+										<i class="fas fa-user-times m1-2">Remove</i></a> </div>
+									</div>
+								</th:block>
+							</div>
+							
 
-							<td><input type="submit" class="btn btn-primary" value="Save"></td>
-
-							<td><a th:href="@{/mvc/events/list}"
-								class="btn btn-primary delete"> <i
-									class="fas fa-user-times m1-2">Back</i>
-							</a></td>
-							<td><a th:href="@{/mvc/events/calendar/{date}?eventId={eventId}(date=${#temporals.format(event.date, 'yyyy/MM/dd')}, eventId= ${event.id})}"
-								class="btn btn-primary" style="background-color: green"> <i class="fas fa-user-edit m1-2">Timeline</i>
-							</a></td>
+							<div class="save-container">
+								<div class="save-item"><input type="submit" class="btn btn-primary" value="Save"></div>
+	
+								<div class="save-item"><a th:href="@{/mvc/events/list}"
+									class="btn btn-primary delete"> <i
+										class="fas fa-user-times m1-2">Back</i>
+								</a></div>
+								<div class="save-item"><a th:href="@{/mvc/events/calendar/{date}?eventId={eventId}(date=${#temporals.format(event.date, 'yyyy/MM/dd')}, eventId= ${event.id})}"
+									class="btn btn-primary" style="background-color: green"> <i class="fas fa-user-edit m1-2">Timeline</i>
+								</a></div>
+							</div>
 						</form>
 
 					</div>
 				</div>
 			</div>
-
-
+	<script type="text/javascript">
+	$(document).on("click", '[id^="showPhotogId_"] a', function (event) {
+		event.preventDefault();
+		console.log("clicked");
+	});
+	
+	$(document).on("click", '[id^="removeShowPhotogId_"]', function (event) {
+		event.preventDefault();
+		console.log("clicked2");
+		$('#' + this.id)[0].parentElement.parentElement.style.display = "none";
+		let photogId = this.id.split("_")[1];
+		console.log($('#addPhotogId_' + photogId));
+		$('#addPhotogId_' + photogId)[0].style.display = "block";
+	});
+	</script>
+	
+				
+	<script type="text/javascript">
+		$("#editForm").submit(function(e) {
+// 			e.preventDefault();
+// 			var selectedPhotographers = $('[id^="savePhotogId_"]');
+			var selectedPhotographers = $('[id^="showPhotogId_"]:visible');
+			
+			if (selectedPhotographers.length == 0) {
+// 				e.preventDefault();
+			}
+			else {
+// 				console.log($(selectedPhotographers));
+// 				console.log(selectedPhotographers.length);
+				var photogs = $("#photographers");
+				var i = 0;
+				for (i = 0; i < selectedPhotographers.length; i++) {
+					var id = $(selectedPhotographers[i]).attr('id').split('_')[1];
+					photogs[0].options.add(new Option(id, id));
+				}
+				$("#photographers option").prop('selected', true);
+			}
+		});
+	</script>
 
 		</div>
 	</div>
+<!-- 	list available photographers modal -->
+	<div id="add-photographer-modal" class="modal">
+		<div class="modal-dialog modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5>Title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="availablePhotographers">
+					<th:block th:each= "photog : ${available_event_photographers}">
+						<div th:id="'addPhotogId_' + ${photog.id}">
+<!-- 							<td><a th:id="'addPhotogId_' + ${photog.id}" class="btn btn-primary"> -->
+							<td><a class="btn btn-primary">
+								<i class="fas fa-user-times m1-2">Add</i></a> </td>
+							<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
+						</div>
+					</th:block>
+					<th:block th:each= "photog : ${assigned_event_photographers}">
+						<div style="display: none" th:id="'addPhotogId_' + ${photog.id}">
+<!-- 							<td><a th:id="'addPhotogId_' + ${photog.id}" class="btn btn-primary"> -->
+							<td><a class="btn btn-primary">
+								<i class="fas fa-user-times m1-2">Add</i></a> </td>
+							<td th:text="${photog.firstName + ' ' + photog.lastName}">Bob PhotoBob</td>
+						</div>
+						
+					</th:block>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+// 	$('[id="photogId_"]').click(function (event) {
+	$(document).on("click", '[id^="addPhotogId_"]', function (event) {
+		
+		var photogId = $(this).attr('id').split("_")[1];
+		console.log('#showPhotogId_' + photogId);
+		console.log($('#showPhotogId_' + photogId));
+		$('#showPhotogId_' + photogId)[0].style.display = "grid";
+		$('#addPhotogId_' + photogId)[0].style.display = "none";
+		
+		
+		$("#add-photographer-modal").modal('hide');
+		
+	});
+
+	
+	</script>
+	
 </body>
 </html>

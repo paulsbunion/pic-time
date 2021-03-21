@@ -1,6 +1,8 @@
 package com.defrainPhoto.pictime.model;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -55,10 +58,16 @@ public class Timeslot {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Client client;
 
+	@JsonProperty("photographers")
+	@JsonIdentityReference(alwaysAsId = true)
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToMany
 	@JoinTable(name = "timeslot_user", joinColumns = @JoinColumn(name = "timeslot_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> photographers = new HashSet<User>();
 
+	@JsonProperty("locationId")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Location location;
 	private boolean trackMileage;
@@ -103,11 +112,37 @@ public class Timeslot {
 		return event;
 	}
 
-	// testing Jackson backrefernce error, refactor to static factory method: https://keepgrowing.in/java/springboot/how-to-get-json-response-only-with-an-id-of-the-related-entity/
+//	 testing Jackson backrefernce error, refactor to static factory method: https://keepgrowing.in/java/springboot/how-to-get-json-response-only-with-an-id-of-the-related-entity/
 	@JsonProperty("eventId")
 	public void setEventById(Long eventId) {
 		this.event = new Event();
 		this.event.setId(eventId);
+	}
+	
+	@JsonProperty("locationId")
+	public void setLocationById(Long locationId) {
+		if (locationId != null) {
+			this.location = new Location();
+			this.location.setId(locationId);
+		}
+		else {
+			this.location = null;
+		}
+		
+	}
+	
+	@JsonProperty("photographers")
+	public void setPhotographersByIds(List<Long> photographerIds) {
+		if (photographerIds != null) {
+			if (this.photographers == null) {
+				this.photographers = new HashSet<User>();
+			}
+			for (Long pId : photographerIds) {
+				User user = new User();
+				user.setId(pId);
+				photographers.add(user);
+			}
+		}
 	}
 	
 	public void setEvent(Event event) {
@@ -188,5 +223,10 @@ public class Timeslot {
 		return id != null && id.equals(((Timeslot) obj).getId());
 	}
 	
+	public static List<Long> getTimeslotListAsIds(List<Timeslot> timeslots) {		
+		List<Long> result = new LinkedList<Long>();
+		timeslots.stream().forEach(t -> result.add(t.getId()));
+		return result;
+	}
 	
 }
