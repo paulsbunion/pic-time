@@ -170,12 +170,10 @@
       </div>
       <div class="modal-body" id="modal-body">
       <form id="myForm" method="post">
-	      <span>event id</span>
 	      <input id="editEventId" name="eventId" type="text" class="form-control" disabled="true" hidden>
-	      <span>timeslot id</span>
 	      <input id="editTimeslotId" name="timeslotId" type="text" class="form-control" disabled="true" hidden>
 	      
-			<span>Start Time</span> <span id="rsp_start_time", class="text-danger"></span>
+			<span>Start Time</span> <span id="rsp_start_time_edit", class="text-danger"></span>
         	<div class="time-selector">
 	       		<select class="form-control w-auto" id="editStartTimeHr" name="startTimeHr">
 	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
@@ -193,13 +191,15 @@
 		       	</select>
 	 		</div>
 	 		
-	        <span>End Time</span>
+	        <span>End Time</span> <span id="rsp_end_time_edit", class="text-danger"></span>
 	        <div class="time-selector">
 		       	<select id="editEndTimeHr" class="form-control w-auto" name="endTimeHr">
+<!-- 		       		<option value=""></option> -->
 		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
 		       	</select>
 		       	:
 		       	<select id="editEndTimeMin" class="form-control w-auto" name="endTimeMin" style="width: 10%">
+<!-- 		       		<option value=""></option> -->
 		       		<option value="00">00</option>
 		       		<option value="05">05</option>
 		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
@@ -209,6 +209,8 @@
 		       		<option value="AM">AM</option>
 		       		<option value="PM">PM</option>
 		       	</select>
+<!-- 		       	<button type="button" class="btn btn-secondary" id="clear_endtime_edit">Clear</button> -->
+		       	<input type="button" value="X" id = "clear_endtime_edit" class="form-control location-searchbar-item btn-danger">
 		       	<br>
 	       	</div>
 	       	
@@ -429,7 +431,7 @@
 		       	</select>
 	 		</div>
 	 		
-	        <span>End Time</span>
+	        <span>End Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
 	        <div class="time-selector">
 		       	<select id="newEndTimeHr" name="newTimeHr" >
 		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>

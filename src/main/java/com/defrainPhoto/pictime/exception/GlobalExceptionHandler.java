@@ -26,13 +26,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(UpdateEventException.class)
 	public ResponseEntity<Object> handleUpdateEventException(UpdateEventException ex, WebRequest request) {
 		Map<String, Object> body = new LinkedHashMap<String, Object>();
-//		body.put("rsp_start_time", ex.getBindingResult().getFieldErrors());
-		body.put("rsp_start_time", "Start Time must be before End Time!");
+		System.out.println("caught ex:");
+		System.out.println(ex.getMessage());
+		System.out.println("found error in update: ");
+		ex.getBindingResult().getAllErrors().forEach(e -> System.out.println(e.getClass()));
+		ex.getBindingResult().getAllErrors().forEach(e ->System.out.println(e.getDefaultMessage()));
+		
+		clearErrors(body);
+		
+		for(ObjectError error : ex.getBindingResult().getAllErrors() ) {
+			if (error.getDefaultMessage().contains("End time Hour and Minute Not Set / Cleared")) {
+				body.put("rsp_end_time", "Invalid, must set or clear all values");
+			}
+			else if (error.getDefaultMessage().contains("start time must be before end time")) {
+				body.put("rsp_start_time", " must be before End Time or clear End Time");
+			}
+		}
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 		
 	}
 	
-//	@Override
+private void clearErrors(Map<String, Object> body) {
+		body.put("rsp_start_time", "");
+		body.put("rsp_end_time", "");
+	}
+
+	//	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 	

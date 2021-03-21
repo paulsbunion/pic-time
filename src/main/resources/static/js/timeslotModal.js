@@ -10,7 +10,8 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		window.location.href = document.getElementById("newEventAnchor").href;
 	}
 	else {
-		$('#rsp_start_time_new').text("");
+		clearResponseErrorCodes("new");
+//		$('#rsp_start_time_new').text("");
 		console.log("value");
 		console.log($("#sel").val());
 		$("#newEventId").val($("#sel").val());
@@ -18,7 +19,6 @@ $(document).on("click", "#newTimeslotModal", function (event) {
   	}
 	});
 
-   
    
    $(document).on("click", ".open-EditModal", function (event) {
 	var _self = $(this);
@@ -41,13 +41,19 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	appendPhotographers(assignedPhotographers, true);
 	appendPhotographers(availablePhotographers, false);
 
-$('#rsp_start_time').text("");
+//$('#rsp_start_time').text("");
+	clearResponseErrorCodes("edit");
 $("#editEventId").val(eventId);
 $("#editTimeslotId").val(timeslotId);
 
 $("#editTimeslotTitle").val(title);
 var startTimeSplit = startTime.split(":");
-var endTimeSplit = endTime.split(":");
+console.log("END time");
+console.log(endTime);
+var endTimeSplit = [null,null];
+if (endTime != undefined) {
+	endTimeSplit = endTime.split(":");
+}
 if (startTimeSplit[0] > 11) {
 	$("#editStartTimeMeridian").val("PM");
 	startTimeSplit[0]-= 12;
@@ -61,6 +67,9 @@ if (endTimeSplit[0] > 11) {
 }
 else {
 	$("#editEndTimeMeridian").val("AM");
+}
+if (endTimeSplit[0] == null) {
+	$("#editEndTimeMeridian").val("");
 }
 
 $("#editStartTimeHr").val(startTimeSplit[0]);
@@ -114,6 +123,9 @@ function appendPhotographer(p, assigned) {
 
    	$(document).on("click", "#edit-modal-submit", function (event) {
 		event.preventDefault();
+		if (!validEndTime("edit")) {
+			return false;
+		}
 		
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -158,7 +170,8 @@ function appendPhotographer(p, assigned) {
 			},
 			
 			success: function(response) {
-				$('#rsp_start_time').text("");
+				clearResponseErrorCodes("edit");
+//				$('#rsp_start_time').text("");
 				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
 				if (response.redirect) {
 					window.location.href = response.redirect;
@@ -169,7 +182,8 @@ function appendPhotographer(p, assigned) {
 					}, RELOAD_TIMER);
 			},
 			error: function (e) {
-				$('#rsp_start_time').text(e.responseJSON.rsp_start_time);
+				$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
+				$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
 			}
 		});
 
@@ -205,7 +219,8 @@ function appendPhotographer(p, assigned) {
 			},
 			
 			success: function(response) {
-				$('#rsp_start_time_new').text("");
+//				$('#rsp_start_time_new').text("");
+				clearResponseErrorCodes("new");
 				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
 				
 				 window.setTimeout(function(){window.location.reload()}, 3000);
@@ -216,6 +231,7 @@ function appendPhotographer(p, assigned) {
 			},
 			error: function (e) {
 				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
+				$('#rsp_end_time_new').text(e.responseJSON.rsp_end_time);
 			}
 		});
 
@@ -249,10 +265,22 @@ function appendPhotographer(p, assigned) {
 			formData.id = $('#' + prefix + 'timeslotId').val();
 		}
 		
+		var endTime = [null];
+		var endTimeHr = $('#' + prefix + 'EndTimeHr').val();
+		var endTimeMin = $('#' + prefix + 'EndTimeMin').val();
+		
+		if (endTimeHr != "" && endTimeMin != "") {
+			var endTime = [$('#' + prefix + 'EndTimeHr').val(), $('#' + prefix + 'EndTimeMin').val(), 
+				$('#' + prefix + 'EndTimeMeridian').val()];
+		}
+		console.log("the times:");
+		console.log(endTimeHr);
+		console.log(endTimeMin);
+		
 		var startTime = [$('#' + prefix + 'StartTimeHr').val(), $('#' + prefix + 'StartTimeMin').val(), 
 			$('#' + prefix + 'StartTimeMeridian').val()];
-		var endTime = [$('#' + prefix + 'EndTimeHr').val(), $('#' + prefix + 'EndTimeMin').val(), 
-			$('#' + prefix + 'EndTimeMeridian').val()];
+//		var endTime = [$('#' + prefix + 'EndTimeHr').val(), $('#' + prefix + 'EndTimeMin').val(), 
+//			$('#' + prefix + 'EndTimeMeridian').val()];
 		formData.time.startTime = parseTime(startTime);
 		formData.time.endTime =  parseTime(endTime);
 		
@@ -276,11 +304,16 @@ function appendPhotographer(p, assigned) {
 		}
 		formData.notes=$('#' + prefix + 'Notes').val();
 		
-//		console.log(formData);
+		console.log(formData);
 		return formData;
 	}
 	
 	function parseTime(timeString) {
+		console.log("the parsing times:");
+		console.log(timeString);
+		if(timeString[0] == null) {
+			return null;
+		}
 		var hr = parseInt(timeString[0]);
 		var mn = parseInt(timeString[1]);
 		var merid = timeString[2];
@@ -343,4 +376,47 @@ function appendPhotographer(p, assigned) {
 		var duration = totHrs * 100 + totMins;
 		return duration;
 		
+	}
+	
+	function validEndTime(modalType) {
+		clearResponseErrorCodes(modalType);
+		var endTime = [null];
+		var endTimeHr = $('#' + modalType + 'EndTimeHr').val();
+		var endTimeMin = $('#' + modalType + 'EndTimeMin').val();
+		var merid = $('#' + modalType + 'EndTimeMeridian').val();
+		
+		var endTimeHrSet = !(endTimeHr == "" || endTimeHr == null);
+		var endTimeMinSet = !(endTimeMin == "" || endTimeMin == null);
+		var meridSet = !(merid == "" || merid == null);
+		var allSet = endTimeHrSet && endTimeMinSet && meridSet;
+		var allClear = !endTimeHrSet && !endTimeMinSet && !meridSet;
+				
+		if (allSet || allClear) {
+			return true;
+		}
+		else {
+			$('#rsp_end_time_' + modalType).text(" invalid, set or clear all values");
+			return false;
+		}
+	}
+	
+	function clearResponseErrorCodes(modalType) {
+		$('#rsp_start_time_' + modalType).text("");
+		$('#rsp_end_time_' + modalType).text("");
+	}
+	
+	$(document).on("click", "#clear_endtime_edit", function(event) {
+		event.preventDefault();
+		clearEndTime("edit");
+	});
+	
+	$(document).on("click", "#clear_endtime_new", function(event) {
+		event.preventDefault();
+		clearEndTime("new");
+	});
+
+	function clearEndTime(modalType) {
+		$("#" + modalType + "EndTimeHr").val('');
+		$("#" + modalType + "EndTimeMin").val('');
+		$("#" + modalType + "EndTimeMeridian").val('');
 	}

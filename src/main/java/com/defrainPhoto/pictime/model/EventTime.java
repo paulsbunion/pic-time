@@ -4,11 +4,10 @@ import java.time.LocalTime;
 
 import javax.persistence.Embeddable;
 
-import com.defrainPhoto.pictime.constraint.StartTimeEndTime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.defrainPhoto.pictime.constraint.StartTimeBeforeEndTime;
 
 @Embeddable
-@StartTimeEndTime
+@StartTimeBeforeEndTime
 public class EventTime {
 
 	private LocalTime startTime;
@@ -46,6 +45,9 @@ public class EventTime {
 	}
 	
 	public String printTime(LocalTime time) {
+		if (time == null) {
+			return "";
+		}
 		String ampm = "AM";
 		String startMin = "" + time.getMinute();
 		if (startMin.length() < 2) {
@@ -70,6 +72,9 @@ public class EventTime {
 	}
 	
 	public String printEndTimeMilitary() {
+		if (this.endTime == null) {
+			return "";
+		}
 		return printTimeMilitary(endTime);
 	}
 	

@@ -1,5 +1,7 @@
 package com.defrainPhoto.pictime.controller.mvc;
 
+import java.time.LocalTime;
+
 import com.defrainPhoto.pictime.model.EventTime;
 
 public class TimeslotTimeSpan {
@@ -45,8 +47,16 @@ public class TimeslotTimeSpan {
 		int stop = -1;
 		int startTimeHour = eventTime.getStartTime().getHour();
 		int startTimeMinute = (int) eventTime.getStartTime().getMinute();
-		int endHour = (int) eventTime.getEndTime().getHour();
-		int endMinute =(int) eventTime.getEndTime().getMinute();
+		LocalTime endTime = eventTime.getEndTime();
+		int endHour = 23;
+		int endMinute = 0;
+		if (endTime == null) {
+			
+		}
+		else {
+			endHour = (int) eventTime.getEndTime().getHour();
+			endMinute =(int) eventTime.getEndTime().getMinute();
+		}
 						
 //		System.out.println("DURATION: " + eventTime.getTotalMinutes());
 //		System.out.println("endtimed: " + eventTime.getEndTime());

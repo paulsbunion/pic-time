@@ -10,11 +10,11 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = StartTimeEndTimeValidator.class)
+@Constraint(validatedBy = StartTimeBeforeEndTimeValidator.class)
 //@Target({ElementType.CONSTRUCTOR, ElementType.ANNOTATION_TYPE})
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface StartTimeEndTime {
+public @interface StartTimeBeforeEndTime {
 
 	String message() default "start time must be before end time. " +
 			"Found: 'start time'=${validatedValue.startTime}, " + 
