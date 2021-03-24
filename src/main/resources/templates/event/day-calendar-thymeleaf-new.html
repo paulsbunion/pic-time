@@ -100,12 +100,23 @@
 						data-location-id=${timeslot.location?.id}">
 						
 						<div class = "timeslotFlex timeslotTime"><span th:text="${timeslot.time.printStartEnd()}"></span></div>
-						<div class = "timeslotFlex timeslotTitle"><span th:text=" ${timeslot.title}"></span></div>
-						<div class = "timeslotFlex"><span></span></div>
+						<div class = "timeslotData">
+							<div class="timeslotFlexTitle"><p class="timeslotFlexTitleText" th:text=" ${timeslot.title}"></p></div>
+							<div class="timeslotFlexNotes"><p  class="timeslotFlexNotesText" th:text=" ${timeslot.notes}"></p></div>
+						</div>
+<!-- 						<div class = "timeslotFlex"><span></span></div> -->
 							
 <!-- 							<span th:text="${timeslot.notes}"></span> -->
 							
 						</div>
+						
+						<th:block th:each= "availPhotogs : ${available_timeslot_photographers}" th:if="${availPhotogs.value!=null and !availPhotogs.value.isEmpty() and availPhotogs.key == timeslot.id}">
+						<p th:id="'avail_photogs_timeslot_' + ${timeslot.id}" th:attr="data-avail_photogs=${availPhotogs.value}" hidden></p>
+					</th:block>
+					
+					<th:block th:each= "assignedPhotogs : ${assigned_timeslot_photographers}" th:if="${assignedPhotogs.value!=null and !assignedPhotogs.value.isEmpty() and assignedPhotogs.key == timeslot.id}">
+						<p th:id="'assigned_photogs_timeslot_' + ${timeslot.id}" th:attr="data-assigned_photogs=${assignedPhotogs.value}" hidden></p>
+					</th:block>
 					</th:block>
 					
 				</th:block>

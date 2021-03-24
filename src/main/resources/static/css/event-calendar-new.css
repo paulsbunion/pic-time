@@ -204,7 +204,8 @@
 	
 	font-size: 2vh;
 	overflow: hidden;
-	text-overflow: ellipsis;
+/* 	text-overflow: ellipsis; */
+	max-width: 100%;
 	
 /* 	text-align: center; */
 /* 	vertical-align: middle; */
@@ -219,33 +220,121 @@ overflow: hidden;
 cursor: pointer;
 }
 
-.testEntry:nth-child(odd) {
+.testEntry:nth-of-type(odd) {
 	background: rgb(192, 192, 192);
 }
 
 .timeslotFlex {
-	flex: 1;
+/* 	flex: 1 1 0; */
   display: flex;
-  justify-content: center;
-  
-  overflow: hidden;
-	text-overflow: ellipsis;
-	
+/*   flex-direction: row; */
+/*   justify-content: center; */
+/*    align-items: center; */
+   height: 100%;
 /* 	flex: 1 1 0; */
 /* 	padding-left: 10px; */
 /* 	text-align: left; */
+/* min-width: 0; */
+/* max-width: 100%; */
+overflow: hidden;
+/* 	text-overflow: ellipsis; */
+/* 	min-width: 0; */
+/* 	white-space: nowrap; */
 }
 
-.timeslotFlex:first-child > span { margin-right: auto; }
+.timeslotData {
+  flex: 9 1 0;
+  height: inherit;
+/*   display: flex; */
+/*   flex-direction: column; */
+/* overflow: hidden; */
+}
 
+/* .timeslotDataColumn { */
+/* 	display: flex; */
+/* 	flex-direction: column; */
+/* } */
+
+.timeslotFlex:first-child > span { margin-right: auto; border-right: 10px solid;}
+
+.timeslotFlexTitle {
+/* 	flex: 1 1 0; */
+	border-bottom: 3px solid;
+	width: 100%;
+	height: 33%;
+	overflow: hidden;
+}
+.timeslotFlexNotes {
+/* 	flex: 2 1 0; */
+	width: 100%;
+	height: 66%;
+	overflow: hidden;
+}
+
+.timeslotTime {
+	flex: 2 1 0;
+	max-width: 20%;
+/* 	min-width: 10%; */
+/* 	height: 100%; */
+/* 	min-width: 100%; */
+}
 .timeslotTime span {
 /* 	padding-left: 10px; */
+	display: flex;
+	width: 100%;
 	margin-left: 10px;
+	align-items: center;
+	align-content: center;
 }
+
+.timeslotFlexTitleText {
+	padding-left: 10px;
+/* 	display: flex; */
+/* height: 1opx; */
+	display:-webkit-box;
+	color: black;
+	font-size: 2.2vh;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+/* 	line-clamp: 2; */
+/* 	width: 100%; */
+/* 	margin-left: 10px; */
+/* 	align-items: center; */
+/* 	align-content: center; */
+/* 	justify-content: center; */
+	overflow: hidden;
+/* 	text-overflow: ellipsis; */
+/* 	white-space: nowrap; */
+}
+
+.timeslotFlexNotesText {
+	display:-webkit-box;
+/* 	color: black; */
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.timeslotTitleText p {
+	padding-left: 10px;
+/* 	display: flex; */
+/* height: 1opx; */
+	display:-webkit-box;
+/* 	color: black; */
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
 .timeslotTitle {
-/* 	flex: 3 1 0; */
+	flex: 9 1 0;
+/* 	display: flex; */
 /* 	padding-left: 10px; */
 /* 	text-align: left; */
+/*  overflow: hidden; */
+/* 	text-overflow: ellipsis; */
+/* 	min-width: 0; */
+/* 	max-width: 100%; */
+/* 	white-space: nowrap; */
 }
 
 .test {
