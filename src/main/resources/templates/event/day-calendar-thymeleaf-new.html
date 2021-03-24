@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/assets/jquery-ui-1.12.1/jquery-ui.js}"></script>
+<script type="text/javascript" th:src="@{/js/switchContentDisplayNew.js}"></script>
+<script type="text/javascript" th:src="@{/js/wickedpicker.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/location.js}"></script>
+<script type="text/javascript" th:src="@{/js/addParameterToURL.js}"></script>
+<script type="text/javascript" th:src="@{/js/timeslotModal.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script> -->
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/jquery-ui-1.12.1/jquery-ui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/slider.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar-new.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/timeslot-edit-modal.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" />
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>	 -->
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<title>Insert title here</title>
+
+</head>
+<body>
+<th:block th:insert="fragments/nav :: nav"></th:block>
+
+<!-- <img -->
+<!--     src="/img/calendar3.svg" -->
+<!--     alt="triangle with all three sides equal" -->
+<!--     height="87" -->
+<!--     width="100" /> -->
+<!--     <svg viewBox="0 0 54 54" style="color: red; height: auto; width: 15em;" ><use xlink:href="/img/calendar.svg#calendar"></use></svg> -->
+    
+    
+<!-- 	<script type="text/javascript" th:src="@{/js/delayLoad.js}"></script> -->
+	<th:block th:each="event, iter : ${events}">
+		<!-- 		<div th:if="${iter.index} != -10" th:id="'eventId' + ${event.id}"  -->
+		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div>
+	</th:block>
+
+	<div class="container2">
+		<div class="navigation"> 
+			<span class="nav-back"><a id="back" th:href="@{/mvc/events/calendar/{date}(date=${month.previousDayLink})}"><</a></span>
+			<span class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span>
+			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{date}(date=${month.nextDayLink})}">></a></span>
+		</div>
+		<div class="day-calendar">
+			<div class="day-header">
+				<div class="newEvent">
+				<a th:href="@{/mvc/events/new/{date}(date=${month.todayLink})}"
+											class="btn btn-primary gray" id="newEventAnchor"> <i class="fas fa-user-edit m1-2">New Event</i></a>
+				</div>
+				
+				<div class="eventDropdown">
+					<select id="sel" name="test">
+					<option th:each="event : ${events}" th:value="${event.id}"
+						th:utext="${event.eventName}" />
+					</select>
+				</div>
+				
+<!-- 				<th:block th:if="${eventExists}"> -->
+					<div class="addTimeslot">
+						<a  id="newTimeslotModal"
+												class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a>
+					</div>
+<!-- 				</th:block> -->
+<!-- 				<th:block th:unless="${eventExists}"> -->
+<!-- 					<div class="addTimeslot"> -->
+<!-- 						<a class="btn btn-primary disabled gray" role="button" aria-disabled="true"> <i class="fas fa-user-edit m1-2">Add Timeslot</i></a> -->
+<!-- 					</div> -->
+<!-- 				</th:block> -->
+			</div>
+			<div class="day-calendar-content" id="cal">
+			
+				<th:block th:each="eventTimeslotEntry : ${eventTimeslots}">
+					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
+<!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
+						<div class="testEntry open-EditModal" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}"
+						th:attr="data-id=${timeslot.id}, 
+						data-event-id=${eventTimeslotEntry.key},
+						data-starttime=${timeslot.time.printStartTimeMilitary()}, 
+						data-endtime=${timeslot.time.printEndTimeMilitary()}, 
+						data-timeslottitle=${timeslot.title}, 
+						data-notes=${timeslot.notes},
+						data-location=${timeslot.location?.printLocationWithDescription()},
+						data-location-id=${timeslot.location?.id}">
+						
+						<div class = "timeslotFlex timeslotTime"><span th:text="${timeslot.time.printStartEnd()}"></span></div>
+						<div class = "timeslotFlex timeslotTitle"><span th:text=" ${timeslot.title}"></span></div>
+						<div class = "timeslotFlex"><span></span></div>
+							
+<!-- 							<span th:text="${timeslot.notes}"></span> -->
+							
+						</div>
+					</th:block>
+					
+				</th:block>
+				
+				
+			</div>
+		</div>
+	</div>
+	<div>Footer</div>
+	
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<input type="text" name="timeslotTitle" id="editTimeslotTitle" placeholder="Title" class="form-control" >
+<!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
+<!-- 		<input type="button" value="X" data-dismiss="modal" class="location-searchbar-item btn-danger"> -->
+<!--         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+<!--           <span aria-hidden="true">&times;</span> -->
+<!--         </button> -->
+      </div>
+      <div class="modal-body" id="modal-body">
+      <form id="myForm" method="post">
+	      <input id="editEventId" name="eventId" type="text" class="form-control" disabled="true" hidden>
+	      <input id="editTimeslotId" name="timeslotId" type="text" class="form-control" disabled="true" hidden>
+	      
+			<span>Start Time</span> <span id="rsp_start_time_edit", class="text-danger"></span>
+        	<div class="time-selector">
+	       		<select class="form-control w-auto" id="editStartTimeHr" name="startTimeHr">
+	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       		</select>
+		       	:
+		       	<select id="editStartTimeMin" class="form-control w-auto" name="startTimeMin" >
+			       	<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="editStartTimeMeridian" class="form-control w-auto" name="startAmPm">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+	 		</div>
+	 		
+	        <span>End Time</span> <span id="rsp_end_time_edit", class="text-danger"></span>
+	        <div class="time-selector">
+		       	<select id="editEndTimeHr" class="form-control w-auto" name="endTimeHr">
+<!-- 		       		<option value=""></option> -->
+		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	:
+		       	<select id="editEndTimeMin" class="form-control w-auto" name="endTimeMin" style="width: 10%">
+<!-- 		       		<option value=""></option> -->
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="editEndTimeMeridian" class="form-control w-auto" name="endAmPm">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+<!-- 		       	<button type="button" class="btn btn-secondary" id="clear_endtime_edit">Clear</button> -->
+		       	<input type="button" value="X" id = "clear_endtime_edit" class="form-control location-searchbar-item btn-danger">
+		       	<br>
+	       	</div>
+	       	
+	       	<div>
+	       		<span>Location</span>
+	       		<div class="location-searchbar">
+		       		<input type="text" name="search" id="searchBox" class="form-control location-searchbar-item ">
+		       		<input type="button" value="X" onclick="clearLocation()" class="form-control location-searchbar-item btn-danger">
+		       		<input type="text" id="editLocation" hidden>
+	       		</div>
+	       		
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleModalDivDisplay('addNewLocation')">Create New Location</button></div>
+	       		
+				<div id="addNewLocation" style="display: none;">
+	       			<div class="">
+
+						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
+						<span class="" id="already-exists-error"></span>
+			
+						<div class="">
+			
+							<form action="#" id="timeslot-new-location-form" th:action="@{/mvc/locations/save}" method="post">
+			
+			
+								<div class="form-group">
+									<label for="description" class="col-form-label">Description</label> 
+									<input type="text"  class="form-control" id="description" placeholder="Description"> 
+									<span id="description-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="street" class="col-form-label">Street</label> 
+									<input type="text" class="form-control" id="street" placeholder="Street (EX: 123 Main St.)"> 
+									<span id="street-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="city" class="col-form-label">City</label> 
+									<input type="text"  class="form-control" id="city" placeholder="City"> 
+									<span id="city-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="state" class="col-form-label">State</label> 
+									<select class="form-control" id="state">
+										<option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+									</select>
+									<span id="state-error" class="text-danger"></span>
+								</div>
+								
+								<div class="form-group">
+									<label for="zipcode" class="col-form-label">ZIP Code</label> 
+									<input type="text"  class="form-control" id="zipcode" placeholder="EX: 43068"> 
+									<span id="zipcode-error" class="text-danger"></span>
+								</div>
+								
+<!-- 								<span class="text-danger" id="already-exists2-error"></span> -->
+								
+								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td>
+								
+								<td><a id="cancel-add-location"
+									class="btn btn-primary delete"> <i
+										class="fas fa-user-times m1-2">Cancel</i>
+								</a></td>
+							</form>
+						</div>
+					</div>
+	       		</div>
+	       	</div>
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+<!-- 	display confirm / cancel modal         -->
+<!-- 	        <div id="id01" class="modal2"> -->
+<!--   <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span> -->
+<!--   <form class="modal-content" action=""> -->
+<!--     <div class="container"> -->
+<!--       <h1>Delete Account</h1> -->
+<!--       <p>Are you sure you want to delete your account?</p> -->
+
+<!--       <div class="clearfix"> -->
+<!--         <button type="button" class="cancelbtn">Cancel</button> -->
+<!--         <button type="button" class="deletebtn">Delete</button> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </form> -->
+<!-- </div> -->
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        <div>
+<!-- 		        <span>Photographers</span> -->
+		        
+<!-- 		        <select hidden="true" multiple="multiple" th:field="${timeslot.photographers}" id="edit_photographers" name="photographers" path="photographers"> -->
+<!-- 				</select> -->
+				<select hidden multiple = "multiple" id="photographers" name="photographers"></select>
+		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowPhotographers()" id="show-photographers-button">Show Photographers</button></div>
+	       		
+				<div id="showPhotographers" style="display: none;">
+	       			<div class="">
+
+						<div class="add-location-header"><span class="col-form-label item">Assign Photographers</span></div>
+			
+<!-- 						<div class=""> -->
+			
+<!-- 							<form action="#" id="timeslot-new-location-form" th:action="@{/mvc/locations/save}" method="post"> -->
+			
+			
+								<div class="form-group" id="edit_avail_photogs"></div>
+								
+<!-- 								<div class="add-location-header"><span class="col-form-label item">Assigned Photographers</span></div> -->
+<!-- 								<div class="form-group" id="edit_assigned_photogs"></div> -->
+								
+<!-- 								<td><input type="submit" class="btn btn-primary" id="timeslot-new-location-form-submit" value="Add Location"></td> -->
+								
+<!-- 								<td><a id="cancel-add-location" -->
+<!-- 									class="btn btn-primary delete"> <i -->
+<!-- 										class="fas fa-user-times m1-2">Cancel</i> -->
+<!-- 								</a></td> -->
+							</form>
+<!-- 						</div> -->
+					</div>
+	       		</div>
+	        </div>
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        <span>Notes</span>
+	        <textarea rows="5" cols="33" name="notes" id="editNotes" class="form-control"></textarea>
+      </form>
+      </div>
+      <div class="modal-footer">
+      
+      <button
+		class="btn btn-danger" 
+		th:data-confirm-delete="|Are you sure you want to delete the Timeslot?|"
+		onclick="if (!confirm(this.getAttribute('data-confirm-delete'))){return false}
+		else {
+			var _self = $('#myForm');
+			var eventId = $('#editEventId').val();
+			var timeslotId = $('#editTimeslotId').val();
+			console.log(_self);
+			console.log(eventId);
+			console.log(timeslotId);
+			console.log(_self.href);
+			window.location.href='/mvc/events/' + eventId + '/timeslots/' + timeslotId + '/delete';
+		}
+			"> <i
+			class="fas fa-user-times m1-2">Delete</i>
+	  </button>
+      
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="edit-modal-submit">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- New Modal -->
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<input type="text" name="timeslotTitle" id="newTimeslotTitle" placeholder="Title" class="form-control" >
+<!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+      <form id="myFormNew" method="post">
+	      <span>event id</span>
+	      <input id="newEventId" name="eventId" type="text" class="form-control" disabled="true" hidden>
+	      
+	      
+	      <span>Start Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+        	<div class="time-selector">
+	       		<select id="newStartTimeHr" name="newstartTimeHr">
+	       			<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	       		</select>
+		       	:
+		       	<select id="newStartTimeMin" name="newstartTimeMin" >
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="newStartTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+	 		</div>
+	 		
+	        <span>End Time</span> <span id="rsp_start_time_new", class="text-danger"></span>
+	        <div class="time-selector">
+		       	<select id="newEndTimeHr" name="newTimeHr" >
+		       		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	:
+		       	<select id="newEndTimeMin" name="newendTimeMin">
+		       		<option value="00">00</option>
+		       		<option value="05">05</option>
+		       		<option th:each="i : ${#numbers.sequence(10, 55, 5)}" th:value="${i}" th:text="${i}"></option>
+		       	</select>
+		       	
+		       	<select id="newEndTimeMeridian">
+		       		<option value="AM">AM</option>
+		       		<option value="PM">PM</option>
+		       	</select>
+		       	<br>
+	       	</div>
+	 
+	        <span>Notes</span>
+	        <textarea rows="5" cols="33" name="notes" id="notesNew" class="form-control"></textarea>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="new-modal-submit">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
