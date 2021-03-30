@@ -7,6 +7,7 @@
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
+
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" th:src="@{/assets/jquery-ui-1.12.1/jquery-ui.js}"></script>
 <script type="text/javascript" th:src="@{/js/switchContentDisplayNew.js}"></script>
@@ -47,10 +48,10 @@
     
     
 <!-- 	<script type="text/javascript" th:src="@{/js/delayLoad.js}"></script> -->
-	<th:block th:each="event, iter : ${events}">
+<!-- 	<th:block th:each="event, iter : ${events}"> -->
 		<!-- 		<div th:if="${iter.index} != -10" th:id="'eventId' + ${event.id}"  -->
-		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div>
-	</th:block>
+<!-- 		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div> -->
+<!-- 	</th:block> -->
 
 	<div class="container2">
 		<div class="navigation"> 
@@ -125,12 +126,12 @@
 			</div>
 		</div>
 	</div>
-	<div>Footer</div>
+<!-- 	<div>Footer</div> -->
 	
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog full_modal-dialog" role="document">
+    <div class="modal-content full_modal-content">
       <div class="modal-header">
       	<input type="text" name="timeslotTitle" id="editTimeslotTitle" placeholder="Title" class="form-control" >
 <!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->

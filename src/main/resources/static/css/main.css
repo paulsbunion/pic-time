@@ -1,7 +1,9 @@
 :root {
 	--dropdown-highlight-color: #BA55D3;
 	--menu-item-text-color: #dddddd;
+	font-size: 1vw;
 }
+
 
 /* dark theme dropdown */
 .dropdown-menu {
@@ -189,11 +191,13 @@ table {
 		width: 350px;
 	}
 	body {
-	font-size: 11px;
+/* 	font-size: 11px; */
+font-size: 1rem;
 	}
 	
   .btn {
-    font-size:11px;
+/*     font-size:11px; */
+font-size: 1rem;
     padding:4px 6px;
   }
 }
@@ -206,12 +210,17 @@ table {
 		width: 320px;
 	}
 	body {
-	font-size: 11px;
+/* 	font-size: 11px; */
+font-size: 2rem;
 	}
 	
   .btn {
-    font-size:11px;
+/*     font-size:11px; */
+font-size: 1rem;
     padding:4px 6px;
+  }
+  .form-control {
+  	font-size: 2rem;
   }
 }
 
@@ -220,12 +229,18 @@ table {
 		width: 700px;
 	}
 	body {
-	font-size: 12px;
+/* 	font-size: 12px; */
+	font-size: 2rem;
 	}
 	
 	.btn {
-    font-size:12px;
+/*     font-size:12px; */
+	font-size: 2rem;
     padding:6px 12px;
+  }
+  
+  .form-control {
+  	font-size: 2rem;
   }
 }
 
@@ -234,12 +249,17 @@ table {
 		width: 900px;
 	}
 	body {
-	font-size: 14px;
+/* 	font-size: 14px; */
+font-size: 1rem;
 	}
 	
   .btn {
-    font-size:14px;
+/*     font-size:14px; */
+    font-size: 1rem;
     padding:8px 12px;
+  }
+  .form-control {
+  	font-size: 1rem;
   }
 }
 
@@ -248,11 +268,13 @@ table {
 		width: 800px;
 	}
 	body {
-	font-size: 18px;
+/* 	font-size: 18px; */
+font-size: 1rem;
 	}
 	
   .btn {
     padding:10px 16px;
-    font-size:18px;
+    font-size: 1rem;
+/*     font-size:18px; */
   }
 }
