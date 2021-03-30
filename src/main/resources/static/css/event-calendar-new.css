@@ -1,3 +1,12 @@
+:root {
+	--min-font-size: 9px;
+	--max-font-size: 22px;
+	--font-size-nav: 2vw;
+	--font-size-nav-arrow: 3vw;
+	--font-size-timeslot-title: 2.2vw;
+	--font-size-timeslot-notes: 2vw;
+}
+
 .container {
 	display: grid;
 	grid-template-columns: 90vw;
@@ -16,13 +25,13 @@
 	display: grid;
 	grid-template-columns: 10% 80% 10%;
 	align-content: center;
-	font-size: 2em;
-	font-size: 2vw;
+/* 	font-size: 2em; */
+	font-size: var(--font-size-nav);
 }
 
 .nav-back {
 	text-align: left;
-	font-size: 3vw;
+	font-size: var(--font-size-nav-arrow);
 	align-self: center;
 }
 
@@ -34,7 +43,7 @@
 
 .nav-forward {
 	text-align: right;
-	font-size: 3vw;
+	font-size: var(--font-size-nav-arrow);
 	align-self: center;
 }
 
@@ -193,7 +202,8 @@
 .testEntry {
 	display: flex;
 	flex-direction: row;
-	height: 10vh;
+/* 	height: 10vh; */
+	height: 10vw;
 	
 	z-index: 2;
 	margin-left: 20px;
@@ -202,10 +212,12 @@
 	color: white;
 	align-items: center;
 	
-	font-size: 2vh;
+/* 	font-size: max(var(--font-size-timeslot-notes), 1px); */
+font-size: clamp(var(--min-font-size), var(--font-size-timeslot-notes), var(--max-font-size));
 	overflow: hidden;
 /* 	text-overflow: ellipsis; */
-	max-width: 100%;
+	width: 100%;
+/* 	max-width: 100%; */
 	
 /* 	text-align: center; */
 /* 	vertical-align: middle; */
@@ -259,6 +271,9 @@ overflow: hidden;
 
 .timeslotFlexTitle {
 /* 	flex: 1 1 0; */
+/* display:grid; */
+/* align-content: center; */
+/* align-items: center; */
 	border-bottom: 3px solid;
 	width: 100%;
 	height: 33%;
@@ -293,7 +308,8 @@ overflow: hidden;
 /* height: 1opx; */
 	display:-webkit-box;
 	color: black;
-	font-size: 2.2vh;
+/* 	font-size: var(--font-size-timeslot-title); */
+	font-size: clamp(var(--min-font-size), var(--font-size-timeslot-title), var(--max-font-size));
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 /* 	line-clamp: 2; */
