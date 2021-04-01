@@ -15,6 +15,7 @@
 <script type="text/javascript" th:src="@{/js/location.js}"></script>
 <script type="text/javascript" th:src="@{/js/addParameterToURL.js}"></script>
 <script type="text/javascript" th:src="@{/js/timeslotModal.js}"></script>
+<script type="text/javascript" th:src="@{/js/timelineToText.js}"></script>
 <!-- <script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script> -->
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
@@ -38,6 +39,8 @@
 </head>
 <body>
 <th:block th:insert="fragments/nav :: nav"></th:block>
+
+<!-- <button type="button" class="form-control btn-primary sticky-top" id="HTML-to-text">Printable Timeline</button> -->
 
 <!-- <img -->
 <!--     src="/img/calendar3.svg" -->
@@ -128,10 +131,27 @@
 	</div>
 <!-- 	<div>Footer</div> -->
 	
+	
+<!-- Timeline as Text Modal -->
+<div class="modal fade modal-fullscreen" id="HTMLasTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog full_modal-dialog" role="document">
+	    <div class="modal-content full_modal-content">
+	      <div class="modal-header">
+	      	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body" id="text-modal-body">
+	      	<p>hello</p>
+	      </div>
+		</div>
+	</div>
+</div>
+
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog full_modal-dialog" role="document">
-    <div class="modal-content full_modal-content">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-content-maxwidth">
       <div class="modal-header">
       	<input type="text" name="timeslotTitle" id="editTimeslotTitle" placeholder="Title" class="form-control" >
 <!--         <h5 class="modal-title" id="timeslotTitle">Title</h5> -->

@@ -8,6 +8,7 @@
     </footer>
 
 	<nav th:fragment="nav" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
+	<div class="upper-nav">
 		<a class="navbar-brand" href="/mvc/home">PIC| |Time</a>
 		
 	<!-- 	Events -->
@@ -79,6 +80,11 @@
 		    	<button onclick="location.href='/mvc/events/calendar'" style="background-color: transparent; background-repeat: no-repeat; border: none; overflow: hidden; outline: none;"><svg width="30" height="30" style="color: red;" ><use xlink:href="/img/calendar.svg#calendar"></use></svg></button>
 		    </li>
 	  	</ul>
+  	</div>
+  	<div class="navbar-header">
+  		<button type="button" class="form-control btn-primary" id="HTML-to-text">Printable Timeline</button>
+  	</div>
 	</nav>
+	
 </body>
 </html>

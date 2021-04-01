@@ -46,23 +46,40 @@
 /* .modal-dialog { width: 500px; max-width:100%; } */
 
 
-.full_modal-dialog {
-/*   width: 98% !important; */
-/*   height: 92% !important; */
-/*   min-width: 98% !important; */
-/*   min-height: 92% !important; */
-/*   max-width: 98% !important; */
-/*   max-height: 92% !important; */
-/*   padding: 0 !important; */
+/* .modal { */
+/*   position: fixed; */
+/*   top: 0; */
+/*   right: 0; */
+/*   bottom: 0; */
+/*   left: 0; */
+/*   overflow: hidden; */
 /* } */
 
-.full_modal-content {
-/*   height: 99% !important; */
-/*   min-height: 99% !important; */
-/*   max-height: 99% !important; */
+/* .modal-dialog { */
+/*   position: fixed; */
+/*   margin: 0; */
+/*   width: 100%; */
+/*   height: 100%; */
+/*   padding: 0; */
+/* } */
+
+.full_modal-dialog {
+  width: 98% !important;
+/*   height: 92% !important; */
+  min-width: 98% !important;
+  min-height: 92% !important;
+  max-width: 98% !important;
+  max-height: 92% !important;
+  padding: 0 !important;
 }
 
-.modal-content { width: 1200px; max-width:100%; }
+.full_modal-content {
+  height: 99% !important;
+  min-height: 99% !important;
+  max-height: 99% !important;
+}
+
+.modal-content-maxwidth { width: 1200px; max-width:100%; }
 
 /* @media only screen and (max-width: 480px) { */
 /*     .modal .modal-dialog { */
