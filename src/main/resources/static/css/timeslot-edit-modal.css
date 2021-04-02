@@ -79,6 +79,27 @@
   max-height: 99% !important;
 }
 
+.left-flex {
+	margin-right: auto;
+}
+.right-flex {
+	margin-left: auto;
+}
+
+.pad-close {
+	margin-left: 1rem;
+	margin-righ: 1rem;
+}
+
+.center-self {
+	margin-left: auto;
+	margin-right: auto;
+}
+.timeline-modal-header {
+	justify-content: flex-end;
+	align-items: space-between;
+}
+
 .modal-content-maxwidth { width: 1200px; max-width:100%; }
 
 /* @media only screen and (max-width: 480px) { */

@@ -67,6 +67,21 @@ function HTMLToText(event) {
 	
 }
 
+function printTextFromModal() {
+	var text = document.getElementById("HTMLasTextModal");
+	var $content = $("#HTMLasTextModal");
+	var $hideData = $content.find(".hidden-print");
+	var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+	$hideData.hide();
+	WinPrint.document.write(text.innerHTML);
+	$hideData.show();
+	WinPrint.document.close();
+	WinPrint.focus();
+	WinPrint.print();
+	WinPrint.close();
+	
+}
+
 function parseTimelineData(data) {
 	var tempBuffer = [];
 	tempBuffer.push("<p>");

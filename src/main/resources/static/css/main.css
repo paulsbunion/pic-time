@@ -4,6 +4,14 @@
 	font-size: 1vw;
 }
 
+@media print {
+  #printPageButton {
+    display: none;
+  }
+  .hidden-print {
+    display: none !important;
+  }
+}
 
 /* dark theme dropdown */
 .dropdown-menu {
@@ -278,3 +286,4 @@ font-size: 1rem;
 /*     font-size:18px; */
   }
 }
+
