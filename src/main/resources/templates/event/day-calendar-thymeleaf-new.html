@@ -59,7 +59,7 @@
 	<div class="container2">
 		<div class="navigation"> 
 			<span class="nav-back"><a id="back" th:href="@{/mvc/events/calendar/{date}(date=${month.previousDayLink})}"><</a></span>
-			<span class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span>
+			<span id="DateAsText" class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span>
 			<span class="nav-forward"><a id="forward" th:href="@{/mvc/events/calendar/{date}(date=${month.nextDayLink})}">></a></span>
 		</div>
 		<div class="day-calendar">
@@ -138,7 +138,7 @@
 	    <div class="modal-content full_modal-content">
 	      <div class="modal-header timeline-modal-header">
 	      <div id="spacing"></div>
-	      <span class="center-self">Text</span>
+	      <span id="timelineAsTextTitle" class="center-self">Title</span>
 	      <div class="hidden-print">
 	      <button class="" onclick="printTextFromModal();">Print</button>
 	      	<button type="button" class="pad-close " data-dismiss="modal" aria-label="Close">

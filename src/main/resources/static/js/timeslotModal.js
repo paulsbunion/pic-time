@@ -177,9 +177,10 @@ function appendPhotographer(p, assigned) {
 					window.location.href = response.redirect;
 				}
 				
-				setTimeout(function() {
-					location.reload();
-					}, RELOAD_TIMER);
+				// causes error reloading event selected page with no changes
+//				setTimeout(function() {
+//					location.reload();
+//					}, RELOAD_TIMER);
 			},
 			error: function (e) {
 				$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);

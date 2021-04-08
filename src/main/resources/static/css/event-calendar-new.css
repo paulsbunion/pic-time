@@ -131,8 +131,8 @@
 }
 
 .day-calendar {
-	display: grid;
-	grid-template-rows: 10fr 90fr; 
+/* 	display: grid; */
+/* 	grid-template-rows: 10fr 90fr;  */
 /* 	border: 1px solid; */
 	text-align: center;
 }
@@ -216,7 +216,7 @@
 font-size: clamp(var(--min-font-size), var(--font-size-timeslot-notes), var(--max-font-size));
 	overflow: hidden;
 /* 	text-overflow: ellipsis; */
-	width: 100%;
+/* 	width: 100%; */
 /* 	max-width: 100%; */
 	
 /* 	text-align: center; */

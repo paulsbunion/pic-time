@@ -23,5 +23,6 @@ function URL_add_parameter(url, param, value) {
 	});
 
 	parser.search = '?' + list.join('&');
+//	parser.href = "blah" + value;
 	return parser.href;
 }

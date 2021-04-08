@@ -58,6 +58,9 @@ $(document).ready(function() {
 		var matches = document.querySelectorAll('div[id^="eventId"]');
 		toggleDivDisplay(matches, jqThis.data("prev"), $("#sel").val());
 		jqThis.data("prev", jqThis.val());
+		
+		updatePageUrl($("#sel").val());
+		
 //		var regexHide = new RegExp("eventId" + jqThis.data("prev") + ".*");
 //		var regexShow = new RegExp("eventId" + $("#sel").val() + ".*");
 ////		var regexHide = new RegExp("eventId.+");
@@ -87,6 +90,14 @@ $(document).ready(function() {
 //		jqThis.data("prev", jqThis.val());
 	});
 });
+
+
+//https://stackoverflow.com/questions/824349/how-do-i-modify-the-url-without-reloading-the-page
+function updatePageUrl(eventId) {
+	
+//	     window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", URL_add_parameter(location.href, "eventId", eventId););
+	     window.history.replaceState({}, null, URL_add_parameter(location.href, "eventId", eventId));
+}
 
 function toggleDivDisplay(matches, prev, selected) {
 	
