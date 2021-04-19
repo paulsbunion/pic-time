@@ -67,7 +67,7 @@ public class EventMVCController {
 	private final String LIST_ALL_EVENTS_URL = "event/list-events";
 	
 	private final String LIST_EVENTS_URL = "event/calendar-thymeleaf";
-	private final String LIST_EVENTS_FOR_DAY_URL = "event/day-calendar-thymeleaf";
+	private final String LIST_EVENTS_FOR_DAY_URL = "event/day-calendar-thymeleaf-new";
 	private final String EDIT_EVENT_URL = "event/edit-event";
 //	private final String NEW_CLIENT_URL = "client/new-client";
 	private final String SHOW_EVENT_URL = "event/show-event";
@@ -146,7 +146,8 @@ public class EventMVCController {
 	public String updateEditedEvent(@Valid Event event, BindingResult result, @PathVariable("id") Long id, Model model) {
 		log.info("MVC user saving edits to existing event with ID: " + id);
 		if (result.hasErrors()) {
-			log.error("Error saving event changes: " + result.getAllErrors());
+//			log.error("Error saving event changes: " + result.getAllErrors());
+			log.error("Error saving event changes: " + result.getFieldErrors().get(0).getDefaultMessage());
 			event.setId(id);
 			return EDIT_EVENT_URL;
 		}

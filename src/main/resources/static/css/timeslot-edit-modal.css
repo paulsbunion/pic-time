@@ -1,4 +1,3 @@
-
 .location-searchbar {
 /* 	max-width: 50%; */
 	display: grid;
@@ -41,6 +40,88 @@
 .show-photographers-item {
 	align-self: center;
 }
+
+/* .modal-content { width: 800px; max-width:100%; } */
+
+/* .modal-dialog { width: 500px; max-width:100%; } */
+
+
+/* .modal { */
+/*   position: fixed; */
+/*   top: 0; */
+/*   right: 0; */
+/*   bottom: 0; */
+/*   left: 0; */
+/*   overflow: hidden; */
+/* } */
+
+/* .modal-dialog { */
+/*   position: fixed; */
+/*   margin: 0; */
+/*   width: 100%; */
+/*   height: 100%; */
+/*   padding: 0; */
+/* } */
+
+.full_modal-dialog {
+  width: 98% !important;
+/*   height: 92% !important; */
+  min-width: 98% !important;
+  min-height: 92% !important;
+  max-width: 98% !important;
+  max-height: 92% !important;
+  padding: 0 !important;
+}
+
+.full_modal-content {
+  height: 99% !important;
+  min-height: 99% !important;
+  max-height: 99% !important;
+}
+
+.left-flex {
+	margin-right: auto;
+}
+.right-flex {
+	margin-left: auto;
+}
+
+.pad-close {
+	margin-left: 1rem;
+	margin-righ: 1rem;
+}
+
+.center-self {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+.timeline-modal-header {
+	display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+/*     border-bottom: 1px solid #dee2e6; */
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
+	
+	
+/* 	justify-content: flex-end; */
+/* 	align-items: space-between; */
+}
+
+.modal-content-maxwidth { width: 1200px; max-width:100%; }
+
+/* @media only screen and (max-width: 480px) { */
+/*     .modal .modal-dialog { */
+/*         position:relative; */
+/*         width:auto; */
+/*         margin: 10px; */
+/*     } */
+/* } */
 
 /* .photographer-row { */
 /* 	display: grid; */

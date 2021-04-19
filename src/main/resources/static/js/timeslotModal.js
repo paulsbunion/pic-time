@@ -177,6 +177,7 @@ function appendPhotographer(p, assigned) {
 					window.location.href = response.redirect;
 				}
 				
+				// causes error reloading event selected page with no changes
 				setTimeout(function() {
 					location.reload();
 					}, RELOAD_TIMER);

@@ -42,10 +42,10 @@ public class Event {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
 
-	@NotBlank
+	@NotBlank(message="Name required")
 	private String eventName;
 
-	@NotNull
+	@NotNull(message="Invalid date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 

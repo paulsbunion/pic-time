@@ -5,12 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/assets/jquery-ui-1.12.1/jquery-ui.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/js/switchContentDisplayNew.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/js/wickedpicker.min.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/js/location.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/js/addParameterToURL.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/js/timeslotModal.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/js/timelineToText.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/js/createDayCalendar.js}"></script> -->
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/assets/jquery-ui-1.12.1/jquery-ui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/slider.css}" /> -->
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar-new.css}" /> -->
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/timeslot-edit-modal.css}" /> -->
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" /> -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <title>Registration</title>
 </head>
 <body>
+<th:block th:insert="fragments/nav :: nav"></th:block>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">

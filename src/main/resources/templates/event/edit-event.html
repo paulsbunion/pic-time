@@ -82,7 +82,7 @@
 							</div>
 							
 							<div class="form-group col-md-6">
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-photographer-modal">Add Photographer</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-photographer-modal">Assign Photographer</button>
 							</div>
 							
 							<div class="photographer-container" >
@@ -113,11 +113,11 @@
 								<div class="save-item"><input type="submit" class="btn btn-primary" value="Save"></div>
 	
 								<div class="save-item"><a th:href="@{/mvc/events/list}"
-									class="btn btn-primary delete"> <i
+									class="btn delete"> <i
 										class="fas fa-user-times m1-2">Back</i>
 								</a></div>
 								<div class="save-item"><a th:href="@{/mvc/events/calendar/{date}?eventId={eventId}(date=${#temporals.format(event.date, 'yyyy/MM/dd')}, eventId= ${event.id})}"
-									class="btn btn-primary" style="background-color: green"> <i class="fas fa-user-edit m1-2">Timeline</i>
+									class="btn btn-timeline"> <i class="fas fa-user-edit m1-2">Timeline</i>
 								</a></div>
 							</div>
 						</form>
@@ -172,7 +172,7 @@
 		<div class="modal-dialog modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5>Title</h5>
+					<h5>Available</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

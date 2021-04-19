@@ -12,27 +12,27 @@ import com.defrainPhoto.pictime.constraint.FieldMatch;
 })
 public class UserRegistrationDto {
 	
-	@NotEmpty
+	@NotEmpty(message = "Required")
 	private String firstName;
 	
-	@NotEmpty
+	@NotEmpty(message = "Required")
 	private String lastName;
 	
-	@NotEmpty
+	@NotEmpty(message = "Required")
 	private String password;
 	
-	@NotEmpty
+	@NotEmpty(message = "Required")
 	private String confirmPassword;
 	
-	@Email
-	@NotEmpty
+	@Email(message = "Invalid email")
+	@NotEmpty(message = "Required")
 	private String email;
 	
-	@Email
-	@NotEmpty
+	@Email(message = "Invalid email")
+	@NotEmpty(message = "Required")
 	private String confirmEmail;
 	
-	@AssertTrue
+	@AssertTrue(message = "Required")
 	private Boolean terms;
 
 	public String getFirstName() {
