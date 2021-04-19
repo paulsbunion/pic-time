@@ -108,7 +108,7 @@ function convertIntTimeToString(time) {
 	
 	return "" + hr + ":" + min + " " + merid;
 	
-	return "";
+//	return "";
 }
 function convertTextTimeToIntTime(time) {
 	var hr = parseInt(time[0], 10);
@@ -168,7 +168,8 @@ function HTMLToText(event) {
 		}
 		
 		if (!location) {
-			location = "<i>No Location assigned</i>";
+//			location = "<i>No Location assigned</i>";
+			location = "";
 		}
 		
 		if (!notesString) {
@@ -229,7 +230,12 @@ function parseTimelineData(data) {
 	// location
 	if(data[2]) {
 		tempBuffer.push("<b>");
-		tempBuffer.push(" @ [<u>" + data[2] + "</u>]");
+		var address = data[2].split(": ")[1];
+		address = address.replaceAll(" ", "+");
+		address = address.replaceAll(",", "");
+		var base = "www.google.com/maps/place/"
+		
+		tempBuffer.push(" @ [<a href='' onclick=window.open('//" + base + address +"')><u>" + data[2] + "</u></a>]");
 		tempBuffer.push("</b>");
 		tempBuffer.push("<br>");
 	}

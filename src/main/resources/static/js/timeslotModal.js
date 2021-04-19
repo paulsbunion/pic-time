@@ -178,9 +178,9 @@ function appendPhotographer(p, assigned) {
 				}
 				
 				// causes error reloading event selected page with no changes
-//				setTimeout(function() {
-//					location.reload();
-//					}, RELOAD_TIMER);
+				setTimeout(function() {
+					location.reload();
+					}, RELOAD_TIMER);
 			},
 			error: function (e) {
 				$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
