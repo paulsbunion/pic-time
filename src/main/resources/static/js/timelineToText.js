@@ -151,6 +151,9 @@ function HTMLToText(event) {
 		var $time = $timeslot.find(".timeslotTime span");
 		var $title = $timeslot.find(".timeslotFlexTitleText");
 		var $notes = $timeslot.find(".timeslotFlexNotesText");
+		var location = $timeslot.data('location');
+//		console.log("The location");
+//		console.log($location);
 		
 		var timeString = $time.text();
 		var titleString = $title.text();
@@ -164,11 +167,15 @@ function HTMLToText(event) {
 			titleString = "<i>No Title assigned</i>";
 		}
 		
+		if (!location) {
+			location = "<i>No Location assigned</i>";
+		}
+		
 		if (!notesString) {
 			
 		}
 		
-		var data = [timeString, titleString, notesString];
+		var data = [timeString, titleString, location, notesString];
 		stringBuilderArray.push(parseTimelineData(data));
 
 		console.log(timeString);
@@ -204,6 +211,7 @@ function printTextFromModal() {
 function parseTimelineData(data) {
 	var tempBuffer = [];
 	tempBuffer.push("<p>");
+	// timeString
 	if (data[0]) {
 		tempBuffer.push("<b>");
 		tempBuffer.push(data[0] + ": ");
@@ -211,14 +219,23 @@ function parseTimelineData(data) {
 //		tempBuffer.push("<hr>");
 //		tempBuffer.push("<br>");
 	}
+	// titleString
 	if (data[1]) {
 		tempBuffer.push("<b>");
 		tempBuffer.push(data[1]);
 		tempBuffer.push("</b>");
+//		tempBuffer.push("<br>");
+	}
+	// location
+	if(data[2]) {
+		tempBuffer.push("<b>");
+		tempBuffer.push(" @ [<u>" + data[2] + "</u>]");
+		tempBuffer.push("</b>");
 		tempBuffer.push("<br>");
 	}
-	if (data[2]) {
-		tempBuffer.push(data[2]);
+	// notesString
+	if (data[3]) {
+		tempBuffer.push(data[3]);
 		tempBuffer.push("<br>");
 	}
 	tempBuffer.push("</p>");
