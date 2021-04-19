@@ -82,15 +82,49 @@ td.td-btn {
 }
 
 .delete {
+	color: #fff;
 	background-color: red;
 	border-color: red;
 }
 
 .delete:hover {
+	color: #fff;
 	background-color: #cc0000;
 	border-color: #cc0000;
 }
 
+.delete:active {
+	color: #fff;
+	background-color: #cc0000;
+	border-color: #cc0000;
+}
+.delete:focus {
+	color: #fff;
+	background-color: #cc0000;
+	border-color: #cc0000;
+}
+
+.btn-timeline {
+	background-color: green;
+	color: #fff;
+}
+
+.btn-timeline:hover {
+	color: #fff;
+	background-color: darkgreen;
+}
+
+.btn-timeline:active {
+	background-color: darkgreen;
+}
+
+.btn-timeline:focus {
+	background-color: darkgreen;
+}
+
+.full-width {
+	width: 100%;
+}
 .client-table {
 	max-width: 10%;
 }
