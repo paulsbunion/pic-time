@@ -4,14 +4,17 @@
 
 
 <footer th:fragment="footer">
-        <p>&copy; 2020 attacomsian.com</p>
+        
     </footer>
 
-	<nav th:fragment="nav" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
-		<a class="navbar-brand" href="/mvc/home">PIC| |Time</a>
+<!-- 	<nav th:fragment="nav" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top"> -->
+	<nav th:fragment="nav" class="navbar-expand-md bg-dark navbar-dark sticky-top">
+	<div class="upper-nav navbar navbar-nav">
+<!-- 		<a class="navbar-brand" href="/mvc/home">PIC| |Time</a> -->
 		
 	<!-- 	Events -->
 		<ul class="navbar-nav">
+		<a class="navbar-brand" href="/mvc/home">PIC| |Time</a>
 	    	<li class="nav-item dropdown black">
 	    		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 	    		 aria-haspopup="true" aria-expanded="false">Events</a>
@@ -79,6 +82,11 @@
 		    	<button onclick="location.href='/mvc/events/calendar'" style="background-color: transparent; background-repeat: no-repeat; border: none; overflow: hidden; outline: none;"><svg width="30" height="30" style="color: red;" ><use xlink:href="/img/calendar.svg#calendar"></use></svg></button>
 		    </li>
 	  	</ul>
+  	</div>
+  	<div id="navbar-print">
+<!--   		<button th:fragment="nav" type="button" class="form-control btn-primary" id="HTML-to-text">Printable Timeline</button> -->
+  	</div>
 	</nav>
+	
 </body>
 </html>

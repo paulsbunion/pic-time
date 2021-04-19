@@ -67,7 +67,7 @@ public class EventMVCController {
 	private final String LIST_ALL_EVENTS_URL = "event/list-events";
 	
 	private final String LIST_EVENTS_URL = "event/calendar-thymeleaf";
-	private final String LIST_EVENTS_FOR_DAY_URL = "event/day-calendar-thymeleaf";
+	private final String LIST_EVENTS_FOR_DAY_URL = "event/day-calendar-thymeleaf-new";
 	private final String EDIT_EVENT_URL = "event/edit-event";
 //	private final String NEW_CLIENT_URL = "client/new-client";
 	private final String SHOW_EVENT_URL = "event/show-event";
