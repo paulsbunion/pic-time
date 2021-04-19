@@ -21,20 +21,20 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
-	@NotNull
-	@NotEmpty
+	@NotNull(message = "Invalid name")
+	@NotEmpty(message = "Invalid name")
 	private String firstName;
-	@NotNull
-	@NotEmpty
+	@NotNull(message = "Invalid name")
+	@NotEmpty(message = "Invalid name")
 	private String lastName;
-	@NotNull
-	@NotEmpty
+	@NotNull(message = "Invalid address")
+	@NotEmpty(message = "Invalid address")
 	private String address;
-	@PhoneNumber
+	@PhoneNumber(message = "Invalid number")
 	private String phoneNumber;
-	@Email
-	@NotNull
-	@NotEmpty
+	@Email(message = "Invalid email")
+	@NotNull(message = "Invalid email")
+	@NotEmpty(message = "Invalid email")
 	private String email;
 	private boolean autoRemind;
 	//private Set<Event> events;

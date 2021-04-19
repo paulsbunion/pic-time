@@ -8,8 +8,8 @@ public class UpdateEventException extends RuntimeException {
 	private BindingResult result;
 
 	public UpdateEventException(BindingResult result) {
-		super();
-		this.result = result;
+//		super();
+//		this.result = result;
 	}
 	
 	public BindingResult getBindingResult() {

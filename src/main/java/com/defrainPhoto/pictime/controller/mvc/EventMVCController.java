@@ -146,7 +146,8 @@ public class EventMVCController {
 	public String updateEditedEvent(@Valid Event event, BindingResult result, @PathVariable("id") Long id, Model model) {
 		log.info("MVC user saving edits to existing event with ID: " + id);
 		if (result.hasErrors()) {
-			log.error("Error saving event changes: " + result.getAllErrors());
+//			log.error("Error saving event changes: " + result.getAllErrors());
+			log.error("Error saving event changes: " + result.getFieldErrors().get(0).getDefaultMessage());
 			event.setId(id);
 			return EDIT_EVENT_URL;
 		}

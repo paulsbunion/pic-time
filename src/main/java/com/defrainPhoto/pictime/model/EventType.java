@@ -19,11 +19,11 @@ public class EventType {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
-	@NotEmpty(message = "Event Type Name cannot be Blank")
-	@NotNull(message = "Event Type Name cannot be Blank")
+	@NotEmpty(message = "Invalid name")
+	@NotNull(message = "Invalid name")
 	private String name;
-	@NotNull(message = "Base Cost must have a value")
-	@Min(value = 0, message = "Base Cost cannot be negative")
+	@NotNull(message = "Invalid amount")
+	@Min(value = 0, message = "Cannot be negatve")
 	private Integer baseCost;
 
 	public EventType() {

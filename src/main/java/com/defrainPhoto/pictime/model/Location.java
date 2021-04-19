@@ -33,23 +33,23 @@ public class Location {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
 	@City
-	@NotEmpty
-	@NotNull(message = "")
+	@NotEmpty(message = "Invalid name")
+	@NotNull(message = "Invalid name")
 	private String city;
-	@State
-	@NotEmpty
-	@NotNull(message = "")
+	@State(message = "Invalid state")
+	@NotEmpty(message = "Invalid state")
+	@NotNull(message = "Invalid state")
 	private String state;
-	@Zipcode
-	@NotEmpty
-	@NotNull(message = "")
+	@Zipcode(message = "Invalid zipcode")
+	@NotEmpty(message = "Invalid zipcode")
+	@NotNull(message = "Invalid zipcode")
 	private String zipcode;
-	@Street
-	@NotEmpty
-	@NotNull(message = "")
+	@Street(message = "Invalid name")
+	@NotEmpty(message = "Invalid name")
+	@NotNull(message = "Invalid name")
 	private String street;
-	@NotEmpty
-	@NotNull
+	@NotEmpty(message = "Required")
+	@NotNull(message = "Required")
 	private String description;
 	
 	public Location() {
