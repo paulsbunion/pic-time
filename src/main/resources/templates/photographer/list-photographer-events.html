@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<title>All Event Types</title>
+
+
+</head>
+<body>
+	<th:block th:insert="fragments/nav :: nav"></th:block>
+	
+	<div class="container my-5">
+		<div class="row">
+
+			<h1 th:text="${photog.firstName + ' ' + photog.lastName} + '\'s events' "></h1>
+			<div class="container">
+				<p class="my-5">
+					<a th:href="@{/mvc/events/new/{date}(date=${month.TodayLink})}" class="btn btn-primary"> <i
+						class="fas fa-user-plus m1-2">Add Event</i></a>
+				</p>
+				<div class="col-md-10">
+					<div>
+						<h2 th:if="${events == null}">No Event Photographers Found!</h2>
+<!-- 						<h2 th:if="${#lists.isEmpty(eventTypes)}">No Event Type Records Found!</h2> -->
+
+						<div th:if="${not #lists.isEmpty(events)}" class="event-type-table">
+							<table class="table-striped">
+								<thead>
+									<tr>
+										<th class="row-1 row-name">Name</th>
+										<th class="row-2 row-cost-header">Date</th>
+										<th class="row-3 row-button-edit">Edit</th>
+										<th class="row-4 row-button-delete">Timeline</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="event: ${events}">
+											<td>
+												<a th:href="@{/mvc/events/show/{id}(id=${event.id})}" th:text="${event.eventName}"></a>
+											</td>
+										<td class="td-btn"><a th:href="@{/mvc/events/calendar/{date}(date=${#temporals.format(event.date, 'yyyy/MM')})}"
+											class="btn btn-primary full-width"> <i class="fas fa-user-edit m1-2" th:text="${#temporals.format(event.date, 'EEEE, MMMM d, yyyy')}">date</i>
+										</a></td>
+										<td class="td-btn"><a th:href="@{/mvc/events/edit/{id}(id=${event.id})}"
+											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Edit</i>
+										</a></td>
+										<td class="td-btn"><a th:href="@{/mvc/events/calendar/{date}?eventId={eventId}(date=${#temporals.format(event.date, 'yyyy/MM/dd')}, eventId= ${event.id})}"
+											class="btn btn-timeline"> <i
+												class="fas fa-user-times m1-2">Timeline</i>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
