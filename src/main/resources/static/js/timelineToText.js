@@ -1,6 +1,6 @@
 //$( document ).ready(HTMLToText);
 $(document).ready( function() {
-	$("#navbar-print").html("<button type=\"button\" class=\"form-control btn-primary\" id=\"HTML-to-text\">Printable Timeline</button>");
+	$("#navbar-print").html("<button type=\"button\" class=\"form-control btn-primary\" id=\"HTML-to-text\">Click to Print Timeline</button>");
 });
 
 $(document).on("click", "#HTML-to-text", function (event) {
@@ -12,7 +12,8 @@ $(document).on("click", "#HTML-to-text", function (event) {
 	console.log("the container");
 	console.log($("#HTMLasTextModal"));
 	console.log($("#text-modal-body"));
-	$("#timelineAsTextTitle").html("<b>" + eventTitle + ": " + date + " [" + eventTimeRange + "]" + "</b>");
+//	$("#timelineAsTextTitle").html("<b>" + eventTitle + ": " + date + " [" + eventTimeRange + "]" + "</b>");
+	$("#timelineAsTextTitle").html("<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>");
 	$("#text-modal-body").html(text);
 	
 	$('#HTMLasTextModal').modal('show');
@@ -76,7 +77,8 @@ function calcTimeRange() {
 		startTime = convertIntTimeToString(earliestStartTime);
 	}
 	else {
-		startTime = "0:00 AM"
+//		startTime = "0:00 AM"
+		startTime = "No Timeslots"
 	}
 	
 	console.log("" + startTime + "-" + endTime);
@@ -206,6 +208,7 @@ function parseTimelineData(data) {
 		tempBuffer.push("<b>");
 		tempBuffer.push(data[0] + ": ");
 		tempBuffer.push("</b>");
+//		tempBuffer.push("<hr>");
 //		tempBuffer.push("<br>");
 	}
 	if (data[1]) {
