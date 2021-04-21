@@ -13,7 +13,10 @@ $(document).on("click", "#HTML-to-text", function (event) {
 	console.log($("#HTMLasTextModal"));
 	console.log($("#text-modal-body"));
 //	$("#timelineAsTextTitle").html("<b>" + eventTitle + ": " + date + " [" + eventTimeRange + "]" + "</b>");
-	$("#timelineAsTextTitle").html("<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>");
+	var titleString = "<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>";
+	$("#timelineAsTextTitle").html(titleString);
+//	$("#timelineAsTextTitle").html("<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>");
+	$("#printThis").html(titleString + "<br>" + text);
 	$("#text-modal-body").html(text);
 	
 	$('#HTMLasTextModal').modal('show');
@@ -195,18 +198,44 @@ function HTMLToText(event) {
 }
 
 function printTextFromModal() {
-	var text = document.getElementById("HTMLasTextModal");
+//	var text = document.getElementById("HTMLasTextModal");
 	var $content = $("#HTMLasTextModal");
+//	$content.html("<div class='always-print'> hello</div>");
+	var printStyle = generateStyle();
 	var $hideData = $content.find(".hidden-print");
-	var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+//	var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
 	$hideData.hide();
-	WinPrint.document.write(text.innerHTML);
-	$hideData.show();
-	WinPrint.document.close();
-	WinPrint.focus();
-	WinPrint.print();
-	WinPrint.close();
+//	console.log(text.innerHTML);
+//	console.log(text);
+//	WinPrint.document.write(text.innerHTML);
+//	$content.css("tCext-align", "center");
+	console.log($content.html());
+	console.log($content);
 	
+//	$("#printThis").html($content);
+//	WinPrint.document.write(printStyle);
+//	WinPrint.document.write('<link rel="stylesheet" type="text/css" href="/css/main.css"/>');
+//	WinPrint.document.write('<link rel="stylesheet" type="text/css" href="/css/timeslot-edit-modal.css"/>');
+//	WinPrint.document.write($content.html());
+	$hideData.show();
+//	WinPrint.document.close();
+//	WinPrint.focus();
+//	WinPrint.print();
+//	WinPrint.close();
+	window.print();
+	
+}
+
+function generateStyle() {
+	var buffer = [];
+	buffer.push('<style>');
+	
+	buffer.push(".center-self {" +
+	"	text-align: center;" +
+	"}");
+	buffer.push('</style>');
+	
+	return buffer.join("");
 }
 
 function parseTimelineData(data) {
@@ -235,7 +264,7 @@ function parseTimelineData(data) {
 		address = address.replaceAll(",", "");
 		var base = "www.google.com/maps/place/"
 		
-		tempBuffer.push(" @ [<a href='www.go.com' onclick=window.open('//" + base + address +"')><u>" + data[2] + "</u></a>]");
+		tempBuffer.push(" @ [<a href='' onclick=window.open('//" + base + address +"')><u>" + data[2] + "</u></a>]");
 		tempBuffer.push("</b>");
 		tempBuffer.push("<br>");
 	}

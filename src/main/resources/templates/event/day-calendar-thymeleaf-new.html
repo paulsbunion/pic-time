@@ -20,10 +20,11 @@
 
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/assets/jquery-ui-1.12.1/jquery-ui.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" media="all"/> -->
+<link rel="stylesheet" type="text/css" href="/css/main.css" media="all"/>
 <link rel="stylesheet" type="text/css" th:href="@{/css/slider.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/event-calendar-new.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/timeslot-edit-modal.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/timeslot-edit-modal.css}" media="all" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/wickedpicker.min.css}" />
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
@@ -38,6 +39,31 @@
 
 </head>
 <body>
+<div id="printThis" class="always-print"></div>
+<!-- Timeline as Text Modal -->
+<!-- <div class="modal fade modal-fullscreen" id="HTMLasTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
+<!-- 	<div class="modal-dialog full_modal-dialog" role="document"> -->
+<!-- 	    <div class="modal-content full_modal-content always-print"> -->
+<!-- 	      <div class="timeline-modal-header"> -->
+<!-- 	      <div id="spacing"></div> -->
+<!-- 	      <span id="timelineAsTextTitle" class="center-self">Title</span> -->
+<!-- 	      <div class="hidden-print"> -->
+<!-- 	      <button class="" onclick="printTextFromModal();">Print</button> -->
+<!-- 	      	<button type="button" class="pad-close " data-dismiss="modal" aria-label="Close"> -->
+<!-- 	          <span aria-hidden="true">&times;</span> -->
+<!-- 	        </button> -->
+<!-- 	        </div> -->
+<!-- 	      </div> -->
+<!-- 	      <div><hr></div> -->
+<!-- 	      <div class="modal-body always-print" id="text-modal-body"> -->
+<!-- 	      	<p>hello</p> -->
+<!-- 	      </div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div> -->
+
+
+<div class="hidden-print">
 <th:block th:insert="fragments/nav :: nav"></th:block>
 
 <!-- <button type="button" class="form-control btn-primary sticky-top" id="HTML-to-text">Printable Timeline</button> -->
@@ -56,7 +82,7 @@
 <!-- 		<div th:id="'eventId' + ${event.id}" th:text="${event.eventName}"></div> -->
 <!-- 	</th:block> -->
 
-	<div class="container2">
+	<div class="container2 hidden-print">
 		<div class="navigation"> 
 			<span class="nav-back"><a id="back" th:href="@{/mvc/events/calendar/{date}(date=${month.previousDayLink})}"><</a></span>
 			<span id="DateAsText" class="nav-header" th:text="${month.dayName} + ', ' + ${month.monthName} + ' ' + ${month.day} + ', ' + ${month.year}">navigation</span>
@@ -131,8 +157,7 @@
 	</div>
 <!-- 	<div>Footer</div> -->
 	
-	
-<!-- Timeline as Text Modal -->
+	<!-- Timeline as Text Modal -->
 <div class="modal fade modal-fullscreen" id="HTMLasTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog full_modal-dialog" role="document">
 	    <div class="modal-content full_modal-content">
@@ -458,6 +483,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </body>
 </html>
