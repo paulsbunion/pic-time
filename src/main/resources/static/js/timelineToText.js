@@ -9,14 +9,17 @@ $(document).on("click", "#HTML-to-text", function (event) {
 	var eventTitle = $("#sel option:selected").text();
 	var eventTimeRange = calcTimeRange();
 	var date = getDate();
+	var eventId = $("#sel option:selected").val();
+	var eventPhotographers = "Photographer(s): " + getEventPhotographers(eventId);
 	console.log("the container");
 	console.log($("#HTMLasTextModal"));
 	console.log($("#text-modal-body"));
 //	$("#timelineAsTextTitle").html("<b>" + eventTitle + ": " + date + " [" + eventTimeRange + "]" + "</b>");
-	var titleString = "<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>";
+	var classStyle = 'class="center-self"';
+	var titleString = "<div " + classStyle + "><b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b><br><i>" + eventPhotographers + "</i></div>";
 	$("#timelineAsTextTitle").html(titleString);
 //	$("#timelineAsTextTitle").html("<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>");
-	$("#printThis").html(titleString + "<br>" + text);
+	$("#printThis").html(titleString + "<hr>" + text);
 	$("#text-modal-body").html(text);
 	
 	$('#HTMLasTextModal').modal('show');
@@ -197,6 +200,24 @@ function HTMLToText(event) {
 	
 }
 
+function getEventPhotographers (eventId) {
+	var div = $("#all_photogs_eventId_" + eventId);
+	var data = div.data("event-photographers");
+	
+	var tempBuffer = [];
+	
+	$.each(data, function(i, val) {
+		tempBuffer.push(val.firstName + " " + val.lastName + ", ");
+	});
+	var result = tempBuffer.join("");
+	if (result.length > 0) {
+		result = result.slice(0, -2);
+	}
+	else {
+		result = "No Photographers Assigned";
+	}
+	return result;
+}
 function printTextFromModal() {
 //	var text = document.getElementById("HTMLasTextModal");
 	var $content = $("#HTMLasTextModal");

@@ -303,6 +303,7 @@ public class EventMVCController {
 		// add photographers to timeslots
 		HashMap<Long, List<UserDTO>> assignedTimeslotPhotographers = new HashMap<Long, List<UserDTO>>();
 		HashMap<Long, List<UserDTO>> availableTimeslotPhotographers = new HashMap<Long, List<UserDTO>>();
+		HashMap<Long, List<UserDTO>> eventPhotographerMap = new HashMap<Long, List<UserDTO>>();
 		
 		if (!eventDTOs.isEmpty()) {
 			eventDTOs.forEach(e -> {
@@ -310,12 +311,10 @@ public class EventMVCController {
 				Event event = eventController.getEvent(eventId);
 //				event.setId(eventId);
 				List<UserDTO> eventPhotographers = getAssignedEventPhotographers(event);
+				eventPhotographerMap.put(e.getId(), eventPhotographers);
 
 				List<Timeslot> timeslots = eventController.getAllTimeslots(e.getId());
 				timeslots.forEach(t -> {
-					if (t.getId() == 23) {
-						System.out.println("test");
-					}
 					List<UserDTO> assignedList = getAssignedTimeslotPhotographers(t);
 					List<UserDTO> availableList = getAvailableTimeslotPhotographers(assignedList, eventPhotographers);
 
@@ -325,6 +324,7 @@ public class EventMVCController {
 
 				eventTimeslots.put(e.getId(), eventController.getAllTimeslots(e.getId()));
 			});
+			params.put("event_photographer_map", eventPhotographerMap);
 		}
 		// add available and assigned photographers to timeslot map
 		ObjectMapper objectMapper = new ObjectMapper();

@@ -19,7 +19,7 @@
   .hidden-print {
     display: none !important;
   }
-  
+/*   https://stackoverflow.com/questions/25187715/css-print-media-query-prints-only-first-page */
   .always-print {
   
   display: block !important;
