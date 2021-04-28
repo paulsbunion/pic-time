@@ -5,18 +5,24 @@ $(document).ready( function() {
 
 $(document).on("click", "#HTML-to-text", function (event) {
 	event.preventDefault();
-	var text = HTMLToText();
+	
+	var eventId = $("#sel option:selected").val();
+	var eventPhotographers = getEventPhotographers(eventId);
+	console.log("Start");
+	console.log(eventPhotographers);
+	var text = HTMLToText(eventPhotographers.length);
 	var eventTitle = $("#sel option:selected").text();
 	var eventTimeRange = calcTimeRange();
 	var date = getDate();
-	var eventId = $("#sel option:selected").val();
-	var eventPhotographers = "Photographer(s): " + getEventPhotographers(eventId);
+	
+	var eventPhotographers = getEventPhotographers(eventId);
+	var eventPhotographersString = "Photographer(s): " + printEventPhotographers(eventPhotographers);
 	console.log("the container");
 	console.log($("#HTMLasTextModal"));
 	console.log($("#text-modal-body"));
 //	$("#timelineAsTextTitle").html("<b>" + eventTitle + ": " + date + " [" + eventTimeRange + "]" + "</b>");
 	var classStyle = 'class="center-self"';
-	var titleString = "<div " + classStyle + "><b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b><br><i>" + eventPhotographers + "</i></div>";
+	var titleString = "<div " + classStyle + "><b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b><br><i>" + eventPhotographersString + "</i></div>";
 	$("#timelineAsTextTitle").html(titleString);
 //	$("#timelineAsTextTitle").html("<b>" + date + " [" + eventTimeRange + "]" + "<br>" + eventTitle +  "</b>");
 	$("#printThis").html(titleString + "<hr>" + text);
@@ -133,7 +139,7 @@ function convertTextTimeToIntTime(time) {
 function getDate() {
 	return $("#DateAsText").html();
 }
-function HTMLToText(event) {
+function HTMLToText(eventPhotographersLength) {
 	var $timeline = $(".day-calendar-content");
 	
 //	var html = [];
@@ -158,6 +164,35 @@ function HTMLToText(event) {
 		var $title = $timeslot.find(".timeslotFlexTitleText");
 		var $notes = $timeslot.find(".timeslotFlexNotesText");
 		var location = $timeslot.data('location');
+		
+		
+		// get the aavailable timeslot photographers
+		var timeslotId = $timeslot.attr('id').split("_")[1];
+		console.log("the id is");
+		console.log(timeslotId);
+		var assignedTimeslotPhotogsId = "assigned_photogs_timeslot_" + timeslotId;
+		var assignedTimeslotPhotographerData = $("#" + assignedTimeslotPhotogsId).data("assigned_photogs");
+		var assignedTimeslotPhotographersString = "All";
+		console.log($("#" + assignedTimeslotPhotogsId).data("assigned_photogs"));
+		
+		if (assignedTimeslotPhotographerData == null) {
+			assignedTimeslotPhotographersString = "None";
+		}
+		else if (assignedTimeslotPhotographerData.length != eventPhotographersLength) {
+			var assignedNames = processPhotographerData(assignedTimeslotPhotographerData);
+			console.log("names");
+			console.log(assignedTimeslotPhotographerData.length);
+			console.log(eventPhotographersLength);
+			console.log(printEventPhotographers(assignedNames));
+			assignedTimeslotPhotographersString = printEventPhotographers(assignedNames);
+			
+			// add the names to the outputed string
+//			getAssignedTimeslotPhotogs(sdfs)sdf;
+		}
+//		var eventPhotographers = "Photographer(s): " + getEventPhotographers(eventId);
+//		console.log(eventPhotographers)
+		
+		
 //		console.log("The location");
 //		console.log($location);
 		
@@ -172,6 +207,9 @@ function HTMLToText(event) {
 		if (!titleString) {
 			titleString = "<i>No Title assigned</i>";
 		}
+//		if (!assignedTimeslotPhotographersString) {
+//			assignedTimeslotPhotographersString = "<i>(" + assignedTimeslotPhotographersString + ")</i>";
+//		}
 		
 		if (!location) {
 //			location = "<i>No Location assigned</i>";
@@ -182,7 +220,7 @@ function HTMLToText(event) {
 			
 		}
 		
-		var data = [timeString, titleString, location, notesString];
+		var data = [timeString, titleString, assignedTimeslotPhotographersString, location, notesString];
 		stringBuilderArray.push(parseTimelineData(data));
 
 		console.log(timeString);
@@ -204,12 +242,31 @@ function getEventPhotographers (eventId) {
 	var div = $("#all_photogs_eventId_" + eventId);
 	var data = div.data("event-photographers");
 	
+//	var tempBuffer = [];
+//	
+//	$.each(data, function(i, val) {
+//		tempBuffer.push(val.firstName + " " + val.lastName + ", ");
+//	});
+//	
+//	return tempBuffer;
+	
+	return processPhotographerData(data);
+}
+
+function processPhotographerData(data) {
 	var tempBuffer = [];
 	
 	$.each(data, function(i, val) {
 		tempBuffer.push(val.firstName + " " + val.lastName + ", ");
 	});
-	var result = tempBuffer.join("");
+	
+	return tempBuffer;
+}
+
+function printEventPhotographers(data) {
+	var result = Array.prototype.join.call(data, "");
+	
+//	var result = data.join("");
 	if (result.length > 0) {
 		result = result.slice(0, -2);
 	}
@@ -277,10 +334,18 @@ function parseTimelineData(data) {
 		tempBuffer.push("</b>");
 //		tempBuffer.push("<br>");
 	}
+	// assignedTimeslotPhotographersString
+	if (data[2]) {
+		console.log("data 2 found");
+		console.log(data[2]);
+//		tempBuffer.push("<b>");
+		tempBuffer.push(" <i>(Photographers: " + data[2] + ")</i>");
+//		tempBuffer.push("</b>");
+	}
 	// location
-	if(data[2]) {
+	if(data[3]) {
 		tempBuffer.push("<b>");
-		var address = data[2].split(": ")[1];
+		var address = data[3].split(": ")[1];
 		address = address.replaceAll(" ", "+");
 		address = address.replaceAll(",", "");
 		var base = "www.google.com/maps/place/"
@@ -290,8 +355,8 @@ function parseTimelineData(data) {
 		tempBuffer.push("<br>");
 	}
 	// notesString
-	if (data[3]) {
-		tempBuffer.push(" " + data[3]);
+	if (data[4]) {
+		tempBuffer.push(" " + data[4]);
 		tempBuffer.push("<br>");
 	}
 	tempBuffer.push("</p>");
