@@ -117,7 +117,7 @@
 			<div class="day-calendar-content" id="cal">
 			
 				<th:block th:each="eventTimeslotEntry : ${eventTimeslots}">
-					<div th:attr="data-event-photographers=${event_photographer_map.get(eventTimeslotEntry.key)}" th:id="'all_photogs_eventId_' +  ${eventTimeslotEntry.key}">the photogs</div>
+					<div th:attr="data-event-photographers=${event_photographer_map.get(eventTimeslotEntry.key)}" th:id="'all_photogs_eventId_' +  ${eventTimeslotEntry.key}" hidden style="display: none;"></div>
 					<th:block th:each="timeslot : ${eventTimeslotEntry.value}" >
 <!-- 						<div class="testEntry" th:id="${eventTimeslotEntry.key}" th:styleappend="|grid-row: 5 /span 60; grid-column: 2 / span 1;|"> -->
 						<div class="testEntry open-EditModal" th:id="'eventId' + ${eventTimeslotEntry.key + '_' + timeslot.id}"

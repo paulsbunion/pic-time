@@ -350,10 +350,10 @@ function parseTimelineData(data) {
 		address = address.replaceAll(",", "");
 		var base = "www.google.com/maps/place/"
 		
-		tempBuffer.push(" @ [<a href='' onclick=window.open('//" + base + address +"')><u>" + data[2] + "</u></a>]");
+		tempBuffer.push(" @ [<a href='' onclick=window.open('//" + base + address +"')><u>" + data[3] + "</u></a>]");
 		tempBuffer.push("</b>");
-		tempBuffer.push("<br>");
 	}
+	tempBuffer.push("<br>");
 	// notesString
 	if (data[4]) {
 		tempBuffer.push(" " + data[4]);
