@@ -96,10 +96,11 @@
 				</div>
 				
 				<div class="eventDropdown">
-					<select id="sel" name="test">
+					<select id="sel" name="test" class="btn sel">
 					<option th:each="event : ${events}" th:value="${event.id}"
 						th:utext="${event.eventName}" />
 					</select>
+					<button class="btn btn-primary">edit Event</button>
 				</div>
 				
 <!-- 				<th:block th:if="${eventExists}"> -->

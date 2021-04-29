@@ -10,14 +10,67 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		window.location.href = document.getElementById("newEventAnchor").href;
 	}
 	else {
-		clearResponseErrorCodes("new");
+		clearResponseErrorCodes("edit");
 //		$('#rsp_start_time_new').text("");
 		console.log("value");
 		console.log($("#sel").val());
-		$("#newEventId").val($("#sel").val());
-	     $('#newModal').modal('show');
+		
+//		var eventId = _self.data('event-id');
+		var timeslotId = null;
+
+		var d = new Date();
+		var hour = d.getHours();
+		var min = roundToMultipleOfFive(d.getMinutes());
+		var time = hour + ":" + min;
+		console.log("time is: " + time);
+		var startTime = time;
+		var endTime = null;
+		var title = "";
+		var notes = "";
+		var location = null;
+		var locationId = null;
+		var data = $("#all_photogs_eventId_" + eventId).data("event-photographers");
+		var availablePhotographers = [];
+		var assignedPhotographers = createJSONfromPhotographerData(data).photographers;
+		console.log("the photogs to add");
+		console.log(assignedPhotographers);
+		var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
+				"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
+				"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers};
+		
+		populateModalData(modalData);
+		
+		
+		$("#editEventId").val($("#sel").val());
+	     $('#editModal').modal('show');
   	}
 	});
+
+
+function roundToMultipleOfFive(time) {
+	console.log(time);
+	var temp = Math.floor(time / 5) * 5;
+	console.log(temp);
+	
+	if (temp == 0) {
+		temp = "00";
+	}
+	return temp;
+}
+
+function createJSONfromPhotographerData(data) {
+	var staff = {};
+	var photographers =[];
+	staff.photographers = photographers;
+	
+	$.each(data, function(i, val) {
+		var photographer = {"id":val.id, "firstName":val.firstName, "lastName":val.lastName};
+		console.log(photographer);
+		staff.photographers.push(photographer);
+	});
+	
+	return staff;
+}
 
    
    $(document).on("click", ".open-EditModal", function (event) {
@@ -35,64 +88,73 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	var availablePhotographers = $("#avail_photogs_timeslot_" + timeslotId).data('avail_photogs');
 	var assignedPhotographers = $("#assigned_photogs_timeslot_" + timeslotId).data('assigned_photogs');
 	
-	// clear
-	$("#edit_avail_photogs").html('');
+	var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
+			"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
+			"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers};
 	
-	appendPhotographers(assignedPhotographers, true);
-	appendPhotographers(availablePhotographers, false);
-
-//$('#rsp_start_time').text("");
-	clearResponseErrorCodes("edit");
-$("#editEventId").val(eventId);
-$("#editTimeslotId").val(timeslotId);
-
-$("#editTimeslotTitle").val(title);
-var startTimeSplit = startTime.split(":");
-console.log("END time");
-console.log(endTime);
-var endTimeSplit = [null,null];
-if (endTime != undefined) {
-	endTimeSplit = endTime.split(":");
-}
-if (startTimeSplit[0] > 11) {
-	$("#editStartTimeMeridian").val("PM");
-	startTimeSplit[0]-= 12;
-}
-else {
-	$("#editStartTimeMeridian").val("AM");
-}
-if (endTimeSplit[0] > 11) {
-	$("#editEndTimeMeridian").val("PM");
-	endTimeSplit[0]-= 12;
-}
-else {
-	$("#editEndTimeMeridian").val("AM");
-}
-if (endTimeSplit[0] == null) {
-	$("#editEndTimeMeridian").val("");
-}
-
-$("#editStartTimeHr").val(startTimeSplit[0]);
-$("#editStartTimeMin").val(startTimeSplit[1]);
-
-$("#editEndTimeHr").val(endTimeSplit[0]);
-$("#editEndTimeMin").val(endTimeSplit[1]);
-
-$("#editNotes").val(notes);
-	 var x = new Date(); 
-
-if (location != null) {
-	$("#searchBox").val(location);
-	$("#editLocation").val(locationId);
-}
-else {
-	$("#searchBox").val("");
-	$("#editLocation").val("");
-}
-
+	populateModalData(modalData);
+	
      $('#editModal').modal('show');
     });
    
+function populateModalData(modalData) {
+	// clear
+	$("#edit_avail_photogs").html('');
+	
+	appendPhotographers(modalData.assignedPhotographers, true);
+	appendPhotographers(modalData.availablePhotographers, false);
+
+	//$('#rsp_start_time').text("");
+		clearResponseErrorCodes("edit");
+	$("#editEventId").val(modalData.eventId);
+	$("#editTimeslotId").val(modalData.timeslotId);
+	
+	$("#editTimeslotTitle").val(modalData.title);
+	var startTimeSplit = modalData.startTime.split(":");
+	console.log("END time");
+	console.log(modalData.endTime);
+	var endTimeSplit = [null,null];
+	if (modalData.endTime != undefined) {
+		endTimeSplit = modalData.endTime.split(":");
+	}
+	if (startTimeSplit[0] > 11) {
+		$("#editStartTimeMeridian").val("PM");
+		startTimeSplit[0]-= 12;
+	}
+	else {
+		$("#editStartTimeMeridian").val("AM");
+	}
+	if (endTimeSplit[0] > 11) {
+		$("#editEndTimeMeridian").val("PM");
+		endTimeSplit[0]-= 12;
+	}
+	else {
+		$("#editEndTimeMeridian").val("AM");
+	}
+	if (endTimeSplit[0] == null) {
+		$("#editEndTimeMeridian").val("");
+	}
+	
+	$("#editStartTimeHr").val(startTimeSplit[0]);
+	$("#editStartTimeMin").val(startTimeSplit[1]);
+	
+	$("#editEndTimeHr").val(endTimeSplit[0]);
+	$("#editEndTimeMin").val(endTimeSplit[1]);
+	
+	$("#editNotes").val(modalData.notes);
+	//	 var x = new Date(); 
+	
+	if (modalData.location != null) {
+		$("#searchBox").val(modalData.location);
+		$("#editLocation").val(modalData.locationId);
+	}
+	else {
+		$("#searchBox").val("");
+		$("#editLocation").val("");
+	}
+}
+
+
 function appendPhotographers(photographers, assigned) {
 	if (typeof photographers !== "undefined" && photographers != null && photographers.length > 0) {
 		// populate modal data
@@ -157,86 +219,71 @@ function appendPhotographer(p, assigned) {
             }
         });
 
-		$.ajax({
-			type: "PUT",
-			contentType: "application/json",
-			url: "/events/" + $('#editEventId').val() + "/timeslots/" + $('#editTimeslotId').val(),
-			data: JSON.stringify(formData),
+		if (formData.id == null) {
+			$.ajax({
+				type: "POST",
+				contentType: "application/json",
+				url: "/events/" + $('#editEventId').val() + "/timeslots/",
+				data: JSON.stringify(formData),
 
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			
-			success: function(response) {
-				clearResponseErrorCodes("edit");
-//				$('#rsp_start_time').text("");
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-				if (response.redirect) {
-					window.location.href = response.redirect;
-				}
+				dataTpye: 'JSON',
 				
-				// causes error reloading event selected page with no changes
-				setTimeout(function() {
-					location.reload();
-					}, RELOAD_TIMER);
-			},
-			error: function (e) {
-				$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
-				$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
-			}
-		});
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				
+				success: function(response) {
+//					$('#rsp_start_time_new').text("");
+					clearResponseErrorCodes("edit");
+					location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+					
+					 window.setTimeout(function(){window.location.reload()}, 3000);
+					if (response.redirect) {
+						//alert(location.href);
+						//window.location.href = response.redirect;
+					}
+				},
+				error: function (e) {
+					$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
+					$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
+				}
+			});
+		}
+		else {
+			$.ajax({
+				type: "PUT",
+				contentType: "application/json",
+				url: "/events/" + $('#editEventId').val() + "/timeslots/" + $('#editTimeslotId').val(),
+				data: JSON.stringify(formData),
+	
+				dataTpye: 'JSON',
+				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				
+				success: function(response) {
+					clearResponseErrorCodes("edit");
+	//				$('#rsp_start_time').text("");
+					location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+					if (response.redirect) {
+						window.location.href = response.redirect;
+					}
+					
+					// causes error reloading event selected page with no changes
+					setTimeout(function() {
+						location.reload();
+						}, RELOAD_TIMER);
+				},
+				error: function (e) {
+					$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
+					$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
+				}
+			});
+		}
 
 	});
 	
-	
-   	$(document).on("click", "#new-modal-submit", function (event) {
-		event.preventDefault();
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		var formData = {};
-		formData = getFormData("new");
-
-		const RELOAD_TIMER = 10;
-		
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-            }
-        });
-		$.ajax({
-			type: "POST",
-			contentType: "application/json",
-			url: "/events/" + $('#newEventId').val() + "/timeslots/",
-			data: JSON.stringify(formData),
-
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			
-			success: function(response) {
-//				$('#rsp_start_time_new').text("");
-				clearResponseErrorCodes("new");
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-				
-				 window.setTimeout(function(){window.location.reload()}, 3000);
-				if (response.redirect) {
-					//alert(location.href);
-					//window.location.href = response.redirect;
-				}
-			},
-			error: function (e) {
-				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
-				$('#rsp_end_time_new').text(e.responseJSON.rsp_end_time);
-			}
-		});
-
-	});
 	
 	function getFormData(typeOfTimeslot) {
 		
@@ -411,11 +458,6 @@ function appendPhotographer(p, assigned) {
 		clearEndTime("edit");
 	});
 	
-	$(document).on("click", "#clear_endtime_new", function(event) {
-		event.preventDefault();
-		clearEndTime("new");
-	});
-
 	function clearEndTime(modalType) {
 		$("#" + modalType + "EndTimeHr").val('');
 		$("#" + modalType + "EndTimeMin").val('');

@@ -228,6 +228,10 @@ table {
 	
 }
 
+.sel {
+	border: 1px solid;
+}
+
 /* ------------- photographer container ----------------- */
 .photographer-container {
 	max-width: 50%;
