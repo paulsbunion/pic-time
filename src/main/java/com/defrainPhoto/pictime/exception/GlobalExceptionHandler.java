@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+	
 	@ExceptionHandler(UpdateEventException.class)
 	public ResponseEntity<Object> handleUpdateEventException(UpdateEventException ex, WebRequest request) {
 		Map<String, Object> body = new LinkedHashMap<String, Object>();
@@ -69,23 +71,23 @@ private void clearErrors(Map<String, Object> body) {
 		return handleExceptionInternal(ex, errors, headers, status, request);
 	}
 	
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<Object> dataIntegrityViolationExceptionHandler(Exception ex) {
-		Set<String> body = new HashSet<String>();
-		Throwable throwable = ex.getCause();
-		while (throwable != null) {
-			if (throwable instanceof SQLIntegrityConstraintViolationException) {
-				String errorMessage = throwable.getMessage();
-				if (errorMessage.toLowerCase().contains("duplicate")) {
-					String[] data = errorMessage.split("for");
-					if (data.length > 0) {
-						data[0] = data[0].replace("Duplicate entry", "Already exists");
-						body.add("already-exists:" +  data[0].replace("-", ", "));
-					}
-				}
-			}
-			throwable = throwable.getCause();
-		}
-		return new ResponseEntity<Object>(body, HttpStatus.CONFLICT);
-	}
+//	@ExceptionHandler(DataIntegrityViolationException.class)
+//	public ResponseEntity<Object> dataIntegrityViolationExceptionHandler(Exception ex) {
+//		Set<String> body = new HashSet<String>();
+//		Throwable throwable = ex.getCause();
+//		while (throwable != null) {
+//			if (throwable instanceof SQLIntegrityConstraintViolationException) {
+//				String errorMessage = throwable.getMessage();
+//				if (errorMessage.toLowerCase().contains("duplicate")) {
+//					String[] data = errorMessage.split("for");
+//					if (data.length > 0) {
+//						data[0] = data[0].replace("Duplicate entry", "Already exists");
+//						body.add("already-exists:" +  data[0].replace("-", ", "));
+//					}
+//				}
+//			}
+//			throwable = throwable.getCause();
+//		}
+//		return new ResponseEntity<Object>(body, HttpStatus.CONFLICT);
+//	}
 }

@@ -205,8 +205,13 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void removePhotographerFromTimeslots(User p, List<Timeslot> t) {
-		timeslotService.removePhotographerFromTimeslots(p, t);
+	public void removePhotographerFromTimeslots(User p, List<Timeslot> timeslots) {
+		timeslotService.removePhotographerFromTimeslots(p, timeslots);
+	}
+
+	@Override
+	public void addPhotographerToTimeslots(User p, List<Timeslot> timeslots) {
+		timeslotService.addPhotographerToTimeslots(p, timeslots);
 	}
 
 }

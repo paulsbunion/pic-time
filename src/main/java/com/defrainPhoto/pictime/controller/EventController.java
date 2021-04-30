@@ -3,6 +3,7 @@ package com.defrainPhoto.pictime.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -91,17 +92,29 @@ public class EventController {
 		Set<User> oldPhotographers = oldEvent.getPhotographers();
 		Set<User> newPhotographers = updateEvent.getPhotographers();
 		if (!oldPhotographers.equals(newPhotographers)) {
-			updatePhotographers(oldPhotographers, newPhotographers, updateEvent);
+			updatePhotographersTimeslots(oldPhotographers, newPhotographers, updateEvent);
 		}
 		return modelMapper.map(eventService.updateEvent(updateEvent), EventDTO.class);
 
 	}
 
-	private void updatePhotographers(Set<User> oldPhotographers, Set<User> newPhotographers, Event updateEvent) {
-		oldPhotographers.removeAll(newPhotographers);
+	private void updatePhotographersTimeslots(Set<User> oldPhotographers, Set<User> newPhotographers, Event updateEvent) {
+		Set<User> commonElements = oldPhotographers.stream().filter(newPhotographers::contains).collect(Collectors.toSet());
+		System.out.println("Common ELements:");
+		System.out.println(commonElements.size());
+		System.out.printf("Before::::Old: %d, New: %d\n", oldPhotographers.size(), newPhotographers.size());
+		oldPhotographers.removeAll(commonElements);
+		newPhotographers.removeAll(commonElements);
+		System.out.printf("After::::Old: %d, New: %d\n", oldPhotographers.size(), newPhotographers.size());
 		for (User p : oldPhotographers) {
 			eventService.removePhotographerFromTimeslots(p, updateEvent.getTimeslots());
 		}
+		for (User p : newPhotographers) {
+			eventService.addPhotographerToTimeslots(p, updateEvent.getTimeslots());
+		}
+		// add back removed photographers
+		oldPhotographers.addAll(commonElements);
+//		newPhotographers.addAll(commonElements);
 	}
 
 	@PutMapping("/{eventId}/switchPhotographer/oldPhotographerId/{oldId}/newPhotographerId/{newId}")
