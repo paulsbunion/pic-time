@@ -2,7 +2,7 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	   event.preventDefault();
 	   
 	var _self = $(this);
-	console.log(_self);
+//	console.log(_self);
 	
 	var eventId = $("#sel").val()
 	// if id null, call create event
@@ -12,8 +12,8 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	else {
 		clearResponseErrorCodes("edit");
 //		$('#rsp_start_time_new').text("");
-		console.log("value");
-		console.log($("#sel").val());
+//		console.log("value");
+//		console.log($("#sel").val());
 		
 //		var eventId = _self.data('event-id');
 		var timeslotId = null;
@@ -22,7 +22,6 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		var hour = d.getHours();
 		var min = roundToMultipleOfFive(d.getMinutes());
 		var time = hour + ":" + min;
-		console.log("time is: " + time);
 		var startTime = time;
 		var endTime = null;
 		var title = "";
@@ -32,8 +31,7 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		var data = $("#all_photogs_eventId_" + eventId).data("event-photographers");
 		var availablePhotographers = [];
 		var assignedPhotographers = createJSONfromPhotographerData(data).photographers;
-		console.log("the photogs to add");
-		console.log(assignedPhotographers);
+		
 		var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
 				"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
 				"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers};
@@ -48,12 +46,10 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 
 
 function roundToMultipleOfFive(time) {
-	console.log(time);
 	var temp = Math.floor(time / 5) * 5;
-	console.log(temp);
-	
-	if (temp == 0) {
-		temp = "00";
+	temp = "" + temp;
+	if (temp.length < 2) {
+		temp = "0" + temp;
 	}
 	return temp;
 }
@@ -65,7 +61,6 @@ function createJSONfromPhotographerData(data) {
 	
 	$.each(data, function(i, val) {
 		var photographer = {"id":val.id, "firstName":val.firstName, "lastName":val.lastName};
-		console.log(photographer);
 		staff.photographers.push(photographer);
 	});
 	
@@ -111,8 +106,6 @@ function populateModalData(modalData) {
 	
 	$("#editTimeslotTitle").val(modalData.title);
 	var startTimeSplit = modalData.startTime.split(":");
-	console.log("END time");
-	console.log(modalData.endTime);
 	var endTimeSplit = [null,null];
 	if (modalData.endTime != undefined) {
 		endTimeSplit = modalData.endTime.split(":");
@@ -219,7 +212,9 @@ function appendPhotographer(p, assigned) {
             }
         });
 
-		if (formData.id == null) {
+		if (formData.id == null || formData.id == undefined || formData.id == "") {
+//			set to null for jackson mapping
+			formData.id = null;
 			$.ajax({
 				type: "POST",
 				contentType: "application/json",
@@ -301,7 +296,7 @@ function appendPhotographer(p, assigned) {
 		formData.eventId=0;
 		
 		let prefix = typeOfTimeslot.toLowerCase();
-		if (prefix == "edit") {
+//		if (prefix == "edit") {
 			prefix = "edit";
 			
 			// check if need to clear location id
@@ -309,10 +304,10 @@ function appendPhotographer(p, assigned) {
 				$("#editLocation").val("");
 			}
 			
+			var query = $("#" + prefix + "TimeslotId").val();
 			// set existing id
-			formData.id = $('#' + prefix + 'timeslotId').val();
-		}
-		
+			formData.id =  $("#" + prefix + "TimeslotId").val();
+//		}
 		var endTime = [null];
 		var endTimeHr = $('#' + prefix + 'EndTimeHr').val();
 		var endTimeMin = $('#' + prefix + 'EndTimeMin').val();
@@ -321,9 +316,6 @@ function appendPhotographer(p, assigned) {
 			var endTime = [$('#' + prefix + 'EndTimeHr').val(), $('#' + prefix + 'EndTimeMin').val(), 
 				$('#' + prefix + 'EndTimeMeridian').val()];
 		}
-		console.log("the times:");
-		console.log(endTimeHr);
-		console.log(endTimeMin);
 		
 		var startTime = [$('#' + prefix + 'StartTimeHr').val(), $('#' + prefix + 'StartTimeMin').val(), 
 			$('#' + prefix + 'StartTimeMeridian').val()];
@@ -352,13 +344,10 @@ function appendPhotographer(p, assigned) {
 		}
 		formData.notes=$('#' + prefix + 'Notes').val();
 		
-		console.log(formData);
 		return formData;
 	}
 	
 	function parseTime(timeString) {
-		console.log("the parsing times:");
-		console.log(timeString);
 		if(timeString[0] == null) {
 			return null;
 		}

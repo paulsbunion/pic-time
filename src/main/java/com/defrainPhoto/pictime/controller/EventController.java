@@ -112,9 +112,10 @@ public class EventController {
 		for (User p : newPhotographers) {
 			eventService.addPhotographerToTimeslots(p, updateEvent.getTimeslots());
 		}
+		System.out.println("UNCOMMENT newPhotographers.addAll(commonElements) to remove error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		// add back removed photographers
 		oldPhotographers.addAll(commonElements);
-//		newPhotographers.addAll(commonElements);
+		newPhotographers.addAll(commonElements);
 	}
 
 	@PutMapping("/{eventId}/switchPhotographer/oldPhotographerId/{oldId}/newPhotographerId/{newId}")
