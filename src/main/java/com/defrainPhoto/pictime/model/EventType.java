@@ -23,7 +23,7 @@ public class EventType {
 	@NotNull(message = "Invalid name")
 	private String name;
 	@NotNull(message = "Invalid amount")
-	@Min(value = 0, message = "Cannot be negatve")
+	@Min(value = 0, message = "Cannot be negative")
 	private Integer baseCost;
 
 	public EventType() {
