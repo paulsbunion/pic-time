@@ -4,7 +4,7 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	var _self = $(this);
 //	console.log(_self);
 	
-	var eventId = $("#sel").val()
+	var eventId = $("#sel").val();
 	// if id null, call create event
 	if (eventId == '' || eventId == null) {
 		window.location.href = document.getElementById("newEventAnchor").href;
@@ -67,7 +67,13 @@ function createJSONfromPhotographerData(data) {
 	return staff;
 }
 
-   
+
+	$(document).on("click", "#edit_event_button", function (event) {
+		event.preventDefault();
+		var eventId = $("#sel").val();
+		window.location='/mvc/events/edit/' + eventId;
+	});
+
    $(document).on("click", ".open-EditModal", function (event) {
 	var _self = $(this);
 	var eventId = _self.data('event-id');

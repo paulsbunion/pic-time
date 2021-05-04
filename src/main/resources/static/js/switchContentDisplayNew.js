@@ -2,9 +2,10 @@ $(document).ready(function() {
 	var sel = $("#sel");
 	sel.data("prev", sel.val());
 	
-	// if empty selector, hide dropdown
+	// if empty selector, hide dropdown and edit event button
 	if ($('#sel option').length == 0) {
 		$('#sel').hide();
+		$('#edit_event_button').hide();
 	}
 	
 	var allEventDivs = document.querySelectorAll('div[id^="eventId"]');
