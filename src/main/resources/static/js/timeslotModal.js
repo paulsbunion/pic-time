@@ -458,3 +458,76 @@ function appendPhotographer(p, assigned) {
 		$("#" + modalType + "EndTimeMin").val('');
 		$("#" + modalType + "EndTimeMeridian").val('');
 	}
+	
+	$(function() {
+		var $baseCost = $("#baseCost");
+//		var $amount = $("#amount");
+//		$amount.val($baseCost.val());
+		
+		addCommas();
+		
+		var $form = $("#form");
+		
+		$baseCost.on( "keyup", function( event ) {
+			
+			
+			// When user select text in the document, also abort.
+			var selection = window.getSelection().toString();
+			if ( selection !== '' ) {
+				return;
+			}
+			
+			// When the arrow keys are pressed, abort.
+			if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+				return;
+			}
+			
+			
+			var $this = $( this );
+			
+			// Get the value.
+			var input = $this.val();
+			
+			input = input.replace(/[\D\s\._\-]+/g, "");
+					input = input ? parseInt( input, 10 ) : 0;
+
+					$this.val( function() {
+						return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+					} );
+		} );
+		
+		
+		$form.on( "submit", function( event ) {
+			
+			var amountWithCommas = $baseCost.val();
+			amountWithCommas = amountWithCommas.replace(/[($)\s\._,\-]+/g, ''); // Sanitize the values.
+			$baseCost.val(amountWithCommas);
+			
+			
+////			event.preventDefault();
+//			console.log("submit");
+//			var $this = $( this );
+//			var arr = $this.serializeArray();
+//		
+//			for (var i = 0; i < arr.length; i++) {
+//					arr[i].value = arr[i].value.replace(/[($)\s\._,\-]+/g, ''); // Sanitize the values.
+//			};
+//			
+//			console.log( arr );
+			
+//			event.preventDefault();
+		});
+	});
+	
+	function addCommas() {
+		var $amount = $("#baseCost");
+		var amount = $amount.val();
+		
+		amount = amount.replace(/[\D\s\._\-]+/g, "");
+		amount = amount ? parseInt( amount, 10 ) : 0;
+		console.log(amount.toLocaleString( "en-US" ));
+
+		$amount.val( function() {
+					return ( amount === 0 ) ? "" : amount.toLocaleString( "en-US" );
+				} );
+	}

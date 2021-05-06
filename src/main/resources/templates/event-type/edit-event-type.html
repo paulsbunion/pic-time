@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/timeslotModal.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
@@ -27,7 +28,7 @@
 
 					<div th:case="*">
 
-						<form action="#" th:action="@{/mvc/event-types/update/{id}(id=${eventType.id})}"  method="post">
+						<form action="#" id="form" th:action="@{/mvc/event-types/update/{id}(id=${eventType.id})}"  method="post">
 
 							<div class="form-group col-md-6">
 								<label for="name" class="col-form-label">Name of Event Type</label> 
@@ -35,9 +36,22 @@
 								<span th:if="${#fields.hasErrors('eventType.name')}" th:errors="*{eventType.name}" class="text-danger"></span>
 							</div>
 										
+<!-- 							<div class="form-group col-md-6"> -->
+<!-- 								<label for="baseCost" class="col-form-label">Base Cost $</label>  -->
+<!-- 								<input type="number" th:field="*{eventType.baseCost}" class="form-control" id="baseCost" placeholder="EX: 500" onfocus="this.select()">  -->
+<!-- 								<span th:if="${#fields.hasErrors('eventType.baseCost')}" th:errors="*{eventType.baseCost}" class="text-danger"></span> -->
+<!-- 							</div> -->
+							
 							<div class="form-group col-md-6">
-								<label for="baseCost" class="col-form-label">Base Cost $</label> 
-								<input type="number" th:field="*{eventType.baseCost}" class="form-control" id="baseCost" placeholder="EX: 500" onfocus="this.select()"> 
+								<label for="baseCost" class="col-form-label">Base Cost $</label>
+								<div class="flex">
+									<span class="currency form-control">$</span>
+<!-- 									<input type="text" name="amount" id="amount" maxlength="15" class="form-control input-amount" placeholder="EX: 500" onfocus="this.select()"/> -->
+<!-- 									<input type="text" th:field="*{eventType.baseCost}" name="baseCost" id="baseCost" maxlength="15" hidden/> -->
+									
+									<input type="text"  th:field="*{eventType.baseCost}" name="baseCost" id="baseCost" maxlength="15" class="form-control input-amount" placeholder="EX: 500" onfocus="this.select()"/>
+									
+								</div>
 								<span th:if="${#fields.hasErrors('eventType.baseCost')}" th:errors="*{eventType.baseCost}" class="text-danger"></span>
 							</div>
 							
