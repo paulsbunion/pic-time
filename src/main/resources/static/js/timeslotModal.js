@@ -468,7 +468,7 @@ function appendPhotographer(p, assigned) {
 		
 		var $form = $("#form");
 		
-		$baseCost.on( "keyup", function( event ) {
+		$baseCost.on( "input", function( event ) {
 			
 			
 			// When user select text in the document, also abort.
