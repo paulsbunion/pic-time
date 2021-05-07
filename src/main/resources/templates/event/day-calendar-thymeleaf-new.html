@@ -129,7 +129,8 @@
 						data-timeslottitle=${timeslot.title}, 
 						data-notes=${timeslot.notes},
 						data-location=${timeslot.location?.printLocationWithDescription()},
-						data-location-id=${timeslot.location?.id}">
+						data-location-id=${timeslot.location?.id},
+						data-track-mileage=${timeslot.trackMileage}">
 						
 						<div class = "timeslotFlex timeslotTime"><span th:text="${timeslot.time.printStartEnd()}"></span></div>
 						<div class = "timeslotData">
@@ -240,7 +241,17 @@
 	       	</div>
 	       	
 	       	<div>
-	       		<span>Location</span>
+	       		<div class="track-mileage-header">
+		       		<span>Location</span>
+		       		<br>
+		       		<span class="track-mileage-button">Track Mileage
+		       			<label class="switch"> 
+	<!-- 						<input type="checkbox" th:field="${client.autoRemind}" th:checked ="${client.autoRemind}" id="autoRemind" name="Auto Remind">  -->
+								<input type="checkbox" id="trackMileage" name="Track Mileage">
+							<span class="slider round text"></span>
+						</label>
+	       			</span>
+       			</div>
 	       		<div class="location-searchbar">
 		       		<input type="text" name="search" id="searchBox" class="form-control location-searchbar-item ">
 		       		<input type="button" value="X" onclick="clearLocation()" class="form-control location-searchbar-item btn-danger">

@@ -31,10 +31,11 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 		var data = $("#all_photogs_eventId_" + eventId).data("event-photographers");
 		var availablePhotographers = [];
 		var assignedPhotographers = createJSONfromPhotographerData(data).photographers;
+		var trackMileage = true;
 		
 		var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
 				"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
-				"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers};
+				"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers, "trackMileage": trackMileage};
 		
 		populateModalData(modalData);
 		
@@ -84,6 +85,7 @@ function createJSONfromPhotographerData(data) {
 	var notes = _self.data('notes');
 	var location = _self.data('location');
 	var locationId = _self.data('location-id');
+	var trackMileage = _self.data('track-mileage');
 	
 
 	var availablePhotographers = $("#avail_photogs_timeslot_" + timeslotId).data('avail_photogs');
@@ -91,7 +93,7 @@ function createJSONfromPhotographerData(data) {
 	
 	var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
 			"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
-			"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers};
+			"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers, "trackMileage": trackMileage};
 	
 	populateModalData(modalData);
 	
@@ -150,6 +152,10 @@ function populateModalData(modalData) {
 	else {
 		$("#searchBox").val("");
 		$("#editLocation").val("");
+	}
+	
+	if(modalData.trackMileage != null) {
+		$("#trackMileage").prop('checked', modalData.trackMileage);
 	}
 }
 
@@ -300,6 +306,7 @@ function appendPhotographer(p, assigned) {
 		formData.locationId=null;
 		formData.trackMileage=false;
 		formData.eventId=0;
+		formData.trackMileage=false;
 		
 		let prefix = typeOfTimeslot.toLowerCase();
 //		if (prefix == "edit") {
@@ -341,7 +348,7 @@ function appendPhotographer(p, assigned) {
 		
 		formData.locationId=$('#' + prefix + 'Location').val();
 		
-		formData.trackMileage=false;
+		formData.trackMileage=$("#trackMileage").is(":checked");
 		formData.eventId=$('#' + prefix + 'EventId').val();
 		
 		formData.title=$('#' + prefix + 'TimeslotTitle').val();
