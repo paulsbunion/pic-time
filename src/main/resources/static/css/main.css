@@ -251,6 +251,14 @@ table {
 	padding-left: .25rem;
 }
 
+.eventType-dropdown {
+	display: grid;
+	grid-template-columns: 1fr 80fr;
+	row-gap: 5px;
+	margin-bottom: 1rem;
+	
+}
+
 /* ------------- photographer container ----------------- */
 .photographer-container {
 	max-width: 50%;
