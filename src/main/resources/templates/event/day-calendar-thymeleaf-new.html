@@ -258,9 +258,9 @@
 		       		<input type="text" id="editLocation" hidden>
 	       		</div>
 	       		
-	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleModalDivDisplay('addNewLocation')">Create New Location</button></div>
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowDiv('showAddNewLocation')" id="showAddNewLocation-button">Create New Location</button></div>
 	       		
-				<div id="addNewLocation" style="display: none;">
+				<div id="showAddNewLocation" style="display: none;">
 	       			<div class="">
 
 						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
@@ -353,7 +353,7 @@
 <!-- 		        <select hidden="true" multiple="multiple" th:field="${timeslot.photographers}" id="edit_photographers" name="photographers" path="photographers"> -->
 <!-- 				</select> -->
 				<select hidden multiple = "multiple" id="photographers" name="photographers"></select>
-		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowPhotographers()" id="show-photographers-button">Show Photographers</button></div>
+		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowDiv('showPhotographers')" id="showPhotographers-button">Show Photographers</button></div>
 	       		
 				<div id="showPhotographers" style="display: none;">
 	       			<div class="">
