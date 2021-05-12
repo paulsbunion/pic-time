@@ -6,6 +6,8 @@ function clientSideSearch(searchBarId, numColumns) {
 	// get row data to search
 	var $rows = $("tbody tr"); 
 	
+	var oddCounter = true;
+	
 	$rows.each(function(index, row) {
 		td = row.getElementsByTagName("td");
 		
@@ -24,6 +26,13 @@ function clientSideSearch(searchBarId, numColumns) {
 		
 		if (match) {
 			row.style.display = "";
+			if (oddCounter) {
+				row.style.backgroundColor = "rgb(" + 242 + "," + 242 + "," + 242 + ")";
+			}
+			else {
+				row.style.backgroundColor = "white";
+			}
+			oddCounter = !oddCounter;
 		}
 		else {
 			row.style.display = "none";

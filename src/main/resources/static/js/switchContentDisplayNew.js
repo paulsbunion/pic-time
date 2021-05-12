@@ -124,7 +124,7 @@ function toggleDivDisplay(matches, prev, selected) {
 	}
 	
 	// check overlap
-	adjustForOverlap(matches);
+//	adjustForOverlap(matches);
 }
 
 function adjustForOverlap(matches) {
