@@ -10,6 +10,7 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/timeslotModal.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
@@ -70,9 +71,13 @@
 							<!-- 					</div> -->
 
 							<div class="form-group col-md-6">
-								<label for="extraCost" class="col-form-label">Extra Cost</label> 
-								<input type="text" th:field="${event.extraCost}" class="form-control" id="extraCost" placeholder="0">
-								<span th:if="${#fields.hasErrors('event.extraCost')}" th:errors="${event.extraCost}" class="text-danger"></span>
+								<label for="extraCost" class="col-form-label">Extra Cost $</label>
+								<div class="flex">
+									<span class="currency form-control">$</span>
+									<input type="text"  th:field="*{event.extraCost}" name="extraCost" id="baseCost" maxlength="15" class="form-control input-amount" placeholder="EX: 500" onfocus="this.select()"/>
+									
+								</div>
+								<span th:if="${#fields.hasErrors('event.extraCost')}" th:errors="*{event.extraCost}" class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-6">
