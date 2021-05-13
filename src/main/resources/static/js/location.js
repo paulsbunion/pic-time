@@ -52,33 +52,34 @@ $(function locationSearchFocusAndChoose() {
 		});
 	}
 	
-//	function toggleCreateLocationDisplay() {
-//		var addLocationDiv = $("#addNewLocation")[0];
-//		console.log(addLocationDiv);
-//		console.log(addLocationDiv.style.display);
-//		if (addLocationDiv.style.display === "none") {
-//			addLocationDiv.style.display = "block";
-//		}
-//		else {
-//			addLocationDiv.style.display = "none";
-//		}
-//	}
-	
-	function toggleShowPhotographers() {
-		toggleModalDivDisplay('showPhotographers');
+	function toggleShowDiv(divId) {
+		toggleModalDivDisplay(divId);
 		
-		var div = $("#" + 'showPhotographers')[0];
+		var div = $("#" + divId)[0];
 		var displayStyle = div.style.display.toLowerCase();
-		var button = $("#show-photographers-button")[0];
-//		console.log("button");
-//		console.log(button.value);
+		var button = $("#" + divId + "-button")[0];
+		
+		var showText = "";
+		var hideText = "";
+		
+		if (divId == "showAddNewLocation") {
+			showText = "Create New Location";
+			hideText = "Hide Create New Location";
+		} 
+		else {
+			showText = "Show Photographers";
+			hideText = "Hide Photographers";
+		}
+			
+			
 		if (displayStyle == "none") {
-			button.innerHTML = "Show Photographers";
+			button.innerHTML = showText;
 		}
 		else {
-			button.innerHTML = "Hide Photographers";
+			button.innerHTML = hideText;
 		}
 	}
+	
 	
 	function toggleModalDivDisplay(idName) {
 //		console.log(idName);
@@ -98,7 +99,7 @@ $(function locationSearchFocusAndChoose() {
 	event.preventDefault();
 	clearErrors();
 //	toggleCreateLocationDisplay();
-	toggleModalDivDisplay("addNewLocation");
+	toggleModalDivDisplay("showAddNewLocation");
 	
 });
 	
@@ -191,7 +192,7 @@ $(document).on("click", "#timeslot-new-location-form-submit", function ajaxCreat
 			$("#searchBox").val(response.description + ": " + response.street + ", " + response.city + ", " + response.state + ", " + response.zipcode); // replace string with selected value
 			// hide new location
 //			toggleCreateLocationDisplay();
-			toggleModalDivDisplay("addNewLocation");
+			toggleModalDivDisplay("showAddNewLocation");
 			
 // 			console.log(locationData.eventId);
 // 			location.href = URL_add_parameter(location.href, "eventId", formData.eventId);

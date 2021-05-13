@@ -2,24 +2,79 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	   event.preventDefault();
 	   
 	var _self = $(this);
-	console.log(_self);
+//	console.log(_self);
 	
-	var eventId = $("#sel").val()
+	var eventId = $("#sel").val();
 	// if id null, call create event
 	if (eventId == '' || eventId == null) {
 		window.location.href = document.getElementById("newEventAnchor").href;
 	}
 	else {
-		clearResponseErrorCodes("new");
+		clearResponseErrorCodes("edit");
 //		$('#rsp_start_time_new').text("");
-		console.log("value");
-		console.log($("#sel").val());
-		$("#newEventId").val($("#sel").val());
-	     $('#newModal').modal('show');
+//		console.log("value");
+//		console.log($("#sel").val());
+		
+//		var eventId = _self.data('event-id');
+		var timeslotId = null;
+
+		var d = new Date();
+		var hour = d.getHours();
+		var min = roundToMultipleOfFive(d.getMinutes());
+		var time = hour + ":" + min;
+		var startTime = time;
+		var endTime = null;
+		var title = "";
+		var notes = "";
+		var location = null;
+		var locationId = null;
+		var data = $("#all_photogs_eventId_" + eventId).data("event-photographers");
+		var availablePhotographers = [];
+		var assignedPhotographers = createJSONfromPhotographerData(data).photographers;
+		var trackMileage = true;
+		
+		var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
+				"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
+				"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers, "trackMileage": trackMileage};
+		
+		populateModalData(modalData);
+		
+		
+		$("#editEventId").val($("#sel").val());
+	     $('#editModal').modal('show');
   	}
 	});
 
-   
+
+function roundToMultipleOfFive(time) {
+	var temp = Math.floor(time / 5) * 5;
+	temp = "" + temp;
+	if (temp.length < 2) {
+		temp = "0" + temp;
+	}
+	return temp;
+}
+
+function createJSONfromPhotographerData(data) {
+	var staff = {};
+	var photographers =[];
+	staff.photographers = photographers;
+	
+	$.each(data, function(i, val) {
+		var photographer = {"id":val.id, "firstName":val.firstName, "lastName":val.lastName};
+		staff.photographers.push(photographer);
+	});
+	
+	return staff;
+}
+
+
+	$(document).on("click", "#edit_event_button", function (event) {
+		event.preventDefault();
+		var eventId = $("#sel").val();
+		window.location='/mvc/events/edit/' + eventId;
+	});
+
    $(document).on("click", ".open-EditModal", function (event) {
 	var _self = $(this);
 	var eventId = _self.data('event-id');
@@ -30,69 +85,81 @@ $(document).on("click", "#newTimeslotModal", function (event) {
 	var notes = _self.data('notes');
 	var location = _self.data('location');
 	var locationId = _self.data('location-id');
+	var trackMileage = _self.data('track-mileage');
 	
 
 	var availablePhotographers = $("#avail_photogs_timeslot_" + timeslotId).data('avail_photogs');
 	var assignedPhotographers = $("#assigned_photogs_timeslot_" + timeslotId).data('assigned_photogs');
 	
-	// clear
-	$("#edit_avail_photogs").html('');
+	var modalData = {"eventId": eventId, "timeslotId": timeslotId, "startTime":startTime,
+			"endTime":endTime, "title":title, "notes":notes, "location":location, "locationId":locationId,
+			"availablePhotographers":availablePhotographers, "assignedPhotographers":assignedPhotographers, "trackMileage": trackMileage};
 	
-	appendPhotographers(assignedPhotographers, true);
-	appendPhotographers(availablePhotographers, false);
-
-//$('#rsp_start_time').text("");
-	clearResponseErrorCodes("edit");
-$("#editEventId").val(eventId);
-$("#editTimeslotId").val(timeslotId);
-
-$("#editTimeslotTitle").val(title);
-var startTimeSplit = startTime.split(":");
-console.log("END time");
-console.log(endTime);
-var endTimeSplit = [null,null];
-if (endTime != undefined) {
-	endTimeSplit = endTime.split(":");
-}
-if (startTimeSplit[0] > 11) {
-	$("#editStartTimeMeridian").val("PM");
-	startTimeSplit[0]-= 12;
-}
-else {
-	$("#editStartTimeMeridian").val("AM");
-}
-if (endTimeSplit[0] > 11) {
-	$("#editEndTimeMeridian").val("PM");
-	endTimeSplit[0]-= 12;
-}
-else {
-	$("#editEndTimeMeridian").val("AM");
-}
-if (endTimeSplit[0] == null) {
-	$("#editEndTimeMeridian").val("");
-}
-
-$("#editStartTimeHr").val(startTimeSplit[0]);
-$("#editStartTimeMin").val(startTimeSplit[1]);
-
-$("#editEndTimeHr").val(endTimeSplit[0]);
-$("#editEndTimeMin").val(endTimeSplit[1]);
-
-$("#editNotes").val(notes);
-	 var x = new Date(); 
-
-if (location != null) {
-	$("#searchBox").val(location);
-	$("#editLocation").val(locationId);
-}
-else {
-	$("#searchBox").val("");
-	$("#editLocation").val("");
-}
-
+	populateModalData(modalData);
+	
      $('#editModal').modal('show');
     });
    
+function populateModalData(modalData) {
+	// clear
+	$("#edit_avail_photogs").html('');
+	
+	appendPhotographers(modalData.assignedPhotographers, true);
+	appendPhotographers(modalData.availablePhotographers, false);
+
+	//$('#rsp_start_time').text("");
+		clearResponseErrorCodes("edit");
+	$("#editEventId").val(modalData.eventId);
+	$("#editTimeslotId").val(modalData.timeslotId);
+	
+	$("#editTimeslotTitle").val(modalData.title);
+	var startTimeSplit = modalData.startTime.split(":");
+	var endTimeSplit = [null,null];
+	if (modalData.endTime != undefined) {
+		endTimeSplit = modalData.endTime.split(":");
+	}
+	if (startTimeSplit[0] > 11) {
+		$("#editStartTimeMeridian").val("PM");
+		startTimeSplit[0]-= 12;
+	}
+	else {
+		$("#editStartTimeMeridian").val("AM");
+	}
+	if (endTimeSplit[0] > 11) {
+		$("#editEndTimeMeridian").val("PM");
+		endTimeSplit[0]-= 12;
+	}
+	else {
+		$("#editEndTimeMeridian").val("AM");
+	}
+	if (endTimeSplit[0] == null) {
+		$("#editEndTimeMeridian").val("");
+	}
+	
+	$("#editStartTimeHr").val(startTimeSplit[0]);
+	$("#editStartTimeMin").val(startTimeSplit[1]);
+	
+	$("#editEndTimeHr").val(endTimeSplit[0]);
+	$("#editEndTimeMin").val(endTimeSplit[1]);
+	
+	$("#editNotes").val(modalData.notes);
+	//	 var x = new Date(); 
+	
+	if (modalData.location != null) {
+		$("#searchBox").val(modalData.location);
+		$("#editLocation").val(modalData.locationId);
+	}
+	else {
+		$("#searchBox").val("");
+		$("#editLocation").val("");
+	}
+	
+	if(modalData.trackMileage != null) {
+		$("#trackMileage").prop('checked', modalData.trackMileage);
+	}
+}
+
+
 function appendPhotographers(photographers, assigned) {
 	if (typeof photographers !== "undefined" && photographers != null && photographers.length > 0) {
 		// populate modal data
@@ -157,86 +224,73 @@ function appendPhotographer(p, assigned) {
             }
         });
 
-		$.ajax({
-			type: "PUT",
-			contentType: "application/json",
-			url: "/events/" + $('#editEventId').val() + "/timeslots/" + $('#editTimeslotId').val(),
-			data: JSON.stringify(formData),
+		if (formData.id == null || formData.id == undefined || formData.id == "") {
+//			set to null for jackson mapping
+			formData.id = null;
+			$.ajax({
+				type: "POST",
+				contentType: "application/json",
+				url: "/events/" + $('#editEventId').val() + "/timeslots/",
+				data: JSON.stringify(formData),
 
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			
-			success: function(response) {
-				clearResponseErrorCodes("edit");
-//				$('#rsp_start_time').text("");
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-				if (response.redirect) {
-					window.location.href = response.redirect;
-				}
+				dataTpye: 'JSON',
 				
-				// causes error reloading event selected page with no changes
-				setTimeout(function() {
-					location.reload();
-					}, RELOAD_TIMER);
-			},
-			error: function (e) {
-				$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
-				$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
-			}
-		});
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				
+				success: function(response) {
+//					$('#rsp_start_time_new').text("");
+					clearResponseErrorCodes("edit");
+					location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+					
+					 window.setTimeout(function(){window.location.reload()}, 3000);
+					if (response.redirect) {
+						//alert(location.href);
+						//window.location.href = response.redirect;
+					}
+				},
+				error: function (e) {
+					$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
+					$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
+				}
+			});
+		}
+		else {
+			$.ajax({
+				type: "PUT",
+				contentType: "application/json",
+				url: "/events/" + $('#editEventId').val() + "/timeslots/" + $('#editTimeslotId').val(),
+				data: JSON.stringify(formData),
+	
+				dataTpye: 'JSON',
+				
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				
+				success: function(response) {
+					clearResponseErrorCodes("edit");
+	//				$('#rsp_start_time').text("");
+					location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
+					if (response.redirect) {
+						window.location.href = response.redirect;
+					}
+					
+					// causes error reloading event selected page with no changes
+					setTimeout(function() {
+						location.reload();
+						}, RELOAD_TIMER);
+				},
+				error: function (e) {
+					$('#rsp_start_time_edit').text(e.responseJSON.rsp_start_time);
+					$('#rsp_end_time_edit').text(e.responseJSON.rsp_end_time);
+				}
+			});
+		}
 
 	});
 	
-	
-   	$(document).on("click", "#new-modal-submit", function (event) {
-		event.preventDefault();
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		
-		var formData = {};
-		formData = getFormData("new");
-
-		const RELOAD_TIMER = 10;
-		
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-            }
-        });
-		$.ajax({
-			type: "POST",
-			contentType: "application/json",
-			url: "/events/" + $('#newEventId').val() + "/timeslots/",
-			data: JSON.stringify(formData),
-
-			dataTpye: 'JSON',
-			
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			
-			success: function(response) {
-//				$('#rsp_start_time_new').text("");
-				clearResponseErrorCodes("new");
-				location.href = URL_add_parameter(location.href, "eventId", formData.eventId);
-				
-				 window.setTimeout(function(){window.location.reload()}, 3000);
-				if (response.redirect) {
-					//alert(location.href);
-					//window.location.href = response.redirect;
-				}
-			},
-			error: function (e) {
-				$('#rsp_start_time_new').text(e.responseJSON.rsp_start_time);
-				$('#rsp_end_time_new').text(e.responseJSON.rsp_end_time);
-			}
-		});
-
-	});
 	
 	function getFormData(typeOfTimeslot) {
 		
@@ -252,9 +306,10 @@ function appendPhotographer(p, assigned) {
 		formData.locationId=null;
 		formData.trackMileage=false;
 		formData.eventId=0;
+		formData.trackMileage=false;
 		
 		let prefix = typeOfTimeslot.toLowerCase();
-		if (prefix == "edit") {
+//		if (prefix == "edit") {
 			prefix = "edit";
 			
 			// check if need to clear location id
@@ -262,10 +317,10 @@ function appendPhotographer(p, assigned) {
 				$("#editLocation").val("");
 			}
 			
+			var query = $("#" + prefix + "TimeslotId").val();
 			// set existing id
-			formData.id = $('#' + prefix + 'timeslotId').val();
-		}
-		
+			formData.id =  $("#" + prefix + "TimeslotId").val();
+//		}
 		var endTime = [null];
 		var endTimeHr = $('#' + prefix + 'EndTimeHr').val();
 		var endTimeMin = $('#' + prefix + 'EndTimeMin').val();
@@ -274,9 +329,6 @@ function appendPhotographer(p, assigned) {
 			var endTime = [$('#' + prefix + 'EndTimeHr').val(), $('#' + prefix + 'EndTimeMin').val(), 
 				$('#' + prefix + 'EndTimeMeridian').val()];
 		}
-		console.log("the times:");
-		console.log(endTimeHr);
-		console.log(endTimeMin);
 		
 		var startTime = [$('#' + prefix + 'StartTimeHr').val(), $('#' + prefix + 'StartTimeMin').val(), 
 			$('#' + prefix + 'StartTimeMeridian').val()];
@@ -296,7 +348,7 @@ function appendPhotographer(p, assigned) {
 		
 		formData.locationId=$('#' + prefix + 'Location').val();
 		
-		formData.trackMileage=false;
+		formData.trackMileage=$("#trackMileage").is(":checked");
 		formData.eventId=$('#' + prefix + 'EventId').val();
 		
 		formData.title=$('#' + prefix + 'TimeslotTitle').val();
@@ -305,13 +357,10 @@ function appendPhotographer(p, assigned) {
 		}
 		formData.notes=$('#' + prefix + 'Notes').val();
 		
-		console.log(formData);
 		return formData;
 	}
 	
 	function parseTime(timeString) {
-		console.log("the parsing times:");
-		console.log(timeString);
 		if(timeString[0] == null) {
 			return null;
 		}
@@ -411,13 +460,81 @@ function appendPhotographer(p, assigned) {
 		clearEndTime("edit");
 	});
 	
-	$(document).on("click", "#clear_endtime_new", function(event) {
-		event.preventDefault();
-		clearEndTime("new");
-	});
-
 	function clearEndTime(modalType) {
 		$("#" + modalType + "EndTimeHr").val('');
 		$("#" + modalType + "EndTimeMin").val('');
 		$("#" + modalType + "EndTimeMeridian").val('');
+	}
+	
+	$(function() {
+		var $baseCost = $("#baseCost");
+//		var $amount = $("#amount");
+//		$amount.val($baseCost.val());
+		
+		addCommas();
+		
+		var $form = $("#form");
+		
+		$baseCost.on( "input", function( event ) {
+			
+			
+			// When user select text in the document, also abort.
+			var selection = window.getSelection().toString();
+			if ( selection !== '' ) {
+				return;
+			}
+			
+			// When the arrow keys are pressed, abort.
+			if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+				return;
+			}
+			
+			
+			var $this = $( this );
+			
+			// Get the value.
+			var input = $this.val();
+			
+			input = input.replace(/[\D\s\._\-]+/g, "");
+					input = input ? parseInt( input, 10 ) : 0;
+
+					$this.val( function() {
+						return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+					} );
+		} );
+		
+		
+		$form.on( "submit", function( event ) {
+			
+			var amountWithCommas = $baseCost.val();
+			amountWithCommas = amountWithCommas.replace(/[($)\s\._,\-]+/g, ''); // Sanitize the values.
+			$baseCost.val(amountWithCommas);
+			
+			
+////			event.preventDefault();
+//			console.log("submit");
+//			var $this = $( this );
+//			var arr = $this.serializeArray();
+//		
+//			for (var i = 0; i < arr.length; i++) {
+//					arr[i].value = arr[i].value.replace(/[($)\s\._,\-]+/g, ''); // Sanitize the values.
+//			};
+//			
+//			console.log( arr );
+			
+//			event.preventDefault();
+		});
+	});
+	
+	function addCommas() {
+		var $amount = $("#baseCost");
+		var amount = $amount.val();
+		
+		amount = amount.replace(/[\D\s\._\-]+/g, "");
+		amount = amount ? parseInt( amount, 10 ) : 0;
+		console.log(amount.toLocaleString( "en-US" ));
+
+		$amount.val( function() {
+					return ( amount === 0 ) ? "" : amount.toLocaleString( "en-US" );
+				} );
 	}

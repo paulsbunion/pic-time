@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/timeslotModal.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
@@ -43,6 +44,15 @@
 									placeholder="mm/dd/yyyy" disabled>
 							</div>
 
+							<div class="form-group col-md-6">
+								<label>Type of Event</label>
+								<select  th:field="${event.eventType}" id="eventType" class="form-control" style="height: auto;" disabled>
+									<option value="-1">none</option>
+									<option th:each="eventType : ${eventTypes}" th:value="${eventType.id}"
+											th:utext="${eventType.name + ' ($' + eventType.baseCost + ')'}" />
+								</select>
+								
+							</div>
 
 							<!-- 					<div class="form-group col-md-6"> -->
 							<!-- 						<label for="address" class="col-form-label">Type of Event</label>  -->
@@ -55,9 +65,13 @@
 							<!-- 					</div> -->
 
 							<div class="form-group col-md-6">
-								<label for="extraCost" class="col-form-label">Extra Cost</label>
-								<input type="text" th:field="${event.extraCost}"
-									class="form-control" id="extraCost" placeholder="0" disabled>
+								<label for="extraCost" class="col-form-label">Extra Cost $</label>
+								<div class="flex">
+									<span class="currency form-control" style="background-color: #e9ecef">$</span>
+									<input type="text"  th:field="*{event.extraCost}" name="extraCost" id="baseCost" maxlength="15" class="form-control input-amount" placeholder="EX: 500" onfocus="this.select()" disabled/>
+									
+								</div>
+								<span th:if="${#fields.hasErrors('event.extraCost')}" th:errors="*{event.extraCost}" class="text-danger"></span>
 							</div>
 
 							<div class="form-group col-md-6">

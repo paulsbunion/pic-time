@@ -96,10 +96,11 @@
 				</div>
 				
 				<div class="eventDropdown">
-					<select id="sel" name="test">
+					<select id="sel" name="test" class="btn sel">
 					<option th:each="event : ${events}" th:value="${event.id}"
 						th:utext="${event.eventName}" />
 					</select>
+					<button class="btn btn-primary" id="edit_event_button">Edit Event</button>
 				</div>
 				
 <!-- 				<th:block th:if="${eventExists}"> -->
@@ -128,7 +129,8 @@
 						data-timeslottitle=${timeslot.title}, 
 						data-notes=${timeslot.notes},
 						data-location=${timeslot.location?.printLocationWithDescription()},
-						data-location-id=${timeslot.location?.id}">
+						data-location-id=${timeslot.location?.id},
+						data-track-mileage=${timeslot.trackMileage}">
 						
 						<div class = "timeslotFlex timeslotTime"><span th:text="${timeslot.time.printStartEnd()}"></span></div>
 						<div class = "timeslotData">
@@ -239,16 +241,26 @@
 	       	</div>
 	       	
 	       	<div>
-	       		<span>Location</span>
+	       		<div class="track-mileage-header">
+		       		<span>Location</span>
+		       		<br>
+		       		<span class="track-mileage-button">Track Mileage
+		       			<label class="switch"> 
+	<!-- 						<input type="checkbox" th:field="${client.autoRemind}" th:checked ="${client.autoRemind}" id="autoRemind" name="Auto Remind">  -->
+								<input type="checkbox" id="trackMileage" name="Track Mileage">
+							<span class="slider round text"></span>
+						</label>
+	       			</span>
+       			</div>
 	       		<div class="location-searchbar">
 		       		<input type="text" name="search" id="searchBox" class="form-control location-searchbar-item ">
 		       		<input type="button" value="X" onclick="clearLocation()" class="form-control location-searchbar-item btn-danger">
 		       		<input type="text" id="editLocation" hidden>
 	       		</div>
 	       		
-	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleModalDivDisplay('addNewLocation')">Create New Location</button></div>
+	       		<div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowDiv('showAddNewLocation')" id="showAddNewLocation-button">Create New Location</button></div>
 	       		
-				<div id="addNewLocation" style="display: none;">
+				<div id="showAddNewLocation" style="display: none;">
 	       			<div class="">
 
 						<div class="add-location-header"><span class="col-form-label item">New Location</span></div>
@@ -341,7 +353,7 @@
 <!-- 		        <select hidden="true" multiple="multiple" th:field="${timeslot.photographers}" id="edit_photographers" name="photographers" path="photographers"> -->
 <!-- 				</select> -->
 				<select hidden multiple = "multiple" id="photographers" name="photographers"></select>
-		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowPhotographers()" id="show-photographers-button">Show Photographers</button></div>
+		        <div class="col-form-label"><button type="button" class="form-control btn-primary" onclick="toggleShowDiv('showPhotographers')" id="showPhotographers-button">Show Photographers</button></div>
 	       		
 				<div id="showPhotographers" style="display: none;">
 	       			<div class="">

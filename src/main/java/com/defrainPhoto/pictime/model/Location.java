@@ -36,17 +36,17 @@ public class Location {
 	@NotEmpty(message = "Invalid name")
 	@NotNull(message = "Invalid name")
 	private String city;
-	@State(message = "Invalid state")
-	@NotEmpty(message = "Invalid state")
-	@NotNull(message = "Invalid state")
+	@State(message = "Invalid State")
+	@NotEmpty(message = "Invalid State")
+	@NotNull(message = "Invalid State")
 	private String state;
-	@Zipcode(message = "Invalid zipcode")
-	@NotEmpty(message = "Invalid zipcode")
-	@NotNull(message = "Invalid zipcode")
+	@Zipcode(message = "Invalid Zipcode")
+	@NotEmpty(message = "Invalid Zipcode")
+	@NotNull(message = "Invalid Zipcode")
 	private String zipcode;
-	@Street(message = "Invalid name")
-	@NotEmpty(message = "Invalid name")
-	@NotNull(message = "Invalid name")
+	@Street(message = "Invalid Street")
+	@NotEmpty(message = "Invalid Street")
+	@NotNull(message = "Invalid Street")
 	private String street;
 	@NotEmpty(message = "Required")
 	@NotNull(message = "Required")

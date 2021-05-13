@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script  type="text/javascript" src="/js/clientSideSearch.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
@@ -24,6 +25,14 @@
 					<a th:href="@{/mvc/clients/new}" class="btn btn-primary"> <i
 						class="fas fa-user-plus m1-2">Add Client</i></a>
 				</p>
+				<div class="form-group col-md-6">
+					<label for="searchClient" class="col-form-label" >Search Name or Email</label>
+					<div class="location-searchbar" style="display: grid; grid-template-columns: 80fr 1fr;">
+						<input type="text" id="searchClient" class="form-control" onkeyup="clientSideSearch('searchClient', 2) " placeholder="Search for Clients...">
+						<input type="button" value="X" onclick="clearSearchBar('searchClient', 2)" class="form-control location-searchbar-item btn-danger">
+<!-- 						<button>clear</button> -->
+					</div>  
+				</div>
 				<div class="col-md-10">
 					<div th:if="${clients != ''}">
 						<h2 th:case="null">No Client Records Found!</h2>

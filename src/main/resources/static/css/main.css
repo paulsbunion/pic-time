@@ -4,6 +4,18 @@
 	font-size: 1vw;
 }
 
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
 
 @media screen {
 	.always-print {
@@ -225,6 +237,37 @@ table {
 
 .row-button-delete {
 	width: 20%;
+	
+}
+
+.sel {
+	border: 1px solid;
+}
+
+.flex {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.currency {
+	width: auto;
+	border-radius:0.25rem 0 0 0.25rem;
+	border-right: 0;
+	padding-right: 0;
+}
+
+.input-amount {
+	flex: 1 1 300px;
+	border-radius: 0 0.25rem 0.25rem 0;
+	border-left: 0;
+	padding-left: .25rem;
+}
+
+.eventType-dropdown {
+	display: grid;
+	grid-template-columns: 1fr 80fr;
+	row-gap: 5px;
+	margin-bottom: 1rem;
 	
 }
 

@@ -62,12 +62,12 @@ public class EventTypeServiceMockUnitTest {
 		eventType = new EventType(2l, "Normal Event", -1);
 		violations = validator.validate(eventType);
 		assertEquals(1, violations.size());
-		assertEquals("Base Cost cannot be negative", violations.stream().findFirst().get().getMessage());
+		assertEquals("Cannot be negative", violations.stream().findFirst().get().getMessage());
 		
 		eventType = new EventType(2l, "", 1);
 		violations = validator.validate(eventType);
 		assertEquals(1, violations.size());
-		assertEquals("Event Type Name cannot be Blank", violations.stream().findFirst().get().getMessage());
+		assertEquals("Invalid name", violations.stream().findFirst().get().getMessage());
 		
 		eventType = new EventType(2l, null, 1);
 		violations = validator.validate(eventType);

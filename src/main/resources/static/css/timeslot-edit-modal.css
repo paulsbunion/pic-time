@@ -1,3 +1,11 @@
+.track-mileage-header {
+	padding-top: .25rem;
+}
+
+.track-mileage-button {
+/* 	padding-left: 30%; */
+}
+
 .location-searchbar {
 /* 	max-width: 50%; */
 	display: grid;
@@ -26,20 +34,20 @@
 	text-align: center;
 }
 
-#addNewLocation {
+#showAddNewLocation {
 	border: 1px solid;
 	padding: 5px;
 }
 
 
-.show-photographers {
-	display: grid;
-	grid-template-columns: 1fr 80fr;
-	column-gap: 2rem;
-}
-.show-photographers-item {
-	align-self: center;
-}
+/* .show-photographers { */
+/* 	display: grid; */
+/* 	grid-template-columns: 1fr 80fr; */
+/* 	column-gap: 2rem; */
+/* } */
+/* .show-photographers-item { */
+/* 	align-self: center; */
+/* } */
 
 /* .modal-content { width: 800px; max-width:100%; } */
 

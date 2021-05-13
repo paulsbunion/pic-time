@@ -24,5 +24,7 @@ public interface TimeslotService {
 
 	public void deleteTimeslot(long timeslotId);
 
-	public void removePhotographerFromTimeslots(User p, List<Timeslot> t);
+	public void removePhotographerFromTimeslots(User p, List<Timeslot> timeslots);
+
+	public void addPhotographerToTimeslots(User p, List<Timeslot> timeslots);
 }

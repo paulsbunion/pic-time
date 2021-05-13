@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.defrainPhoto.pictime.controller.EventController;
+import com.defrainPhoto.pictime.controller.EventTypeController;
 import com.defrainPhoto.pictime.controller.PhotographerController;
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
@@ -50,6 +51,8 @@ public class EventMVCController {
 	ModelMapper modelMapper;
 	@Autowired
 	LocationMVCController locationMvcController;
+	@Autowired
+	EventTypeController eventTypeController;
 	
 	private static final String NEW_EVENT_URL = "event/new-event";
 	private static final String MVC_ALL_EVENT_URL_BASE = "/mvc/events/";
@@ -94,6 +97,9 @@ public class EventMVCController {
 		Event event = eventController.getEvent(id);
 		model.addAttribute("event", event);
 		
+		List<EventType> eventTypes = eventTypeController.getAllEventTypes();
+		model.addAttribute("eventTypes", eventTypes);
+		
 		List<UserDTO> assignedEventPhotographers = getAssignedEventPhotographers(event);
 		model.addAttribute("assigned_event_photographers", assignedEventPhotographers);
 		
@@ -106,6 +112,9 @@ public class EventMVCController {
 		Event event = eventController.getEvent(id);
 		
 		model.addAttribute("event", event);
+		
+		List<EventType> eventTypes = eventTypeController.getAllEventTypes();
+		model.addAttribute("eventTypes", eventTypes);
 		
 		List<UserDTO> assignedEventPhotographers = getAssignedEventPhotographers(event);
 		List<UserDTO> availableEventPhotographers = getAvailableEventPhotographers(assignedEventPhotographers);
@@ -149,6 +158,10 @@ public class EventMVCController {
 //			log.error("Error saving event changes: " + result.getAllErrors());
 			log.error("Error saving event changes: " + result.getFieldErrors().get(0).getDefaultMessage());
 			event.setId(id);
+			
+			List<EventType> eventTypes = eventTypeController.getAllEventTypes();
+			model.addAttribute("eventTypes", eventTypes);
+			
 			return EDIT_EVENT_URL;
 		}
 		Event oldEvent = eventController.getEvent(id);
@@ -179,15 +192,24 @@ public class EventMVCController {
 	@GetMapping("/new/{year}/{month}/{day}")
 	public String newEventForm(Model model, @PathVariable("year") Integer year, @PathVariable("month") Integer month, @PathVariable("day") Integer day) {
 		log.info("MVC user creating new Event");
+		
+		List<EventType> eventTypes = eventTypeController.getAllEventTypes();
+		model.addAttribute("eventTypes", eventTypes);
+		
 		Event event = new Event();
 		event.setDate(LocalDate.of(year, month, day));
 		model.addAttribute("event", event);
+		
 		return NEW_EVENT_URL;
 	}
 	
 	@PostMapping("/save")
 	public String saveNewEvent(@Valid Event event, BindingResult result, Model model) {
+		
 		log.info("MVC user saving new Event");
+		
+		List<EventType> eventTypes = eventTypeController.getAllEventTypes();
+		model.addAttribute("eventTypes", eventTypes);
 		
 		if(result.hasErrors()) {
 			log.error("Error(s) saving new Event: " + result.getAllErrors());

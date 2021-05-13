@@ -65,7 +65,8 @@ public class ClientServiceMockUnitTest {
 		Client client = new Client(1l, "Bob", "Barker", "address", "227-334-5566", "email", false);
 		Set<ConstraintViolation<Client>> violations = validator.validate(client);
 		String message = violations.stream().findFirst().get().getMessage();
-		assertTrue(message.contains("must be a well-formed email address"));
+		System.out.println("MEssage: " + message);
+		assertTrue(message.contains("Invalid email"));
 	}
 
 	@Test
@@ -83,7 +84,7 @@ public class ClientServiceMockUnitTest {
 	public void testInvalidPhoneNumber() {
 		Client client = new Client(1l, "Bob", "Barker", "address", "234-5566", "email@valid", false);
 		Set<ConstraintViolation<Client>> violations = validator.validate(client);
-		assertEquals("Invalid phone number", violations.stream().findFirst().get().getMessage());
+		assertEquals("Invalid number", violations.stream().findFirst().get().getMessage());
 	}
 
 	@Test
