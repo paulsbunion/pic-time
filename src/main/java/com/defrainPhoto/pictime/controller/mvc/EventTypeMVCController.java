@@ -1,5 +1,6 @@
 package com.defrainPhoto.pictime.controller.mvc;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.defrainPhoto.pictime.controller.EventTypeController;
 import com.defrainPhoto.pictime.model.EventType;
@@ -98,7 +101,7 @@ public class EventTypeMVCController {
 	}
 	
 	@GetMapping("delete/{id}")
-	public String deleteEventTypeById(@PathVariable("id") Long id) {
+	public ModelAndView deleteEventTypeById(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		log.info("MVC user deleting EventType with ID: " + id);
 		try {
 			eventTypeController.deleteEventypeById(id);
@@ -106,8 +109,17 @@ public class EventTypeMVCController {
 		catch (EmptyResultDataAccessException e) {
 			log.error("Error occured in calling delete client by ID for ID: " + id, e);
 		}
+		catch (Exception e) {
+			log.error("Error occured in calling delete client by ID for ID: " + id, e);
+			redirectAttributes.addFlashAttribute("errorMsg", "Error deleting Event Type! Some events use this type!");
+		}
 		
-		return "redirect:" + MVC_EVENT_TYPE_URL_BASE + "list";
+		String view = "redirect:" + MVC_EVENT_TYPE_URL_BASE + "list";
+		HashMap<String, String> model = new HashMap<String, String>();
+//		model.put("error", "Error occured!");
+		ModelAndView mav = new ModelAndView(view, model);
+		return mav;
+//		return "redirect:" + MVC_EVENT_TYPE_URL_BASE + "list";
 	}
 	
 	/**
