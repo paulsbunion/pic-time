@@ -93,7 +93,12 @@
     -moz-animation: slideDown 3.5s 1.0s 1 ease forwards;
 }
 
-
+#note:hover {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+}
 
 /* dark theme dropdown */
 .dropdown-menu {
