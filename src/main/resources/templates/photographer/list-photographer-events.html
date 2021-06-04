@@ -55,7 +55,7 @@
 											<td>
 												<a th:href="@{/mvc/events/show/{id}(id=${event.id})}" th:text="${event.eventName}"></a>
 											</td>
-										<td class="td-btn"><a th:href="@{/mvc/events/calendar/{date}(date=${#temporals.format(event.date, 'yyyy/MM')})}"
+										<td class="td-btn"><a th:href="@{/mvc/events/calendar/{date}?eventId={id}(date=${#temporals.format(event.date, 'yyyy/MM')}, id=${event.id})}"
 											class="btn btn-primary full-width"> <i class="fas fa-user-edit m1-2" th:text="${#temporals.format(event.date, 'EEEE, MMMM d, yyyy')}">date</i>
 										</a></td>
 										<td class="td-btn"><a th:href="@{/mvc/events/edit/{id}(id=${event.id})}"
