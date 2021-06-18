@@ -29,6 +29,8 @@ public interface EventService {
 	public Event updateEvent(Event event);
 
 	public List<Event> getAllEventsForPhotographer(long id);
+	
+	public List<Event> getAllEventsForPhotographerBYYear(Long id, int year);
 
 	public List<Timeslot> getAllTimeslots(long eventId);
 

@@ -71,11 +71,11 @@ public class EventController {
 				.asList(modelMapper.map(eventService.findAllByYearAndMonthAndDay(year, month, day), EventDTO[].class));
 	}
 
-	@GetMapping("/user/{id}")
-	public List<EventDTO> getAllEventsForUser(@PathVariable("id") long id) {
-		log.info("Event REST controller getting all Events for User with ID: " + id);
-		return Arrays.asList(modelMapper.map(eventService.getAllEventsForPhotographer(id), EventDTO[].class));
-	}
+//	@GetMapping("/user/{id}")
+//	public List<EventDTO> getAllEventsForUser(@PathVariable("id") long id) {
+//		log.info("Event REST controller getting all Events for User with ID: " + id);
+//		return Arrays.asList(modelMapper.map(eventService.getAllEventsForPhotographer(id), EventDTO[].class));
+//	}
 
 	@PostMapping
 	public EventDTO addEvent(@Valid @RequestBody Event event) {

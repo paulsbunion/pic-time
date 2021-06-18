@@ -153,6 +153,16 @@ public class EventServiceImpl implements EventService {
 	public List<Event> getAllEventsForPhotographer(long id) {
 		return eventRepository.findAllByPhotographersId(id);
 	}
+	
+	@Override
+	public List<Event> getAllEventsForPhotographerBYYear(Long id, int year) {
+		LocalDate startYear = LocalDate.of(year, 1, 1);
+		LocalDate endYear = LocalDate.of(year + 1, 1, 1);
+		List<Event> foundEvents =  eventRepository.findAllByPhotographersIdAndDateGreaterThanEqualAndDateLessThan(id, startYear, endYear);
+		System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ  TOTAL EVENTS FOUND:");
+		System.out.println(foundEvents.size());
+		return foundEvents;
+	}
 
 	@Override
 	public List<Timeslot> getAllTimeslots(long eventId) {

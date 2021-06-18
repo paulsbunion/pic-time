@@ -10,6 +10,8 @@ import com.defrainPhoto.pictime.model.Event;
 public interface EventRepository extends JpaRepository<Event, Long>{
 
 	List<Event> findAllByPhotographersId(long id);
+	
+	List<Event> findAllByPhotographersIdAndDateGreaterThanEqualAndDateLessThan(Long id, LocalDate fromDate, LocalDate toDate);
 
 	List<Event> findAllByDateGreaterThanEqualAndDateLessThan(LocalDate fromDate, LocalDate toDate);
 

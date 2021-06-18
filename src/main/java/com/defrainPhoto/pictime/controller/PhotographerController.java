@@ -32,6 +32,10 @@ public class PhotographerController {
 	public List<Event> getAllEventsForPhotographer(Long id) {
 		return eventService.getAllEventsForPhotographer(id);
 	}
+	
+	public List<Event> getAllEventsForPhotographerByYear(Long id, int year) {
+		return eventService.getAllEventsForPhotographerBYYear(id, year);
+	}
 
 	public UserDTO getPhotographer(Long id) {
 		// TODO Auto-generated method stub
