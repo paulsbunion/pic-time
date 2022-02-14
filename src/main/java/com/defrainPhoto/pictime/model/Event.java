@@ -60,8 +60,8 @@ public class Event {
 	private String extraCost;
 	private String notes;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
-	private Mileage mileage;
+	//@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "event")
+	//private UserEventMileage mileage;
 
 //	@JsonBackReference
 //	@JsonIgnore
@@ -146,13 +146,13 @@ public class Event {
 		this.notes = notes;
 	}
 
-	public Mileage getMileage() {
-		return mileage;
-	}
-
-	public void setMileage(Mileage mileage) {
-		this.mileage = mileage;
-	}
+//	public UserEventMileage getMileage() {
+//		return mileage;
+//	}
+//
+//	public void setMileage(UserEventMileage mileage) {
+//		this.mileage = mileage;
+//	}
 
 	public Set<User> getPhotographers() {
 		return photographers;

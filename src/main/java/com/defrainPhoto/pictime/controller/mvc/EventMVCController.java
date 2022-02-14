@@ -32,6 +32,7 @@ import com.defrainPhoto.pictime.controller.EventTypeController;
 import com.defrainPhoto.pictime.controller.PhotographerController;
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
+import com.defrainPhoto.pictime.dto.EventListDTO;
 import com.defrainPhoto.pictime.dto.MonthDTO;
 import com.defrainPhoto.pictime.dto.UserDTO;
 import com.defrainPhoto.pictime.model.Client;
@@ -78,7 +79,7 @@ public class EventMVCController {
 	@GetMapping("list")
 	public String listAllEvents(Model model) {
 		log.info("MVC user calling get all Events");
-		List<EventDTO> allEvents = eventController.getAllEvents();
+		List<EventListDTO> allEvents = eventController.getAllEvents();
 //		while (allEvents == null || allEvents.isEmpty()) {
 //			log.info("Addind Dummy Client Data for testing");
 //			addClients();

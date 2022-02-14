@@ -138,7 +138,7 @@ public class EventServiceImpl implements EventService {
 			eventUpdate.setEventType(event.getEventType());
 			eventUpdate.setExtraCost(event.getExtraCost());
 			eventUpdate.setId(event.getId());
-			eventUpdate.setMileage(event.getMileage());
+			//eventUpdate.setMileage(event.getMileage());
 			eventUpdate.setNotes(event.getNotes());
 			eventUpdate.setPhotographers(event.getPhotographers());
 			eventUpdate.setTimeslots(event.getTimeslots());
@@ -159,8 +159,8 @@ public class EventServiceImpl implements EventService {
 		LocalDate startYear = LocalDate.of(year, 1, 1);
 		LocalDate endYear = LocalDate.of(year + 1, 1, 1);
 		List<Event> foundEvents =  eventRepository.findAllByPhotographersIdAndDateGreaterThanEqualAndDateLessThan(id, startYear, endYear);
-		System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ  TOTAL EVENTS FOUND:");
-		System.out.println(foundEvents.size());
+		// System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ  TOTAL EVENTS FOUND:");
+		// System.out.println(foundEvents.size());
 		return foundEvents;
 	}
 

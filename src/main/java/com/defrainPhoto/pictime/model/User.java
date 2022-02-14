@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -59,6 +60,9 @@ public class User {
 
 	@ManyToMany(mappedBy = "photographers")
 	private Set<Timeslot> timeslots = new HashSet<Timeslot>();
+	
+	@OneToOne
+	private Location address;
 
 	public User() {
 

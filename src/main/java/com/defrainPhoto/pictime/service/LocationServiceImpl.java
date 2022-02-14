@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.LocationDistance;
 import com.defrainPhoto.pictime.repository.LocationRepository;
 
 @Service
@@ -64,7 +65,7 @@ public class LocationServiceImpl implements LocationService {
 //		return result.size() == 0 ? true : false;
 		return result.size() > 0? result.get(0) : null;
 	}
-	
+
 //	@Override
 //	public Page<LocationDTO> doAutoComplete(String input, Pageable pageable) {
 //		Page<LocationDTO> result = locationRepository.findAllByInputString(input, pageable);

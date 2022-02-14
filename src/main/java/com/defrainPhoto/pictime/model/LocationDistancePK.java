@@ -39,6 +39,6 @@ public class LocationDistancePK implements Serializable {
 	        if ( o == null || getClass() != o.getClass()) return false;
 	        LocationDistancePK that = (LocationDistancePK) o;
 	        return Objects.equals(getStartLocation().getId(), that.getStartLocation().getId()) &&
-	        		Objects.equals(getEndLocation(), that.getEndLocation());
+	        		Objects.equals(getEndLocation().getId(), that.getEndLocation().getId());
 	}
 }

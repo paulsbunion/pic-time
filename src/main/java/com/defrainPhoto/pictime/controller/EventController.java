@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.defrainPhoto.pictime.dto.CalendarEventDTO;
 import com.defrainPhoto.pictime.dto.EventDTO;
+import com.defrainPhoto.pictime.dto.EventListDTO;
 import com.defrainPhoto.pictime.exception.UpdateEventException;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.Timeslot;
@@ -51,9 +52,9 @@ public class EventController {
 	}
 
 	@GetMapping
-	public List<EventDTO> getAllEvents() {
+	public List<EventListDTO> getAllEvents() {
 		log.info("Event REST controller getting all Events");
-		return Arrays.asList(modelMapper.map(eventService.findAll(), EventDTO[].class));
+		return Arrays.asList(modelMapper.map(eventService.findAll(), EventListDTO[].class));
 	}
 
 	@GetMapping("/year/{year}/month/{month}")

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.defrainPhoto.pictime.dto.LocationDTO;
 import com.defrainPhoto.pictime.model.Location;
+import com.defrainPhoto.pictime.model.LocationDistance;
 
 public interface LocationService {
 	
@@ -27,4 +28,5 @@ public interface LocationService {
 	public Location existsByLocation(@Valid Location location);
 	
 //	public Page<LocationDTO> doAutoComplete(String input, Pageable pageable);
+	
 }

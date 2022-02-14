@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.defrainPhoto.pictime.model.EventType;
-import com.defrainPhoto.pictime.model.Mileage;
+import com.defrainPhoto.pictime.model.UserEventMileage;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.model.User;
 
@@ -24,7 +24,7 @@ public class EventDTO {
 	private String extraCost;
 	private String notes;
 
-	private Mileage mileage;
+	private UserEventMileage mileage;
 
 	private Set<UserDTO> photographers;
 
@@ -84,11 +84,11 @@ public class EventDTO {
 		this.notes = notes;
 	}
 
-	public Mileage getMileage() {
+	public UserEventMileage getMileage() {
 		return mileage;
 	}
 
-	public void setMileage(Mileage mileage) {
+	public void setMileage(UserEventMileage mileage) {
 		this.mileage = mileage;
 	}
 
