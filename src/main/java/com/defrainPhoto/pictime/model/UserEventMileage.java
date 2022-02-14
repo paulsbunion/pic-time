@@ -24,25 +24,25 @@ public class UserEventMileage {
 	private EventUserId eventUserId;
 	
 	@DateTimeFormat(pattern = "yyy-MM-dd")
-	private LocalDate year;
+	private LocalDate date;
 	
-	private long totalMiles;
+	private Double totalMiles;
 	public EventUserId getEventUserId() {
 		return eventUserId;
 	}
 	public void setEventUserId(EventUserId eventUserId) {
 		this.eventUserId = eventUserId;
 	}
-	public LocalDate getYear() {
-		return year;
+	public LocalDate getDate() {
+		return date;
 	}
-	public void setYear(LocalDate year) {
-		this.year = year;
+	public void setYear(LocalDate date) {
+		this.date = date;
 	}
-	public long getTotalMiles() {
+	public Double getTotalMiles() {
 		return totalMiles;
 	}
-	public void setTotalMiles(long totalMiles) {
+	public void setTotalMiles(Double totalMiles) {
 		this.totalMiles = totalMiles;
 	}
 	

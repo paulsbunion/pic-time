@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.defrainPhoto.pictime.dto.UserEventMileageDTO;
 import com.defrainPhoto.pictime.model.Event;
 import com.defrainPhoto.pictime.model.UserEventMileage;
 import com.defrainPhoto.pictime.model.Location;
 import com.defrainPhoto.pictime.model.LocationDistance;
 import com.defrainPhoto.pictime.model.Timeslot;
 import com.defrainPhoto.pictime.service.LocationDistanceService;
+import com.defrainPhoto.pictime.service.MileageService;
 
 @RestController
 @RequestMapping("/mileage/")
@@ -25,8 +27,11 @@ public class MileageController {
 	@Autowired
 	PhotographerController photographerController;
 	
-	@GetMapping("{year}/{user}")
-	public List<UserEventMileage> getYearMileageForUser(@PathVariable("year") int year, @PathVariable("user") Long user) {
+	@Autowired
+	MileageService mileageService;
+	
+	@GetMapping("{user}/{year}")
+	public List<UserEventMileage> getYearMileageForUser(@PathVariable("user") Long user, @PathVariable("year") int year) {
 		List<Event> allEventsForYear = photographerController.getAllEventsForPhotographerByYear(user, year);
 		return null;
 		
@@ -64,6 +69,12 @@ public class MileageController {
 		allEventsForYear.stream().filter(e -> e.getTimeslots().size() > 0).peek(s -> s.getTimeslots().stream().filter(ts -> ts.isTrackMileage())
 				);
 		 */	
+	}
+	
+	@GetMapping("{user}")
+	public List<UserEventMileageDTO> getAllMileageForUser(@PathVariable("user") Long user) {
+		List<UserEventMileageDTO> userEventMileage = mileageService.getAllByUserId(user);
+		return userEventMileage;
 	}
 
 	private Long updateDistance(Location lastLocation, Location currentLocation) {

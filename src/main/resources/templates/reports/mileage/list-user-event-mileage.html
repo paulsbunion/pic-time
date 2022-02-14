@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script  type="text/javascript" src="/js/clientSideSearch.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<title>All Event Mileage</title>
+</head>
+<body>
+	<th:block th:insert="fragments/nav :: nav"></th:block>
+	
+	<div class="container my-5">
+		<div class="row">
+
+			<h1>All Event Mileage</h1>
+			<div th:switch="${events}" class="container">
+
+				<div class="form-group col-md-6">
+					<label for="searchClient" class="col-form-label" >Search Name or Date</label>
+					<div class="location-searchbar" style="display: grid; grid-template-columns: 80fr 1fr;">
+						<input type="text" id="searchClient" class="form-control" onkeyup="clientSideSearch('searchClient', 2) " placeholder="Search for Events...">
+						<input type="button" value="X" onclick="clearSearchBar('searchClient', 2)" class="form-control location-searchbar-item btn-danger">
+<!-- 						<button>clear</button> -->
+					</div>  
+				</div>
+				<div class="col-md-10">
+					<div th:if="${events != ''}">
+						<h2 th:case="null">No Event Records Found!</h2>
+						<h2 th:case="NoData">No Event Records Found!</h2>
+
+						<div th:case="*" class="event-table">
+							<table class="table-striped">
+								<thead>
+									<tr>
+										<th class="row-1 row-name">Name</th>
+										<th class="row-2 row-date">Date</th>
+										<th class="row-2 row-miles">Miles</th>
+										<th class="row-3 row-button-edit">Details</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="event: ${events}">
+											<td>
+												<a th:href="@{/mvc/events/show/{id}(id=${event.EventUserId.EventId})}" th:text="${event.EventName}"></a>
+											</td>
+										<td th:text="${#temporals.format(event.date,'E, MMMM d, yyyy')}"></td>
+										<td th:text="${event.totalMiles}"></td>
+										<td class="td-btn"><a th:href="@{/mvc/events/edit/{id}(id=${event.EventUserId.EventId})}"
+											class="btn btn-primary"> <i class="fas fa-user-edit m1-2">Details</i>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

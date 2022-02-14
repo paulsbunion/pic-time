@@ -49,7 +49,7 @@ public class Event {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private EventType eventType;
 
 //	@JsonBackReference
